@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // Ultra Intelligence</title>
+    <title>NEXUS AI // OMNI INTELLIGENCE v3</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- Markdown & Syntax Highlighting -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -22,7 +22,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle">Autorisierter Zugang erforderlich</p>
+            <p class="login-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG</p>
             
             <form id="login-form">
                 <div class="input-group">
@@ -38,7 +38,7 @@
             </form>
 
             <div class="login-hint">
-                <span>Standard-Admin: <b>admin</b> / <b>admin123</b></span>
+                <span>Standard-Login: <b>admin</b> / Passwort: <b>123</b></span>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro">ULTRA</span>
+                <span class="badge-pro">OMNI</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -59,6 +59,21 @@
 
             <div class="sidebar-section-title">VERLAUF</div>
             <div class="chat-history" id="chat-history"></div>
+
+            <!-- Voice & Audio Control Box -->
+            <div class="voice-box">
+                <div class="voice-header">
+                    <span><i class="fas fa-volume-high"></i> Sprachausgabe</span>
+                    <input type="checkbox" id="auto-speak-toggle" checked title="Antworten automatisch vorlesen">
+                </div>
+                <select id="voice-select" title="Stimme auswählen">
+                    <option value="">Stimme wird geladen...</option>
+                </select>
+                <div class="voice-controls-row">
+                    <button id="stop-speech-btn" class="mini-btn" title="Vorlesen stoppen"><i class="fas fa-stop"></i> Stop</button>
+                    <button id="test-voice-btn" class="mini-btn" title="Stimme testen"><i class="fas fa-play"></i> Test</button>
+                </div>
+            </div>
 
             <div class="sidebar-footer">
                 <div class="user-card">
@@ -70,11 +85,11 @@
                 </div>
 
                 <div class="footer-actions">
-                    <button id="admin-panel-btn" class="icon-btn admin-only" title="Admin Kontrollzentrum">
+                    <button id="admin-panel-btn" class="icon-btn" title="Admin Kontrollzentrum (Passwortgeschützt)">
                         <i class="fas fa-shield-halved"></i> Admin
                     </button>
                     <button id="api-settings-btn" class="icon-btn" title="KI-Gehirn / API Einstellungen">
-                        <i class="fas fa-brain"></i> KI-Setup
+                        <i class="fas fa-brain"></i> Setup
                     </button>
                     <button id="logout-btn" class="icon-btn danger" title="Abmelden">
                         <i class="fas fa-power-off"></i>
@@ -89,39 +104,60 @@
                 <div class="model-selector">
                     <i class="fas fa-microchip"></i>
                     <select id="model-select">
-                        <option value="nexus-auto">Nexus-Ultra (Smart Auto-Modus - Kein Key nötig)</option>
-                        <option value="pollinations-openai">GPT-4o / Omni (Kostenlos & Direkt aktiv)</option>
-                        <option value="pollinations-claude">Claude-3.5 Style (Kostenlos & Direkt aktiv)</option>
+                        <option value="omni-auto">Nexus-Omni v3 (Echtzeit-Wissen + Stabil + Bilder)</option>
+                        <option value="openai-large">GPT-4o / Reasoning (Maximale Intelligenz)</option>
+                        <option value="search-grounded">Deep-Search Modus (Live-Fakten & Aktuelles)</option>
                         <option value="custom-api">Eigener API-Key (OpenAI / OpenRouter)</option>
                     </select>
                 </div>
-                <div class="status-indicator">
-                    <span class="pulse-dot"></span> System Online
+
+                <div class="topbar-right">
+                    <button id="screen-share-btn" class="screen-btn" title="Bildschirm teilen, damit die KI sieht was auf deinem Screen ist">
+                        <i class="fas fa-desktop"></i> <span>Bildschirm zeigen</span>
+                    </button>
+                    <div class="status-indicator">
+                        <span class="pulse-dot"></span> <span id="live-date-badge">Online</span>
+                    </div>
                 </div>
             </header>
+
+            <!-- Screen Share Live Preview Banner -->
+            <div id="screen-preview-panel" class="screen-panel hidden">
+                <div class="screen-preview-inner">
+                    <video id="screen-video" autoplay muted playsinline></video>
+                    <div class="screen-overlay-info">
+                        <span class="live-rec"><i class="fas fa-circle"></i> LIVE BILDSCHIRM AKTIV</span>
+                        <p>Die KI sieht jetzt deinen Bildschirm bei jeder Frage!</p>
+                        <div class="screen-btns">
+                            <button id="analyze-screen-now-btn" class="btn-cyan-sm"><i class="fas fa-eye"></i> Jetzt Screen analysieren</button>
+                            <button id="stop-screen-btn" class="btn-red-sm"><i class="fas fa-times"></i> Beenden</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Chat Messages -->
             <div class="chat-feed" id="chat-feed">
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
-                    <h2>Willkommen zurück, <span id="hero-username">Admin</span>.</h2>
-                    <p>Ich kann Code schreiben, Dateien analysieren, Daten verarbeiten und jede Frage beantworten.</p>
+                    <h2>Bereit, <span id="hero-username">Admin</span>.</h2>
+                    <p>Sprich mit mir, zeig mir deinen Bildschirm, lass mich Bilder erschaffen oder analysiere Daten & Code.</p>
                     
                     <div class="quick-cards">
-                        <div class="q-card" onclick="usePrompt('Analysiere folgende Daten und erstelle eine Zusammenfassung: Umsatz Q1: 12.000€, Q2: 18.500€, Q3: 15.200€, Q4: 29.800€')">
-                            <i class="fas fa-chart-line"></i>
-                            <h4>Daten auswerten</h4>
-                            <p>Zahlen, Tabellen & CSVs analysieren</p>
+                        <div class="q-card" onclick="usePrompt('Erstelle ein Bild von einem fotorealistischen goldenen KI-Apfel im Weltraum mit Neon-Licht')">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            <h4>KI-Bilder generieren</h4>
+                            <p>"Erstelle ein Bild von einem KI-Apfel..."</p>
                         </div>
-                        <div class="q-card" onclick="usePrompt('Schreibe mir ein modernes Python-Skript für einen Web-Scraper mit Erklärungen.')">
-                            <i class="fas fa-code"></i>
-                            <h4>Code & Entwicklung</h4>
-                            <p>Websites, Skripte & Debugging</p>
+                        <div class="q-card" onclick="document.getElementById('screen-share-btn').click()">
+                            <i class="fas fa-desktop"></i>
+                            <h4>Bildschirm-Hilfe</h4>
+                            <p>Teile deinen Screen für Live-Support</p>
                         </div>
-                        <div class="q-card" onclick="usePrompt('Erkläre mir Quantencomputing so einfach, als wäre ich 12 Jahre alt.')">
-                            <i class="fas fa-atom"></i>
-                            <h4>Komplexes Wissen</h4>
-                            <p>Jedes Thema tiefgehend verstehen</p>
+                        <div class="q-card" onclick="usePrompt('Wie alt ist Markus Rühl aktuell?')">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Aktuelles Wissen 2026</h4>
+                            <p>Präzise Fakten & Datenanalyse</p>
                         </div>
                     </div>
                 </div>
@@ -136,23 +172,58 @@
                 </div>
             </div>
 
+            <!-- Voice Listening Indicator -->
+            <div id="voice-listening-bar" class="listening-bar hidden">
+                <div class="sound-wave">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span id="live-transcript">Ich höre zu... Sprich jetzt!</span>
+                <button id="cancel-voice-btn">Abbrechen</button>
+            </div>
+
             <!-- Input Area -->
             <div class="input-wrapper">
                 <div class="input-container">
-                    <input type="file" id="file-upload" hidden accept=".txt,.csv,.json,.md,.js,.py,.html,.css,.xml,.log">
-                    <button id="attach-btn" class="tool-btn" title="Datei / Daten hochladen (CSV, TXT, JSON, Code)">
+                    <input type="file" id="file-upload" hidden accept=".txt,.csv,.json,.md,.js,.py,.html,.css,.xml,.log,.png,.jpg,.jpeg,.webp">
+                    <button id="attach-btn" class="tool-btn" title="Datei oder Bild hochladen">
                         <i class="fas fa-paperclip"></i>
                     </button>
-                    <textarea id="prompt-input" placeholder="Frag mich alles oder lade eine Datei zur Analyse hoch..." rows="1"></textarea>
-                    <button id="send-btn" class="send-btn">
+                    <button id="mic-btn" class="tool-btn mic-btn" title="Spracheingabe starten (Mit KI reden)">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button id="img-gen-quick-btn" class="tool-btn" title="Direkt ein Bild generieren">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <textarea id="prompt-input" placeholder="Frag alles, sag 'Erstelle ein Bild von...', oder klicke aufs Mikrofon..." rows="1"></textarea>
+                    <button id="send-btn" class="send-btn" title="Senden">
                         <i class="fas fa-arrow-up"></i>
                     </button>
                 </div>
                 <div class="input-footer">
-                    <span>Unterstützt Datei-Upload (.csv, .json, .txt, Code) &bull; Markdown & Code-Highlighting aktiv</span>
+                    <span>Bildgenerierung aktiv &bull; Live-Bildschirm-Vision &bull; Sprachsteuerung &bull; Aktuelles Weltwissen (2026)</span>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- ADMIN PASSWORD LOCK MODAL -->
+    <div id="admin-lock-modal" class="modal-backdrop hidden">
+        <div class="modal-card lock-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-lock"></i> ADMIN-SPERRE</h3>
+                <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
+            </div>
+            <p class="modal-desc">Bitte gib das separate <b>Admin-Master-Passwort</b> ein, um das Kontrollzentrum zu entsperren:</p>
+            <form id="admin-unlock-form">
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="admin-master-input" placeholder="Admin-Master-Passwort" required>
+                </div>
+                <div id="admin-lock-error" class="error-msg"></div>
+                <button type="submit" class="btn-glow">ADMIN-BEREICH ÖFFNEN</button>
+            </form>
+            <p style="font-size:11px; color:#9ca3af; margin-top:12px; text-align:center;">Standard Master-Passwort: <b>admin123</b> (im Admin-Menü änderbar)</p>
+        </div>
     </div>
 
     <!-- ADMIN MODAL -->
@@ -164,18 +235,19 @@
             </div>
             
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchAdminTab('users')">Benutzer & Passwörter</button>
-                <button class="tab-btn" onclick="switchAdminTab('system')">System & KI-Steuerung</button>
-                <button class="tab-btn" onclick="switchAdminTab('logs')">Aktivitäts-Logs</button>
+                <button class="tab-btn active" onclick="switchAdminTab('users', this)">Benutzer & Passwörter</button>
+                <button class="tab-btn" onclick="switchAdminTab('security', this)">Admin-Passwort</button>
+                <button class="tab-btn" onclick="switchAdminTab('system', this)">KI-Steuerung</button>
+                <button class="tab-btn" onclick="switchAdminTab('logs', this)">Logs</button>
             </div>
 
             <!-- Tab 1: Users -->
             <div id="tab-users" class="tab-content active">
                 <div class="add-user-box">
-                    <h4>Neuen Zugang erstellen</h4>
+                    <h4>Neuen Zugang für andere Nutzer erstellen</h4>
                     <div class="form-row">
-                        <input type="text" id="new-username" placeholder="Neuer Benutzername">
-                        <input type="text" id="new-password" placeholder="Passwort vergeben">
+                        <input type="text" id="new-username" placeholder="Benutzername">
+                        <input type="text" id="new-password" placeholder="Passwort">
                         <select id="new-role">
                             <option value="user">Nutzer (User)</option>
                             <option value="admin">Administrator</option>
@@ -184,7 +256,7 @@
                     </div>
                 </div>
 
-                <h4>Aktive Benutzerkonten</h4>
+                <h4>Alle registrierten Konten</h4>
                 <div class="table-wrapper">
                     <table class="user-table">
                         <thead>
@@ -201,11 +273,20 @@
                 </div>
             </div>
 
-            <!-- Tab 2: System -->
+            <!-- Tab 2: Admin Master Security -->
+            <div id="tab-security" class="tab-content hidden">
+                <div class="sys-setting">
+                    <label>Aktuelles Admin-Master-Passwort ändern (Sperre für das Admin-Menü)</label>
+                    <input type="text" id="new-master-pass" placeholder="Neues Master-Passwort eingeben">
+                </div>
+                <button id="save-master-pass-btn" class="btn-primary">Neues Master-Passwort speichern</button>
+            </div>
+
+            <!-- Tab 3: System -->
             <div id="tab-system" class="tab-content hidden">
                 <div class="sys-setting">
-                    <label>System-Persönlichkeit der KI (System Prompt)</label>
-                    <textarea id="system-prompt-input" rows="4">Du bist NEXUS AI, eine extrem intelligente, hilfreiche und präzise KI. Du analysierst Daten messerscharf, schreibst perfekten Code und antwortest immer strukturiert auf Deutsch.</textarea>
+                    <label>System-Persönlichkeit & Wissensbasis der KI</label>
+                    <textarea id="system-prompt-input" rows="4"></textarea>
                 </div>
                 <div class="sys-setting">
                     <label>KI-Name im Header</label>
@@ -218,7 +299,7 @@
                 <button id="save-system-btn" class="btn-primary">System-Einstellungen speichern</button>
             </div>
 
-            <!-- Tab 3: Logs -->
+            <!-- Tab 4: Logs -->
             <div id="tab-logs" class="tab-content hidden">
                 <div class="logs-box" id="admin-logs-list"></div>
                 <button id="clear-logs-btn" class="btn-danger-outline" style="margin-top:10px;">Logs löschen</button>
@@ -233,7 +314,7 @@
                 <h3><i class="fas fa-brain"></i> KI-Gehirn Konfiguration</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
-            <p class="modal-desc">Deine KI funktioniert <b>sofort ohne API-Key</b> über das integrierte Cloud-Modell. Wenn du zusätzlich deinen eigenen OpenAI- oder OpenRouter-Key nutzen willst, kannst du ihn hier eintragen:</p>
+            <p class="modal-desc">Deine KI läuft <b>komplett kostenlos & ohne Key</b> über das integrierte Omni-System. Optional kannst du hier deinen eigenen OpenAI/OpenRouter Key eintragen:</p>
             <div class="sys-setting">
                 <label>Eigener API-Key (Optional)</label>
                 <input type="password" id="custom-api-key" placeholder="sk-...">

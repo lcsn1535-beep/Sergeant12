@@ -1,25 +1,13 @@
-# 🚀 NEXUS AI — Ultra Intelligence Platform (100% GitHub Pages Ready)
+# 🚀 NEXUS AI OMNI v3 (GitHub Pages Ready)
 
-Kein Server, kein Node.js, keine Installation nötig! Einfach den Inhalt dieses Ordners auf GitHub hochladen und **GitHub Pages** aktivieren.
+## 🔑 Zugangsdaten
+* **Login:** Benutzername `admin` | Passwort `123`
+* **Admin-Sperre (Master-Passwort):** `admin123` *(kann im Admin-Menü unter "Admin-Passwort" geändert werden)*
 
-## 🔑 Dein Admin-Login (Sofort einsatzbereit)
-* **Benutzername:** `admin`
-* **Passwort:** `123`
-
-*(Du kannst dein Passwort und neue Benutzer jederzeit direkt auf der Website im **Admin-Kontrollzentrum** ändern!)*
-
-## 🌐 So machst du die Seite in 30 Sekunden online (für Faule)
-1. Erstelle auf [GitHub.com](https://github.com) ein neues Repository (z. B. `meine-ki`).
-2. Lade die 3 Dateien (`index.html`, `style.css`, `app.js`) direkt in das Repository hoch (einfach reinziehen).
-3. Gehe im Repository oben auf **Settings** -> links auf **Pages**.
-4. Wähle unter **Branch** `main` aus und klicke auf **Save**.
-5. Fertig! Nach wenigen Sekunden zeigt dir GitHub oben den Link zu deiner eigenen KI-Website an.
-
-## ✨ Enthaltene Features
-* **Sofort einsatzbereite KI:** Funktioniert direkt ohne eigenen API-Key (optional kann im Menü `KI-Setup` aber auch ein eigener OpenAI-Key hinterlegt werden).
-* **Datei- & Datenanalyse:** Lade `.csv`, `.json`, `.txt` oder Code-Dateien über die Büroklammer hoch – die KI wertet sie sofort aus.
-* **Admin-Kontrollzentrum:**
-  * Neue Benutzer & Passwörter erstellen, ändern, sperren oder löschen
-  * KI-Persönlichkeit (System Prompt) und KI-Namen live anpassen
-  * Wartungsmodus aktivieren
-  * Live-Aktivitäts-Logs einsehen
+## ✨ Neue Features in v3
+1. **Passwort-Sperre für das Admin-Menü:** Selbst wenn jemand eingeloggt ist, öffnet sich das Admin-Panel nur mit dem separaten Master-Passwort.
+2. **Kein Chat-Abbruch mehr:** Kompaktes Kontext-Management + automatischer Backup-Fallback sorgen dafür, dass du endlos viele Nachrichten hintereinander schreiben kannst.
+3. **Echtzeit-Wissen (2026):** Die KI kennt das exakte aktuelle Datum und berechnet Alter/Fakten korrekt (z. B. Markus Rühl = 54 Jahre). Zudem gibt es oben den **Deep-Search Modus**.
+4. **KI-Bildgenerierung:** Schreibe einfach *"Erstelle ein Bild von einem KI-Apfel"* – die KI übersetzt deinen Wunsch und generiert sofort ein HD-Bild direkt im Chat.
+5. **Live-Bildschirmübertragung (Screen-Vision):** Klicke oben auf **Bildschirm zeigen** – die KI sieht live deinen Bildschirm und hilft dir bei allem, was du gerade machst.
+6. **Sprachfunktion & Stimmenauswahl:** Klicke auf das **Mikrofon** zum Sprechen und wähle links in der Seitenleiste deine Wunsch-Stimme zum Vorlesen aus.

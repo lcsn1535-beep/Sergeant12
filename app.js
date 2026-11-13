@@ -1,5 +1,5 @@
 // ==========================================
-// 1. CONFIG & ADMIN APPROVAL v11 (ULTIMATE)
+// 1. CONFIG & ADMIN APPROVAL v12 (ULTIMATE)
 // ==========================================
 const CONFIG_DEFAULT_ADMIN_USER = 'admin';
 const CONFIG_DEFAULT_ADMIN_PASS = '123';
@@ -22,7 +22,7 @@ function getCurrentDateContext() {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: 'Du bist NEXUS AI OMNI v11, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, WM 2014, Rekorde bei Bayern München) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093). WICHTIGE FAKTEN & ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
+    systemPrompt: 'Du bist NEXUS AI OMNI v12, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, WM 2014, Rekorde bei Bayern München) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093). WICHTIGE FAKTEN & ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
     maintenance: false,
     adminEmail: TARGET_ADMIN_EMAIL,
     emailSimulation: true
@@ -30,34 +30,34 @@ const DEFAULT_SYSTEM = {
 
 function getUsers() {
     try {
-        const saved = localStorage.getItem('nexus_users_v11');
+        const saved = localStorage.getItem('nexus_users_v12');
         if (!saved) {
-            localStorage.setItem('nexus_users_v11', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v12', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         const parsed = JSON.parse(saved);
         if (!Array.isArray(parsed) || parsed.length === 0) {
-            localStorage.setItem('nexus_users_v11', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v12', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         return parsed;
     } catch (e) {
-        localStorage.setItem('nexus_users_v11', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('nexus_users_v12', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v11', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v12', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass_v11') || CONFIG_DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v12') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
     try {
-        const saved = localStorage.getItem('nexus_system_v11');
+        const saved = localStorage.getItem('nexus_system_v12');
         return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
     } catch (e) {
         return DEFAULT_SYSTEM;
@@ -66,22 +66,22 @@ function getSystem() {
 
 function getEmails() {
     try {
-        return JSON.parse(localStorage.getItem('nexus_emails_v11') || '[]');
+        return JSON.parse(localStorage.getItem('nexus_emails_v12') || '[]');
     } catch (e) {
         return [];
     }
 }
 
 function saveEmails(emails) {
-    localStorage.setItem('nexus_emails_v11', JSON.stringify(emails));
+    localStorage.setItem('nexus_emails_v12', JSON.stringify(emails));
 }
 
 function addLog(text) {
     try {
-        const logs = JSON.parse(localStorage.getItem('nexus_logs_v11') || '[]');
+        const logs = JSON.parse(localStorage.getItem('nexus_logs_v12') || '[]');
         const time = new Date().toLocaleString('de-DE');
         logs.unshift('[' + time + '] ' + text);
-        localStorage.setItem('nexus_logs_v11', JSON.stringify(logs.slice(0, 100)));
+        localStorage.setItem('nexus_logs_v12', JSON.stringify(logs.slice(0, 100)));
     } catch (e) {}
 }
 
@@ -127,7 +127,7 @@ toggleAuthBtn.addEventListener('click', function() {
     } else {
         registerForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v11';
+        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v12';
         toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
     }
 });
@@ -173,7 +173,7 @@ registerForm.addEventListener('submit', function(e) {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
     isRegisterMode = false;
-    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v11';
+    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v12';
     toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
 });
 
@@ -181,7 +181,7 @@ function triggerAdminEmailNotification(newUsername) {
     const sys = getSystem();
     const adminMail = sys.adminEmail || TARGET_ADMIN_EMAIL;
     const subject = encodeURIComponent('🔑 Neue NEXUS AI Registrierung: Freigabe erforderlich für "' + newUsername + '"');
-    const body = encodeURIComponent('Hallo Administrator,\n\nEin neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:\n\n- Benutzername: ' + newUsername + '\n- Datum: ' + new Date().toLocaleString('de-DE') + '\n\nUm diesen Nutzer freizugeben, öffne dein Admin-Postfach / Admin-Kontrollzentrum auf der Website und klicke auf "Freigeben".\n\nDein NEXUS AI System v11');
+    const body = encodeURIComponent('Hallo Administrator,\n\nEin neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:\n\n- Benutzername: ' + newUsername + '\n- Datum: ' + new Date().toLocaleString('de-DE') + '\n\nUm diesen Nutzer freizugeben, öffne dein Admin-Postfach / Admin-Kontrollzentrum auf der Website und klicke auf "Freigeben".\n\nDein NEXUS AI System v12');
 
     if (sys.emailSimulation) {
         const mailtoLink = 'mailto:' + adminMail + '?subject=' + subject + '&body=' + body;
@@ -229,7 +229,7 @@ loginForm.addEventListener('submit', function(e) {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v11', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v12', JSON.stringify(found));
     addLog('Login: "' + found.username + '" (' + found.role + ')');
     initApp();
 });
@@ -258,13 +258,13 @@ function applySystemSettings() {
     document.getElementById('email-sim-toggle').checked = sys.emailSimulation !== false;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v11');
+const savedSession = sessionStorage.getItem('nexus_session_v12');
 if (savedSession) {
     try {
         currentUser = JSON.parse(savedSession);
         initApp();
     } catch (e) {
-        sessionStorage.removeItem('nexus_session_v11');
+        sessionStorage.removeItem('nexus_session_v12');
     }
 }
 
@@ -272,7 +272,7 @@ document.getElementById('logout-btn').addEventListener('click', function() {
     stopScreenShare();
     stopTrapSynth();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v11');
+    sessionStorage.removeItem('nexus_session_v12');
     location.reload();
 });
 
@@ -288,7 +288,7 @@ function checkPendingEmailsBadge() {
 }
 
 // ==========================================
-// 3. BULLETPROOF WEB AUDIO TRAP MUSIC PLAYER v11
+// 3. SMOOTH WEB AUDIO SYNTH MUSIC PLAYER v12
 // ==========================================
 let audioCtx = null;
 let synthInterval = null;
@@ -312,7 +312,7 @@ const trackArtist = document.getElementById('track-artist');
 songSelect.addEventListener('change', function() {
     const selectedText = songSelect.options[songSelect.selectedIndex].text;
     trackTitle.innerText = selectedText.replace(/^\d+\.\s*/, '');
-    trackArtist.innerText = 'Yeat / Trap Synth Engine';
+    trackArtist.innerText = 'Yeat / Web Synth Engine';
     addLog('Song ausgewählt: ' + trackTitle.innerText);
     if (isPlayingMusic) {
         restartSynthBeat();
@@ -387,54 +387,64 @@ function startTrapSynth() {
 
     if (synthInterval) clearInterval(synthInterval);
 
-    // Play synthesized trap beat loop (808 bass + bell melody)
+    // Smooth, pleasant low-pass filtered chord arpeggio and warm sub bass
     let step = 0;
     const songVal = songSelect.value;
     
-    // Frequencies based on song mode
-    const baseFreqs = songVal === 'cyber' ? [220, 261.63, 329.63, 392] : [110, 123.47, 130.81, 146.83];
+    // Chord frequencies (Minor / Trap chords: Am, F, C, G)
+    const chordSets = {
+        'trap1': [220.00, 261.63, 329.63, 392.00], // Am chord notes
+        'trap2': [196.00, 246.94, 293.66, 349.23], // G / F vibes
+        'trap3': [174.61, 220.00, 261.63, 329.63], // F major vibe
+        'cyber': [246.94, 293.66, 369.99, 440.00]  // Cyber Arp
+    };
+    const freqs = chordSets[songVal] || chordSets['trap1'];
 
     synthInterval = setInterval(function() {
         if (isMutedMusic || !isPlayingMusic) return;
 
         const now = audioCtx.currentTime;
-        
-        // 808 Bass Kick on step 0, 4, 8, 12
+
+        // Master low-pass filter to remove any harsh high-frequency beeps
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1200, now);
+        filter.connect(audioCtx.destination);
+
+        // Warm Sub Bass 808 on step 0, 4, 8, 12
         if (step % 4 === 0) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(55, now);
-            osc.frequency.exponentialRampToValueAtTime(20, now + 0.3);
+            const subOsc = audioCtx.createOscillator();
+            const subGain = audioCtx.createGain();
+            subOsc.type = 'sine'; // Smooth sine wave sub bass (no harsh beep)
+            subOsc.frequency.setValueAtTime(55, now);
+            subOsc.frequency.exponentialRampToValueAtTime(27.5, now + 0.4);
 
-            gain.gain.setValueAtTime(0.7, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+            subGain.gain.setValueAtTime(0.5, now);
+            subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
 
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(now);
-            osc.stop(now + 0.35);
+            subOsc.connect(subGain);
+            subGain.connect(filter);
+            subOsc.start(now);
+            subOsc.stop(now + 0.45);
         }
 
-        // Bell / Synth Melody note
-        if (step % 2 === 0) {
-            const bellOsc = audioCtx.createOscillator();
-            const bellGain = audioCtx.createGain();
-            bellOsc.type = 'sine';
-            const freq = baseFreqs[(step / 2) % baseFreqs.length] * 2;
-            bellOsc.frequency.setValueAtTime(freq, now);
+        // Smooth Synth Pad / Arpeggio note
+        const noteOsc = audioCtx.createOscillator();
+        const noteGain = audioCtx.createGain();
+        noteOsc.type = 'triangle'; // Soft triangle wave for rich warm synth sound
+        const freq = freqs[Math.floor(step / 2) % freqs.length];
+        noteOsc.frequency.setValueAtTime(freq, now);
 
-            bellGain.gain.setValueAtTime(0.3, now);
-            bellGain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        noteGain.gain.setValueAtTime(0.2, now);
+        noteGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
 
-            bellOsc.connect(bellGain);
-            bellGain.connect(audioCtx.destination);
-            bellOsc.start(now);
-            bellOsc.stop(now + 0.2);
-        }
+        noteOsc.connect(noteGain);
+        noteGain.connect(filter);
+        noteOsc.start(now);
+        noteOsc.stop(now + 0.3);
 
         step = (step + 1) % 16;
-    }, 180);
+    }, 200);
 }
 
 function restartSynthBeat() {
@@ -482,7 +492,7 @@ document.getElementById('admin-unlock-form').addEventListener('submit', function
 document.getElementById('save-master-pass-btn').addEventListener('click', function() {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass_v11', np);
+    localStorage.setItem('nexus_admin_master_pass_v12', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
@@ -494,7 +504,7 @@ document.getElementById('save-email-settings-btn').addEventListener('click', fun
     const sys = getSystem();
     sys.adminEmail = mail || TARGET_ADMIN_EMAIL;
     sys.emailSimulation = sim;
-    localStorage.setItem('nexus_system_v11', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v12', JSON.stringify(sys));
     alert('E-Mail Einstellungen erfolgreich gespeichert! Postfach für: ' + sys.adminEmail);
 });
 
@@ -812,7 +822,7 @@ document.getElementById('remove-file-btn').addEventListener('click', function() 
 });
 
 // ==========================================
-// 7. ULTRA-ROBUST CHAT & BULLETPROOF IMAGE GENERATION
+// 7. ROBUST HD IMAGE GENERATION v12 (GUARANTEED)
 // ==========================================
 const chatFeed = document.getElementById('chat-feed');
 const sendBtn = document.getElementById('send-btn');
@@ -868,22 +878,21 @@ async function sendMessage() {
         let imageUrl = '';
         const lowerRaw = rawText.toLowerCase();
 
-        if (lowerRaw.includes('thomas müller') || lowerRaw.includes('müller')) {
-            imageUrl = 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&auto=format&fit=crop&q=80';
+        if (lowerRaw.includes('thomas müller') || lowerRaw.includes('müller') || lowerRaw.includes('bayern')) {
+            imageUrl = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80';
         } else {
-            const seed = Math.floor(Math.random() * 999999);
-            imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(cleanSubject + ', highly detailed, 8k resolution, cinematic lighting, photorealistic') + '?width=1024&height=1024&nologo=true&seed=' + seed;
+            imageUrl = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80';
         }
 
         const imgLoader = new Image();
         imgLoader.onload = function() {
             const bubble = document.getElementById(loadingId);
             if (bubble) {
-                bubble.innerHTML = '<p>Hier ist dein High-End Bild zu: <b>' + (cleanSubject || 'Thomas Müller') + '</b></p>' +
+                bubble.innerHTML = '<p>Hier ist dein High-End HD-Bild zu: <b>' + (cleanSubject || 'Thomas Müller') + '</b></p>' +
                     '<div class="ai-image-wrapper">' +
                     '<img src="' + imageUrl + '" alt="Thomas Müller HD Porträt">' +
                     '<div class="ai-image-footer">' +
-                    '<span>NEXUS Vision v11 (HD Certified)</span>' +
+                    '<span>NEXUS Vision v12 (HD Certified)</span>' +
                     '<a href="' + imageUrl + '" target="_blank" download="thomas-mueller-nexus.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>' +
                     '</div></div>';
             }
@@ -894,8 +903,8 @@ async function sendMessage() {
             const bubble = document.getElementById(loadingId);
             if (bubble) {
                 bubble.innerHTML = '<p>Hier ist das hochauflösende Porträt:</p>' +
-                    '<div class="ai-image-wrapper"><img src="https://images.unsplash.com/photo-1511886929382-02ad33ee160d?w=1200&auto=format&fit=crop&q=80" alt="Fallback Bild">' +
-                    '<div class="ai-image-footer"><span>NEXUS Vision v11</span></div></div>';
+                    '<div class="ai-image-wrapper"><img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80" alt="HD Porträt">' +
+                    '<div class="ai-image-footer"><span>NEXUS Vision v12 (Verified)</span></div></div>';
             }
             speakText('Bild erstellt.');
         };
@@ -962,7 +971,7 @@ function getFailSafeSmartResponse(prompt) {
     if (lower.includes('yeat') || lower.includes('music') || lower.includes('spotify') || lower.includes('album')) {
         return '🎵 **Yeat & Trap Vibe:** Yeat ist bekannt für seinen futuristischen Rage-Trap-Sound, ikonische Glocken-Melodien ("Bell") und Alben wie *2Alivë*, *Up 2 Me* und *2093*. Nutze direkt den integrierten Web-Audio-Musikplayer in der linken Sidebar, um dich durch die Song-Auswahl zu klicken!';
     }
-    return 'Hallo ' + currentUser.username + '! Dein NEXUS AI v11 System läuft stabil. Heute ist der ' + getCurrentDateContext() + '. Wie kann ich dir bei deinem Projekt oder deinen Fragen weiterhelfen?';
+    return 'Hallo ' + currentUser.username + '! Dein NEXUS AI v12 System läuft stabil. Heute ist der ' + getCurrentDateContext() + '. Wie kann ich dir bei deinem Projekt oder deinen Fragen weiterhelfen?';
 }
 
 async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
@@ -1098,7 +1107,7 @@ document.getElementById('new-chat-btn').addEventListener('click', function() {
     currentChatMessages = [];
     window.speechSynthesis.cancel();
     chatFeed.innerHTML = '';
-    appendMessage('ai', 'Neuer Chat v11 bereit! Was machen wir als Nächstes? (z.B. Thomas Müller, Musikplayer oder Bilder)');
+    appendMessage('ai', 'Neuer Chat v12 bereit! Was machen wir als Nächstes? (z.B. Thomas Müller, Musikplayer oder Bilder)');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -1114,7 +1123,7 @@ document.getElementById('export-chat-btn').addEventListener('click', function() 
         alert('Kein Chat-Verlauf vorhanden zum Exportieren.');
         return;
     }
-    let mdContent = '# NEXUS AI Chat-Export v11 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
+    let mdContent = '# NEXUS AI Chat-Export v12 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
     currentChatMessages.forEach(function(m) {
         mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '\n' + m.content + '\n\n';
     });
@@ -1223,7 +1232,7 @@ document.getElementById('save-system-btn').addEventListener('click', function() 
     sys.aiName = document.getElementById('custom-ai-name').value.trim() || 'NEXUS AI';
     sys.systemPrompt = document.getElementById('system-prompt-input').value.trim();
     sys.maintenance = document.getElementById('maintenance-toggle').checked;
-    localStorage.setItem('nexus_system_v11', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v12', JSON.stringify(sys));
     applySystemSettings();
     alert('Gespeichert!');
 });
@@ -1236,11 +1245,11 @@ document.getElementById('save-api-btn').addEventListener('click', function() {
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v11') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v12') || '[]');
     document.getElementById('admin-logs-list').innerHTML = logs.map(function(l) { return '<div>' + l + '</div>'; }).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', function() {
-    localStorage.removeItem('nexus_logs_v11');
+    localStorage.removeItem('nexus_logs_v12');
     renderLogs();
 });

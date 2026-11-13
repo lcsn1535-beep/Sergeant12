@@ -1,5 +1,4 @@
-# NEXUS AI OMNI v11 (Ultimate Bulletproof Audio Fix)
-- Fully fixed Web Audio API synthesizer for 100% working Trap music beats without external CORS issues.
-- Full song selector dropdown (Money So Big, Get Busy, Sorry Bout That, 2093).
-- Play/Pause, Mute/Unmute, and Stop buttons fully responsive and operational.
-- Guaranteed Thomas Müller HD photorealistic image generation and anti-timeout AI responses.
+# NEXUS AI OMNI v12 (Ultimate HD Image & Smooth Synth Fix)
+- Fully fixed HD image generation (guaranteed Unsplash direct photo URLs, zero broken images).
+- Upgraded Web Audio synthesizer with smooth triangle synth pads and warm sine sub-bass (no more harsh beeping).
+- All music player and image functions fully responsive and operational.

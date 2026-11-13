@@ -1,3 +1,3 @@
-# NEXUS AI OMNI v15 (World Knowledge Popup & HD Image Fix)
-- Removed World Knowledge box from the sidebar and turned it into an interactive topbar Popup Modal (`world-knowledge-modal`).
-- Fixed the canvas image generator (`generateCanvasImage`) to properly wrap text and prevent clipping or overflow issues.
+# NEXUS AI OMNI v16 (Bulletproof DOM & Hoisting Fix)
+- Wrapped all initialization inside `DOMContentLoaded`.
+- Ensured all variables (`availableVoices`, `promptInput`, etc.) are safely scoped and hoisted (`var` where appropriate) to eliminate any `ReferenceError` or `null` property access errors.

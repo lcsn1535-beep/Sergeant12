@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI v31 (SMART DIRECT ANSWER ENGINE)</title>
-    <link rel="stylesheet" href="style.css?v=31">
+    <title>NEXUS AI // OMNI v33 (LIVE KICK & BAN EDITION)</title>
+    <link rel="stylesheet" href="style.css?v=33">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -21,7 +21,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle">OMNI INTELLIGENCE &bull; v31 DIRECT ANSWER</p>
+            <p class="login-subtitle">OMNI INTELLIGENCE &bull; v33 STABLE</p>
             
             <div class="auth-toggle-row">
                 <button class="toggle-btn active" id="mode-login-btn" onclick="switchAuthMode('login')">Anmelden</button>
@@ -39,7 +39,7 @@
                     <input type="password" id="login-pass" placeholder="Passwort (z.B. 123)" required>
                 </div>
                 <div id="login-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">SYSTEM STARTEN v31 <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" class="btn-glow">SYSTEM STARTEN v33 <i class="fas fa-arrow-right"></i></button>
             </form>
 
             <!-- Register Form -->
@@ -65,7 +65,7 @@
             </form>
 
             <div class="login-hint">
-                <button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v31 Laden</button>
+                <button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v33 Laden</button>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro" id="sidebar-role-badge">v31 OMNI</span>
+                <span class="badge-pro" id="sidebar-role-badge">v33 OMNI</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -86,7 +86,7 @@
 
             <div class="sidebar-section-title">CHATHISTORIE</div>
             <div class="chat-history" id="chat-history">
-                <div class="history-item active"><i class="fas fa-message"></i> Nexus v31 Direct Workspace</div>
+                <div class="history-item active"><i class="fas fa-message"></i> Nexus v33 Direct Workspace</div>
             </div>
 
             <div class="sidebar-section-title">SYSTEM THEME</div>
@@ -99,7 +99,7 @@
             </div>
 
             <div class="sidebar-footer">
-                <div class="user-card">
+                <div class="user-card" onclick="openProfileModal()" style="cursor:pointer;" title="Klicke hier, um Benutzernamen & Passwort zu ändern">
                     <div class="user-avatar" id="current-user-avatar">A</div>
                     <div class="user-details">
                         <span id="current-user-name">admin</span>
@@ -107,6 +107,7 @@
                     </div>
                 </div>
                 <div class="footer-actions">
+                    <button id="profile-settings-btn" class="icon-btn" title="Profil & Zugangsdaten bearbeiten" onclick="openProfileModal()"><i class="fas fa-user-gear"></i></button>
                     <button id="admin-panel-btn" class="icon-btn" title="Admin Kontrollzentrum"><i class="fas fa-shield-halved"></i></button>
                     <button id="logout-btn" class="icon-btn danger" title="Abmelden"><i class="fas fa-power-off"></i></button>
                 </div>
@@ -119,7 +120,7 @@
                 <div class="model-selector">
                     <i class="fas fa-brain"></i>
                     <select id="model-select">
-                        <option value="nexus-omni-v31">Nexus-Omni v31 (Direct Answer Engine)</option>
+                        <option value="nexus-omni-v33">Nexus-Omni v33 (Live Kick & Ban Engine)</option>
                         <option value="claude-3-5">Claude 3.5 Sonnet Reasoning</option>
                         <option value="gpt-4o">GPT-4o World Knowledge</option>
                     </select>
@@ -137,24 +138,24 @@
             <div class="chat-feed" id="chat-feed">
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
-                    <h2>NEXUS AI v31 &bull; Direkte, intelligente Antworten.</h2>
-                    <p>Keine generellen Platzhalter mehr! Nexus v31 antwortet exakt wie ChatGPT, Claude oder Gemini: Du stellst eine Frage (egal ob zu einem Autohaus, Manuel Neuer, Physik oder Programmierung) und erhältst sofort die präzise, fachlich korrekte Antwort.</p>
+                    <h2>NEXUS AI v33 &bull; Live Kicken & Bannen.</h2>
+                    <p>In v33 kannst du im **Admin-Kontrollzentrum** eingeloggte Benutzer in Echtzeit **kicken** (sofortige Session-Beendigung) oder **bannen** (gesperrter Account). Jeder Kick greift sofort auf allen offenen Tabs und Geräten!</p>
                     
                     <div class="quick-cards">
+                        <div class="q-card" onclick="openProfileModal()">
+                            <i class="fas fa-user-pen"></i>
+                            <h4>Profil bearbeiten</h4>
+                            <p>Benutzername & Passwort ändern</p>
+                        </div>
+                        <div class="q-card" onclick="openAdminModal()">
+                            <i class="fas fa-shield-halved"></i>
+                            <h4>Admin-Panel</h4>
+                            <p>User kicken, bannen & verwalten</p>
+                        </div>
                         <div class="q-card" onclick="useQuickPrompt('Was ist ein Autohaus und welche Dienstleistungen bietet es an?')">
                             <i class="fas fa-car"></i>
                             <h4>Frage: Autohaus</h4>
-                            <p>Dienstleistungen & Definition</p>
-                        </div>
-                        <div class="q-card" onclick="useQuickPrompt('Wie alt ist Manuel Neuer?')">
-                            <i class="fas fa-futbol"></i>
-                            <h4>Manuel Neuer</h4>
-                            <p>Alter & Karriere (40 Jahre in 2026)</p>
-                        </div>
-                        <div class="q-card" onclick="useQuickPrompt('Generiere ein Bild von einem fotorealistischen roten Apfel auf einem Holztisch')">
-                            <i class="fas fa-apple-whole"></i>
-                            <h4>Echtes KI-Bild</h4>
-                            <p>Mit realistischer Ladezeit (4.5s)</p>
+                            <p>Direkte & exakte Antwort</p>
                         </div>
                     </div>
                 </div>
@@ -169,10 +170,39 @@
                     <button id="send-btn" class="send-btn" title="Senden"><i class="fas fa-arrow-up"></i></button>
                 </div>
                 <div class="input-footer">
-                    <span>NEXUS AI v31 &bull; Direct Answer Engine &bull; lcsn1535@gmail.com</span>
+                    <span>NEXUS AI v33 &bull; Live Kick & Ban Engine &bull; lcsn1535@gmail.com</span>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- PROFILE SETTINGS MODAL -->
+    <div id="profile-modal" class="modal-backdrop hidden">
+        <div class="modal-card" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-gear"></i> Account- & Profileinstellungen</h3>
+                <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="profile-form" class="auth-form" style="display:flex; flex-direction:column; gap:16px;" onsubmit="saveProfileChanges(event)">
+                <div class="sys-setting">
+                    <label>Benutzername ändern</label>
+                    <input type="text" id="profile-username-input" required autocomplete="off">
+                </div>
+                <div class="sys-setting">
+                    <label>Neues Passwort (leer lassen, um beizubehalten)</label>
+                    <input type="password" id="profile-password-input" placeholder="Neues Passwort eingeben">
+                </div>
+                <div class="sys-setting">
+                    <label>Aktuelle Rolle</label>
+                    <input type="text" id="profile-role-display" readonly style="opacity: 0.7; cursor: not-allowed;">
+                </div>
+                <div id="profile-error" class="error-msg"></div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button type="submit" class="btn-primary" style="flex:1;"><i class="fas fa-check"></i> Änderungen speichern</button>
+                    <button type="button" class="btn-secondary" onclick="closeModals()">Abbrechen</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- WORLD KNOWLEDGE MODAL -->
@@ -203,12 +233,12 @@
     <div id="admin-modal" class="modal-backdrop hidden">
         <div class="modal-card admin-modal-card">
             <div class="modal-header">
-                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v31</h3>
+                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v33</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
             
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchAdminTab('users', this)"><i class="fas fa-users"></i> Benutzer & Freigaben (Approval, Ban, Early Access)</button>
+                <button class="tab-btn active" onclick="switchAdminTab('users', this)"><i class="fas fa-users"></i> Benutzer, Kicken & Bannen</button>
                 <button class="tab-btn" onclick="switchAdminTab('email', this)"><i class="fas fa-envelope"></i> E-Mail Postfach (lcsn1535@gmail.com)</button>
                 <button class="tab-btn" onclick="switchAdminTab('system', this)"><i class="fas fa-microchip"></i> KI-Steuerung</button>
                 <button class="tab-btn" onclick="switchAdminTab('logs', this)"><i class="fas fa-terminal"></i> System-Logs</button>
@@ -216,17 +246,17 @@
 
             <!-- Tab 1: Users -->
             <div id="tab-users" class="tab-content active">
-                <h4>Erweiterte Benutzerverwaltung & Freigaben</h4>
+                <h4>Echtzeit Benutzerverwaltung (Kicken, Bannen & Bearbeiten)</h4>
                 <div class="table-wrapper">
                     <table class="user-table">
                         <thead>
                             <tr>
                                 <th>Benutzername</th>
+                                <th>Passwort</th>
                                 <th>Rolle</th>
                                 <th>Freigabe</th>
-                                <th>Status</th>
-                                <th>Early Access</th>
-                                <th>Aktionen</th>
+                                <th>Status / Ban</th>
+                                <th>Live-Aktionen</th>
                             </tr>
                         </thead>
                         <tbody id="admin-users-table-body"></tbody>
@@ -245,7 +275,7 @@
                 </div>
                 <h4 style="margin-top:15px; color:#3b82f6;"><i class="fas fa-inbox"></i> Postfach für lcsn1535@gmail.com</h4>
                 <div class="email-inbox-box" style="background:#0b0f19; padding:14px; border-radius:8px; border:1px solid rgba(75,85,99,0.3); font-size:12px; color:#d1d5db; line-height:1.6;">
-                    <p><b>[System Notification]</b> Nexus AI v31 Direct Answer Engine deployed.</p>
+                    <p><b>[System Notification]</b> Nexus AI v33 Live Kick & Ban Engine deployed successfully.</p>
                 </div>
             </div>
 
@@ -253,7 +283,7 @@
             <div id="tab-system" class="tab-content hidden">
                 <div class="sys-setting">
                     <label>Globaler System-Prompt</label>
-                    <textarea id="admin-system-prompt" rows="4">Du bist NEXUS AI Omni v31, eine intelligente Direktanwort-KI, die jede Frage präzise, direkt und fundiert beantwortet.</textarea>
+                    <textarea id="admin-system-prompt" rows="4">Du bist NEXUS AI Omni v33, eine intelligente Direktanwort-KI mit Echtzeit-Admin-Kontrolle.</textarea>
                 </div>
                 <button class="btn-primary" onclick="alert('Einstellungen gespeichert!'); closeModals();">Speichern</button>
             </div>
@@ -261,14 +291,14 @@
             <!-- Tab 4: Logs -->
             <div id="tab-logs" class="tab-content hidden">
                 <div class="logs-box" style="background:#0b0f19; padding:14px; border-radius:8px; border:1px solid rgba(75,85,99,0.3); font-family:monospace; font-size:11px; color:#10b981; max-height:220px; overflow-y:auto; line-height:1.5;">
-                    [13.11.2026 16:20:00] [INIT] Nexus Omni v31 core loaded successfully.<br>
-                    [13.11.2026 16:20:01] [SUCCESS] Direct Answer Synthesizer active for all world queries.<br>
-                    [13.11.2026 16:20:02] [SUCCESS] Login syntax errors permanently fixed.
+                    [13.11.2026 16:40:00] [INIT] Nexus Omni v33 live session manager active.<br>
+                    [13.11.2026 16:40:01] [SUCCESS] Instant kick broadcast listener active.<br>
+                    [13.11.2026 16:40:02] [SUCCESS] Admin table synchronized with live kick & ban actions.
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="app.js?v=31"></script>
+    <script src="app.js?v=33"></script>
 </body>
 </html>

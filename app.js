@@ -1,11 +1,11 @@
 // ==========================================
-// NEXUS AI OMNI v31 - DIRECT ANSWER EDITION
+// NEXUS AI OMNI v33 - LIVE KICK & BAN ENGINE
 // ==========================================
 const RELEASE_DATE = '13.11.2026';
 const TARGET_ADMIN_EMAIL = 'lcsn1535@gmail.com';
 
 function getUsersDB() {
-    const stored = localStorage.getItem('nexus_users_v31');
+    const stored = localStorage.getItem('nexus_users_v33');
     if (stored) {
         try { return JSON.parse(stored); } catch(e){}
     }
@@ -14,12 +14,12 @@ function getUsersDB() {
         { username: 'premium_user', pass: '123', role: 'premium', approved: true, status: 'Aktiv', earlyAccess: true },
         { username: 'free_user', pass: '123', role: 'user', approved: false, status: 'Aktiv', earlyAccess: false }
     ];
-    localStorage.setItem('nexus_users_v31', JSON.stringify(defaults));
+    localStorage.setItem('nexus_users_v33', JSON.stringify(defaults));
     return defaults;
 }
 
 function saveUsersDB(users) {
-    localStorage.setItem('nexus_users_v31', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v33', JSON.stringify(users));
 }
 
 var currentUser = null;
@@ -33,6 +33,20 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.reload(true);
         });
     }
+
+    // Listen for live kick signals across tabs/windows
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'nexus_kick_signal' && e.newValue) {
+            try {
+                const data = JSON.parse(e.newValue);
+                if (currentUser && currentUser.username.toLowerCase() === data.username.toLowerCase()) {
+                    alert('Du wurdest vom Administrator aus dem System gekickt oder gebannt!');
+                    sessionStorage.removeItem('nexus_session_v33');
+                    window.location.reload();
+                }
+            } catch(err){}
+        }
+    });
 
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
@@ -54,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 currentUser = found;
-                sessionStorage.setItem('nexus_session_v31', JSON.stringify(found));
+                sessionStorage.setItem('nexus_session_v33', JSON.stringify(found));
                 initApp();
             } else {
                 document.getElementById('login-error').innerText = 'Ungültiger Benutzername oder Passwort!';
@@ -83,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isAdm) {
                 currentUser = newUser;
-                sessionStorage.setItem('nexus_session_v31', JSON.stringify(newUser));
+                sessionStorage.setItem('nexus_session_v33', JSON.stringify(newUser));
                 initApp();
             } else {
                 alert('Account erfolgreich erstellt! Bitte warte, bis ein Administrator deinen Account freigibt.');
@@ -95,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('nexus_session_v31');
+            sessionStorage.removeItem('nexus_session_v33');
             location.reload();
         });
     }
@@ -104,10 +118,20 @@ document.addEventListener('DOMContentLoaded', function() {
     initWorldKnowledgeModal();
     initAdminModal();
 
-    const saved = sessionStorage.getItem('nexus_session_v31');
+    const saved = sessionStorage.getItem('nexus_session_v33');
     if (saved) {
         try {
             currentUser = JSON.parse(saved);
+            // Verify if user is banned or deleted
+            const users = getUsersDB();
+            const fresh = users.find(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
+            if (!fresh || fresh.status === 'Gesperrt' || !fresh.approved) {
+                sessionStorage.removeItem('nexus_session_v33');
+                alert('Deine Sitzung ist abgelaufen oder dein Account wurde gesperrt.');
+                location.reload();
+                return;
+            }
+            currentUser = fresh;
             initApp();
         } catch(e){}
     }
@@ -144,7 +168,7 @@ function initApp() {
     const adminBtn = document.getElementById('admin-panel-btn');
 
     roleLabel.innerText = currentUser.role.toUpperCase();
-    sideBadge.innerText = 'v31 ' + (currentUser.earlyAccess ? 'EARLY ACCESS' : currentUser.role.toUpperCase());
+    sideBadge.innerText = 'v33 ' + (currentUser.earlyAccess ? 'EARLY ACCESS' : currentUser.role.toUpperCase());
 
     if (currentUser.role !== 'admin') {
         if (adminBtn) adminBtn.style.display = 'none';
@@ -159,7 +183,54 @@ function changeTheme(themeName) {
 window.changeTheme = changeTheme;
 
 // ==========================================
-// CHAT & REAL AI IMAGE GENERATOR (WITH DELAY)
+// PROFILE MANAGEMENT
+// ==========================================
+function openProfileModal() {
+    if (!currentUser) return;
+    document.getElementById('profile-username-input').value = currentUser.username;
+    document.getElementById('profile-password-input').value = '';
+    document.getElementById('profile-role-display').value = currentUser.role.toUpperCase();
+    document.getElementById('profile-error').innerText = '';
+    document.getElementById('profile-modal').classList.remove('hidden');
+}
+window.openProfileModal = openProfileModal;
+
+function saveProfileChanges(e) {
+    e.preventDefault();
+    const newUsername = document.getElementById('profile-username-input').value.trim();
+    const newPassword = document.getElementById('profile-password-input').value.trim();
+    if (!newUsername) {
+        document.getElementById('profile-error').innerText = 'Benutzername darf nicht leer sein!';
+        return;
+    }
+
+    let users = getUsersDB();
+    const existingIndex = users.findIndex(x => x.username.toLowerCase() === newUsername.toLowerCase() && x.username !== currentUser.username);
+    if (existingIndex !== -1) {
+        document.getElementById('profile-error').innerText = 'Dieser Benutzername ist bereits vergeben!';
+        return;
+    }
+
+    const myIndex = users.findIndex(x => x.username === currentUser.username);
+    if (myIndex !== -1) {
+        users[myIndex].username = newUsername;
+        if (newPassword) {
+            users[myIndex].pass = newPassword;
+        }
+        currentUser = users[myIndex];
+        saveUsersDB(users);
+        sessionStorage.setItem('nexus_session_v33', JSON.stringify(currentUser));
+        initApp();
+        closeModals();
+        alert('Profil- und Zugangsdaten erfolgreich aktualisiert!');
+    } else {
+        document.getElementById('profile-error').innerText = 'Fehler beim Aktualisieren des Profils.';
+    }
+}
+window.saveProfileChanges = saveProfileChanges;
+
+// ==========================================
+// CHAT & AI IMAGE GENERATOR
 // ==========================================
 function initChatControls() {
     const promptInput = document.getElementById('prompt-input');
@@ -179,7 +250,7 @@ function initChatControls() {
     }
     if (newChatBtn) {
         newChatBtn.addEventListener('click', () => {
-            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace v31</h2></div>';
+            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace v33</h2></div>';
         });
     }
     if (magicBtn) {
@@ -241,7 +312,7 @@ function sendAIQuery() {
 
     if (isImageRequest(text)) {
         const loadId = 'img-' + Date.now();
-        appendMessage('ai', `<div id="${loadId}-prog"><i class="fas fa-wand-magic-sparkles fa-spin" style="color:#3b82f6;"></i> Nexus v31 analysiert Prompt & initialisiert Diffusion Engine... (0%)</div>`, loadId, true);
+        appendMessage('ai', `<div id="${loadId}-prog"><i class="fas fa-wand-magic-sparkles fa-spin" style="color:#3b82f6;"></i> Nexus v33 analysiert Prompt & initialisiert Diffusion Engine... (0%)</div>`, loadId, true);
 
         setTimeout(() => {
             const el1 = document.getElementById(`${loadId}-prog`);
@@ -263,19 +334,18 @@ function sendAIQuery() {
             if (bubble) {
                 bubble.innerHTML = `<p>Hier ist dein fotorealistisches, frisch generiertes KI-Bild für: <i>"${cleanPrompt}"</i></p>` +
                     `<div class="ai-image-wrapper">` +
-                    `<img src="${imageUrl}" alt="Nexus v31 AI Render" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1000';">` +
+                    `<img src="${imageUrl}" alt="Nexus v33 AI Render" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1000';">` +
                     `<div class="ai-image-footer">` +
-                    `<span>Nexus AI Studio v31 // Universal Render Engine</span>` +
-                    `<a href="${imageUrl}" target="_blank" download="nexus-v31-ai-image.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
+                    `<span>Nexus AI Studio v33 // Universal Render Engine</span>` +
+                    `<a href="${imageUrl}" target="_blank" download="nexus-v33-ai-image.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
                     `</div></div>`;
             }
         }, 4500);
         return;
     }
 
-    // Direct Answer Intelligence Engine (Like ChatGPT / Claude / Gemini)
     const loadId = 'msg-' + Date.now();
-    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Nexus v31 generiert die direkte Antwort...', loadId, true);
+    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Nexus v33 generiert die direkte Antwort...', loadId, true);
 
     setTimeout(() => {
         let reply = '';
@@ -327,21 +397,20 @@ Ein **Autohaus** ist ein gewerblicher Betrieb, der sich auf den Verkauf, die War
         } else if (lower.includes('ki') || lower.includes('intelligenz') || lower.includes('ai')) {
             reply = `### Künstliche Intelligenz 2026
 - **Aktueller Stand:** Multimodale LLMs, Echtzeit-Websuche und autonome Agenten-Workflows prägen das Jahr 2026.
-- **Fakten:** Als Nexus v31 greife ich auf ein universelles Wissensnetzwerk zurück, um jede erdenkliche Frage präzise zu beantworten.`;
+- **Fakten:** Als Nexus v33 greife ich auf ein universelles Wissensnetzwerk zurück, um jede erdenkliche Frage präzise zu beantworten.`;
         } else if (lower.includes('code') || lower.includes('html') || lower.includes('javascript')) {
             reply = `Hier ist dein professioneller Web-Code:
 \`\`\`html
 <!DOCTYPE html>
 <html>
-<head><title>Nexus v31 App</title></head>
+<head><title>Nexus v33 App</title></head>
 <body style="background:#0b0f19; color:white; font-family:Inter; padding:40px;">
-  <h1>Nexus v31 Code Engine</h1>
+  <h1>Nexus v33 Code Engine</h1>
   <p>Erfolgreich generiert und sofort einsatzbereit!</p>
 </body>
 </html>
 \`\`\``;
         } else {
-            // Intelligent Direct Answer Generator for ANY question in the world (like ChatGPT / Claude / Gemini)
             reply = `### Antwort zu: "${text}"
 
 Hier ist die präzise und fachlich fundierte Antwort auf deine Frage:
@@ -425,7 +494,7 @@ function initWorldKnowledgeModal() {
 }
 
 // ==========================================
-// ADMIN PANEL (USER APPROVAL, BAN, EARLY ACCESS)
+// ADMIN PANEL (LIVE KICK & BAN)
 // ==========================================
 function initAdminModal() {
     const adminBtn = document.getElementById('admin-panel-btn');
@@ -448,11 +517,11 @@ function renderAdminUsersTable() {
     tbody.innerHTML = '';
     users.forEach((u, idx) => {
         const tr = document.createElement('tr');
-        // FIXED: Using clean template literals to avoid any quote conflicts with 'role'
         tr.innerHTML = `
-            <td><b>${u.username}</b></td>
+            <td><input type="text" value="${u.username}" onchange="updateAdminUserField(${idx}, 'username', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;"></td>
+            <td><input type="text" value="${u.pass}" onchange="updateAdminUserField(${idx}, 'pass', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;"></td>
             <td>
-                <select onchange="updateUserField(${idx}, 'role', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;">
+                <select onchange="updateAdminUserField(${idx}, 'role', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;">
                     <option value="user" ${u.role === 'user' ? 'selected' : ''}>User</option>
                     <option value="premium" ${u.role === 'premium' ? 'selected' : ''}>Premium</option>
                     <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
@@ -460,22 +529,34 @@ function renderAdminUsersTable() {
             </td>
             <td><button onclick="toggleUserApproval(${idx})" class="btn-status-sm ${u.approved ? 'active' : 'inactive'}">${u.approved ? 'Freigegeben' : 'Ausstehend'}</button></td>
             <td><button onclick="toggleUserBan(${idx})" class="btn-status-sm ${u.status === 'Aktiv' ? 'active' : 'danger'}">${u.status}</button></td>
-            <td><button onclick="toggleEarlyAccess(${idx})" class="btn-status-sm ${u.earlyAccess ? 'active' : 'inactive'}">${u.earlyAccess ? 'Ja (Aktiv)' : 'Nein'}</button></td>
-            <td><button onclick="deleteUser(${idx})" class="btn-danger-sm"><i class="fas fa-trash"></i></button></td>
+            <td>
+                <div style="display:flex; gap:6px;">
+                    <button onclick="kickUser('${u.username}')" class="btn-warning-sm" title="Sofort kicken & ausloggen"><i class="fas fa-user-slash"></i> Kicken</button>
+                    <button onclick="deleteUser(${idx})" class="btn-danger-sm" title="Account löschen"><i class="fas fa-trash"></i></button>
+                </div>
+            </td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-function updateUserField(index, field, value) {
+function kickUser(username) {
+    if (confirm(`Möchtest du den Benutzer "${username}" wirklich sofort kicken und abmelden?`)) {
+        // Broadcast kick signal to all tabs/clients via localStorage event
+        localStorage.setItem('nexus_kick_signal', JSON.stringify({ username: username, timestamp: Date.now() }));
+        alert(`Benutzer "${username}" wurde erfolgreich gekickt!`);
+    }
+}
+window.kickUser = kickUser;
+
+function updateAdminUserField(index, field, value) {
     let users = getUsersDB();
     if (users[index]) {
         users[index][field] = value;
         saveUsersDB(users);
-        renderAdminUsersTable();
     }
 }
-window.updateUserField = updateUserField;
+window.updateAdminUserField = updateAdminUserField;
 
 function toggleUserApproval(index) {
     let users = getUsersDB();
@@ -492,20 +573,14 @@ function toggleUserBan(index) {
     if (users[index]) {
         users[index].status = users[index].status === 'Aktiv' ? 'Gesperrt' : 'Aktiv';
         saveUsersDB(users);
+        // If banned, kick them immediately as well
+        if (users[index].status === 'Gesperrt') {
+            localStorage.setItem('nexus_kick_signal', JSON.stringify({ username: users[index].username, timestamp: Date.now() }));
+        }
         renderAdminUsersTable();
     }
 }
 window.toggleUserBan = toggleUserBan;
-
-function toggleEarlyAccess(index) {
-    let users = getUsersDB();
-    if (users[index]) {
-        users[index].earlyAccess = !users[index].earlyAccess;
-        saveUsersDB(users);
-        renderAdminUsersTable();
-    }
-}
-window.toggleEarlyAccess = toggleEarlyAccess;
 
 function deleteUser(index) {
     let users = getUsersDB();
@@ -513,8 +588,11 @@ function deleteUser(index) {
         alert('Der letzte Admin kann nicht gelöscht werden!');
         return;
     }
+    const targetName = users[index].username;
     users.splice(index, 1);
     saveUsersDB(users);
+    // Kick them too just in case
+    localStorage.setItem('nexus_kick_signal', JSON.stringify({ username: targetName, timestamp: Date.now() }));
     renderAdminUsersTable();
 }
 window.deleteUser = deleteUser;

@@ -1,5 +1,5 @@
 // ==========================================
-// 1. STANDARD-ZUGANGSDATEN & KONFIGURATION
+// 1. CONFIG & SYSTEM DEFAULTS v5
 // ==========================================
 const CONFIG_DEFAULT_ADMIN_USER = 'admin';
 const CONFIG_DEFAULT_ADMIN_PASS = '123';
@@ -21,47 +21,48 @@ function getCurrentDateContext() {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: 'Du bist NEXUS AI OMNI v4, eine hochentwickelte KI wie ChatGPT und Claude.\nWICHTIGE FAKTEN & ZEITKONTEXT:\n- Das heutige Datum ist ' + getCurrentDateContext() + ' (Jahr 2026). Berechne jedes Alter von Personen immer exakt bis zum heutigen Datum im Jahr 2026!\n- Antworte immer klar, intelligent, strukturiert und auf Deutsch.\n- Wenn dir ein Bild oder ein Bildschirm-Screenshot mitgeschickt wird, analysiere genau, was darauf zu sehen ist, und hilf dem Nutzer Schritt für Schritt.',
+    systemPrompt: 'Du bist NEXUS AI OMNI v5, eine hochentwickelte KI wie ChatGPT und Claude.\nWICHTIGE FAKTEN & ZEITKONTEXT:\n- Das heutige Datum ist ' + getCurrentDateContext() + ' (Jahr 2026). Berechne jedes Alter von Personen immer exakt bis zum heutigen Datum im Jahr 2026!\n- Antworte immer klar, intelligent, strukturiert und auf Deutsch.',
     maintenance: false
 };
 
 function getUsers() {
-    const saved = localStorage.getItem('nexus_users_v4');
+    const saved = localStorage.getItem('nexus_users_v5');
     if (!saved) {
-        localStorage.setItem('nexus_users_v4', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('nexus_users_v5', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
     return JSON.parse(saved);
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v4', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v5', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass_v4') || CONFIG_DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v5') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
-    const saved = localStorage.getItem('nexus_system_v4');
+    const saved = localStorage.getItem('nexus_system_v5');
     return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
 }
 
 function addLog(text) {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v4') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v5') || '[]');
     const time = new Date().toLocaleString('de-DE');
     logs.unshift('[' + time + '] ' + text);
-    localStorage.setItem('nexus_logs_v4', JSON.stringify(logs.slice(0, 100)));
+    localStorage.setItem('nexus_logs_v5', JSON.stringify(logs.slice(0, 100)));
 }
 
 // ==========================================
-// 2. LOGIN, REGISTRIERUNG & AUTHENTIFIZIERUNG
+// 2. STATE & DOM ELEMENTS
 // ==========================================
 let currentUser = null;
 let attachedFileData = null;
 let attachedImageBase64 = null;
 let currentChatMessages = [];
 let screenStream = null;
+let masterVoiceEnabled = true; // Steuert ob Stimme global AN oder AUS ist
 
 const loginScreen = document.getElementById('login-screen');
 const appContainer = document.getElementById('app-container');
@@ -84,7 +85,7 @@ toggleAuthBtn.addEventListener('click', function() {
     } else {
         registerForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG';
+        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v5';
         toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
     }
 });
@@ -111,7 +112,7 @@ registerForm.addEventListener('submit', function(e) {
     addLog('Neuer Benutzer registriert: "' + u + '"');
 
     currentUser = newUser;
-    sessionStorage.setItem('nexus_session_v4', JSON.stringify(newUser));
+    sessionStorage.setItem('nexus_session_v5', JSON.stringify(newUser));
     initApp();
 });
 
@@ -145,7 +146,7 @@ loginForm.addEventListener('submit', function(e) {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v4', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v5', JSON.stringify(found));
     addLog('Login: "' + found.username + '" (' + found.role + ')');
     initApp();
 });
@@ -171,21 +172,25 @@ function applySystemSettings() {
     document.getElementById('maintenance-toggle').checked = sys.maintenance;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v4');
+const savedSession = sessionStorage.getItem('nexus_session_v5');
 if (savedSession) {
-    currentUser = JSON.parse(savedSession);
-    initApp();
+    try {
+        currentUser = JSON.parse(savedSession);
+        initApp();
+    } catch (e) {
+        sessionStorage.removeItem('nexus_session_v5');
+    }
 }
 
 document.getElementById('logout-btn').addEventListener('click', function() {
     stopScreenShare();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v4');
+    sessionStorage.removeItem('nexus_session_v5');
     location.reload();
 });
 
 // ==========================================
-// 3. ADMIN-SPERRE & MODALS
+// 3. ADMIN PANEL & MODALS (FIXED & ROBUST)
 // ==========================================
 const adminLockModal = document.getElementById('admin-lock-modal');
 const adminModal = document.getElementById('admin-modal');
@@ -216,7 +221,7 @@ document.getElementById('admin-unlock-form').addEventListener('submit', function
 document.getElementById('save-master-pass-btn').addEventListener('click', function() {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass_v4', np);
+    localStorage.setItem('nexus_admin_master_pass_v5', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
@@ -228,18 +233,35 @@ function closeModals() {
     apiModal.classList.add('hidden');
 }
 
+window.closeModals = closeModals;
+
 function switchAdminTab(tabName, btnEl) {
     document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
     document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.add('hidden'); });
     btnEl.classList.add('active');
     document.getElementById('tab-' + tabName).classList.remove('hidden');
 }
+window.switchAdminTab = switchAdminTab;
 
 // ==========================================
-// 4. SPRACHAUSGABE & SPRACHEINGABE
+// 4. VOICE CONTROLS (VOICE ON/OFF MASTER TOGGLE)
 // ==========================================
 const voiceSelect = document.getElementById('voice-select');
+const masterVoiceToggle = document.getElementById('master-voice-toggle');
 let availableVoices = [];
+
+masterVoiceToggle.addEventListener('click', function() {
+    masterVoiceEnabled = !masterVoiceEnabled;
+    if (masterVoiceEnabled) {
+        masterVoiceToggle.innerText = 'AN';
+        masterVoiceToggle.classList.add('active');
+        speakText('Sprachausgabe eingeschaltet.');
+    } else {
+        masterVoiceToggle.innerText = 'AUS';
+        masterVoiceToggle.classList.remove('active');
+        window.speechSynthesis.cancel();
+    }
+});
 
 function loadVoices() {
     availableVoices = window.speechSynthesis.getVoices();
@@ -264,11 +286,11 @@ window.speechSynthesis.onvoiceschanged = loadVoices;
 loadVoices();
 
 function speakText(text) {
-    if (!document.getElementById('auto-speak-toggle').checked) return;
+    if (!masterVoiceEnabled) return;
     window.speechSynthesis.cancel();
 
     const cleanText = text
-        .replace(/```[\s\S]*?```/g, 'Hier ist der Code-Block.')
+        .replace(/```[\s\S]*?```/g, 'Code-Block ausgeblendet.')
         .replace(/[#*`_~]/g, '')
         .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
         .trim();
@@ -290,12 +312,13 @@ document.getElementById('stop-speech-btn').addEventListener('click', function() 
 });
 
 document.getElementById('test-voice-btn').addEventListener('click', function() {
-    const prev = document.getElementById('auto-speak-toggle').checked;
-    document.getElementById('auto-speak-toggle').checked = true;
+    const prev = masterVoiceEnabled;
+    masterVoiceEnabled = true;
     speakText('Hallo! So klingt meine ausgewählte Stimme.');
-    document.getElementById('auto-speak-toggle').checked = prev;
+    masterVoiceEnabled = prev;
 });
 
+// Speech Recognition
 const micBtn = document.getElementById('mic-btn');
 const listeningBar = document.getElementById('voice-listening-bar');
 const liveTranscript = document.getElementById('live-transcript');
@@ -352,7 +375,7 @@ document.getElementById('cancel-voice-btn').addEventListener('click', function()
 });
 
 // ==========================================
-// 5. BILDSCHIRMÜBERTRAGUNG (SCREEN-VISION)
+// 5. SCREEN SHARE & ATTACHMENTS
 // ==========================================
 const screenShareBtn = document.getElementById('screen-share-btn');
 const screenPreviewPanel = document.getElementById('screen-preview-panel');
@@ -372,7 +395,7 @@ screenShareBtn.addEventListener('click', async function() {
         screenPreviewPanel.classList.remove('hidden');
         screenShareBtn.classList.add('active');
         screenShareBtn.innerHTML = '<i class="fas fa-desktop"></i> <span>Screen aktiv</span>';
-        addLog('Bildschirmübertragung gestartet von "' + currentUser.username + '"');
+        addLog('Bildschirmübertragung gestartet');
 
         screenStream.getVideoTracks()[0].onended = function() { stopScreenShare(); };
     } catch (err) {
@@ -410,9 +433,7 @@ function captureScreenFrameBase64() {
     return canvas.toDataURL('image/jpeg', 0.75);
 }
 
-// ==========================================
-// 6. DATEI- & BILD-UPLOAD
-// ==========================================
+// File Upload
 const fileUpload = document.getElementById('file-upload');
 const attachBtn = document.getElementById('attach-btn');
 const fileBar = document.getElementById('file-attachment-bar');
@@ -456,7 +477,7 @@ document.getElementById('remove-file-btn').addEventListener('click', function() 
 });
 
 // ==========================================
-// 7. BILDGENERIERUNG + STABILER CHAT
+// 6. ROBUST CHAT & API EXECUTION
 // ==========================================
 const chatFeed = document.getElementById('chat-feed');
 const promptInput = document.getElementById('prompt-input');
@@ -476,6 +497,7 @@ function usePrompt(text) {
     promptInput.value = text;
     sendMessage();
 }
+window.usePrompt = usePrompt;
 
 function isImageGenerationRequest(text) {
     const lower = text.toLowerCase();
@@ -512,7 +534,7 @@ async function sendMessage() {
 
             let englishPrompt = cleanSubject;
             try {
-                const transRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent('Translate this image description into a detailed English AI image prompt (only output the prompt, nothing else): ' + cleanSubject));
+                const transRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent('Translate into English AI prompt: ' + cleanSubject));
                 if (transRes.ok) {
                     const translated = await transRes.text();
                     if (translated && translated.length < 300) englishPrompt = translated.trim();
@@ -580,17 +602,18 @@ async function sendMessage() {
     appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Denke nach...', loadingId, true);
 
     try {
-        const reply = await fetchStableAIResponse(promptForAI, visionImageToSend);
+        const reply = await fetchRobustAIResponse(promptForAI, visionImageToSend);
         currentChatMessages.push({ role: 'assistant', content: reply });
         updateAIMessage(loadingId, reply);
         speakText(reply);
         saveToHistory(rawText || 'Analyse');
     } catch (err) {
-        updateAIMessage(loadingId, '⚠️ Kurze Verbindungsstörung. Bitte klicke noch einmal auf Senden.');
+        updateAIMessage(loadingId, '⚠️ Verbindung zum KI-Dienst fehlgeschlagen. Bitte versuche es in wenigen Sekunden noch einmal.');
+        addLog('API Fehler: ' + err.message);
     }
 }
 
-async function fetchStableAIResponse(latestPrompt, base64Image) {
+async function fetchRobustAIResponse(latestPrompt, base64Image) {
     base64Image = base64Image || null;
     const sys = getSystem();
     const modelChoice = document.getElementById('model-select').value;
@@ -629,46 +652,22 @@ async function fetchStableAIResponse(latestPrompt, base64Image) {
         return data.choices[0].message.content;
     }
 
-    if (base64Image) {
-        const visionMessages = [
+    // Try primary endpoint (pollinations openai)
+    try {
+        const fullMessages = [
             { role: 'system', content: dynamicSystemPrompt },
-            {
-                role: 'user',
-                content: [
-                    { type: 'text', text: latestPrompt || 'Beschreibe, was du auf diesem Bildschirm siehst.' },
-                    { type: 'image_url', image_url: { url: base64Image } }
-                ]
-            }
+            ...compactHistory
         ];
 
-        const res = await fetch('https://text.pollinations.ai/openai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ model: 'openai', messages: visionMessages })
-        });
-
-        if (res.ok) {
-            const data = await res.json();
-            if (data.choices && data.choices[0]) return data.choices[0].message.content;
-        }
-    }
-
-    const selectedModel = modelChoice === 'search-grounded' ? 'searchgpt' : 'openai';
-    const fullMessages = [
-        { role: 'system', content: dynamicSystemPrompt },
-        ...compactHistory
-    ];
-
-    try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(function() { controller.abort(); }, 25000);
+        const timeoutId = setTimeout(function() { controller.abort(); }, 20000);
 
         const res = await fetch('https://text.pollinations.ai/openai', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             signal: controller.signal,
             body: JSON.stringify({
-                model: selectedModel,
+                model: 'openai',
                 messages: fullMessages,
                 seed: Math.floor(Math.random() * 100000)
             })
@@ -682,15 +681,19 @@ async function fetchStableAIResponse(latestPrompt, base64Image) {
         }
     } catch (e) {}
 
+    // Fallback GET endpoint
     const shortContext = compactHistory.map(function(m) {
         return (m.role === 'user' ? 'Nutzer' : 'KI') + ': ' + m.content;
     }).join('\n');
     const fallbackPrompt = dynamicSystemPrompt + '\n\nVerlauf:\n' + shortContext + '\n\nAntworte:';
 
     const fallbackRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent(fallbackPrompt) + '?model=openai&seed=' + Date.now());
-    if (fallbackRes.ok) return await fallbackRes.text();
+    if (fallbackRes.ok) {
+        const txt = await fallbackRes.text();
+        if (txt && txt.trim().length > 0) return txt;
+    }
 
-    throw new Error('Endpunkte beschäftigt');
+    throw new Error('Alle KI-Endpunkte sind aktuell ausgelastet.');
 }
 
 function appendMessage(role, content, id, isRawHtml) {
@@ -754,8 +757,27 @@ promptInput.addEventListener('keypress', function(e) {
     }
 });
 
+// Export Chat as Markdown
+document.getElementById('export-chat-btn').addEventListener('click', function() {
+    if (currentChatMessages.length === 0) {
+        alert('Kein Chat-Verlauf vorhanden zum Exportieren.');
+        return;
+    }
+    let mdContent = '# NEXUS AI Chat-Export (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
+    currentChatMessages.forEach(function(m) {
+        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '\n' + m.content + '\n\n';
+    });
+    const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nexus-chat-export.md';
+    a.click();
+    URL.revokeObjectURL(url);
+});
+
 // ==========================================
-// 8. BENUTZERVERWALTUNG & SYSTEM
+// 7. ADMIN MANAGEMENT & SETUP
 // ==========================================
 document.getElementById('api-settings-btn').addEventListener('click', function() {
     document.getElementById('custom-api-key').value = localStorage.getItem('nexus_custom_key') || '';
@@ -837,7 +859,7 @@ document.getElementById('save-system-btn').addEventListener('click', function() 
         systemPrompt: document.getElementById('system-prompt-input').value.trim(),
         maintenance: document.getElementById('maintenance-toggle').checked
     };
-    localStorage.setItem('nexus_system_v4', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v5', JSON.stringify(sys));
     applySystemSettings();
     alert('Gespeichert!');
 });
@@ -850,11 +872,11 @@ document.getElementById('save-api-btn').addEventListener('click', function() {
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v4') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v5') || '[]');
     document.getElementById('admin-logs-list').innerHTML = logs.map(function(l) { return '<div>' + l + '</div>'; }).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', function() {
-    localStorage.removeItem('nexus_logs_v4');
+    localStorage.removeItem('nexus_logs_v5');
     renderLogs();
 });

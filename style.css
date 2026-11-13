@@ -278,7 +278,7 @@ body {
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .voice-header {
@@ -289,6 +289,21 @@ body {
     font-weight: 600;
     color: var(--cyan);
     margin-bottom: 8px;
+}
+
+.voice-toggle-btn {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.voice-toggle-btn.active {
+    background: var(--success);
 }
 
 #voice-select {
@@ -320,6 +335,24 @@ body {
 }
 
 .mini-btn:hover { border-color: var(--cyan); }
+
+.secondary-sidebar-btn {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.secondary-sidebar-btn:hover { border-color: var(--accent); color: white; }
 
 .sidebar-footer {
     border-top: 1px solid var(--border);

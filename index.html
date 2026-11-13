@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI INTELLIGENCE v4</title>
+    <title>NEXUS AI // OMNI INTELLIGENCE v5</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG</p>
+            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG v5</p>
             
             <!-- Login Form -->
             <form id="login-form">
@@ -37,7 +37,7 @@
                 <button type="submit" class="btn-glow">SYSTEM ENTSPERREN <i class="fas fa-arrow-right"></i></button>
             </form>
 
-            <!-- Register Form (Hidden by default) -->
+            <!-- Register Form -->
             <form id="register-form" class="hidden">
                 <div class="input-group">
                     <i class="fas fa-user-plus"></i>
@@ -68,29 +68,35 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro">OMNI v4</span>
+                <span class="badge-pro">OMNI v5</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
                 <i class="fas fa-plus"></i> Neuer Chat
             </button>
 
-            <div class="sidebar-section-title">VERLAUF</div>
+            <div class="sidebar-section-title">VERLAUF & HISTORIE</div>
             <div class="chat-history" id="chat-history"></div>
 
+            <!-- Voice Control Box -->
             <div class="voice-box">
                 <div class="voice-header">
                     <span><i class="fas fa-volume-high"></i> Sprachausgabe</span>
-                    <input type="checkbox" id="auto-speak-toggle" checked title="Antworten automatisch vorlesen">
+                    <button id="master-voice-toggle" class="voice-toggle-btn active" title="Sprache komplett an/aus">AN</button>
                 </div>
                 <select id="voice-select" title="Stimme auswählen">
                     <option value="">Stimme wird geladen...</option>
                 </select>
                 <div class="voice-controls-row">
                     <button id="stop-speech-btn" class="mini-btn" title="Vorlesen stoppen"><i class="fas fa-stop"></i> Stop</button>
-                    <button id="test-voice-btn" class="mini-btn" title="Stimme testen"><i class="fas fa-play"></i> Test</button>
+                    <button id="test-voice-btn" class="mini-btn" title="Test"><i class="fas fa-play"></i> Test</button>
                 </div>
             </div>
+
+            <!-- Export Chat Button -->
+            <button id="export-chat-btn" class="secondary-sidebar-btn">
+                <i class="fas fa-file-arrow-down"></i> Chat als Markdown exportieren
+            </button>
 
             <div class="sidebar-footer">
                 <div class="user-card">
@@ -102,10 +108,10 @@
                 </div>
 
                 <div class="footer-actions">
-                    <button id="admin-panel-btn" class="icon-btn" title="Admin Kontrollzentrum (Passwortgeschützt)">
+                    <button id="admin-panel-btn" class="icon-btn" title="Admin Kontrollzentrum">
                         <i class="fas fa-shield-halved"></i> Admin
                     </button>
-                    <button id="api-settings-btn" class="icon-btn" title="KI-Gehirn / API Einstellungen">
+                    <button id="api-settings-btn" class="icon-btn" title="KI-Gehirn / Setup">
                         <i class="fas fa-brain"></i> Setup
                     </button>
                     <button id="logout-btn" class="icon-btn danger" title="Abmelden">
@@ -121,7 +127,7 @@
                 <div class="model-selector">
                     <i class="fas fa-microchip"></i>
                     <select id="model-select">
-                        <option value="omni-auto">Nexus-Omni v4 (Echtzeit-Wissen + Stabil + Bilder)</option>
+                        <option value="omni-auto">Nexus-Omni v5 (Echtzeit-Wissen + Stabil + Bilder)</option>
                         <option value="openai-large">GPT-4o / Reasoning (Maximale Intelligenz)</option>
                         <option value="search-grounded">Deep-Search Modus (Live-Fakten & Aktuelles)</option>
                         <option value="custom-api">Eigener API-Key (OpenAI / OpenRouter)</option>
@@ -158,7 +164,7 @@
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
                     <h2>Willkommen, <span id="hero-username">Admin</span>.</h2>
-                    <p>Sprich mit mir, zeig mir deinen Bildschirm, lass mich Bilder erschaffen oder analysiere Daten & Code.</p>
+                    <p>Wähle eine Persönlichkeit, lass dir Bilder generieren, analysiere Code oder sprich direkt per Mikrofon mit mir.</p>
                     
                     <div class="quick-cards">
                         <div class="q-card" onclick="usePrompt('Erstelle ein Bild von einem fotorealistischen goldenen KI-Apfel im Weltraum mit Neon-Licht')">
@@ -171,10 +177,10 @@
                             <h4>Bildschirm-Hilfe</h4>
                             <p>Teile deinen Screen für Live-Support</p>
                         </div>
-                        <div class="q-card" onclick="usePrompt('Wie alt ist Markus Rühl aktuell?')">
-                            <i class="fas fa-bolt"></i>
-                            <h4>Aktuelles Wissen 2026</h4>
-                            <p>Präzise Fakten & Datenanalyse</p>
+                        <div class="q-card" onclick="usePrompt('Schreibe einen sauberen Python Web Scraper mit BeautifulSoup')">
+                            <i class="fas fa-code"></i>
+                            <h4>Code & Entwicklung</h4>
+                            <p>Professionelle Skripte & Debugging</p>
                         </div>
                     </div>
                 </div>
@@ -217,7 +223,7 @@
                     </button>
                 </div>
                 <div class="input-footer">
-                    <span>Bildgenerierung aktiv &bull; Live-Bildschirm-Vision &bull; Sprachsteuerung &bull; Aktuelles Weltwissen (2026)</span>
+                    <span>Bildgenerierung aktiv &bull; Live-Bildschirm-Vision &bull; Sprachsteuerung &bull; Weltwissen (2026)</span>
                 </div>
             </div>
         </main>
@@ -239,7 +245,7 @@
                 <div id="admin-lock-error" class="error-msg"></div>
                 <button type="submit" class="btn-glow">ADMIN-BEREICH ÖFFNEN</button>
             </form>
-            <p style="font-size:11px; color:#9ca3af; margin-top:12px; text-align:center;">Standard Master-Passwort: <b>admin123</b> (im Admin-Menü änderbar)</p>
+            <p style="font-size:11px; color:#9ca3af; margin-top:12px; text-align:center;">Standard Master-Passwort: <b>admin123</b></p>
         </div>
     </div>
 
@@ -255,7 +261,7 @@
                 <button class="tab-btn active" onclick="switchAdminTab('users', this)">Benutzer & Passwörter</button>
                 <button class="tab-btn" onclick="switchAdminTab('security', this)">Admin-Passwort</button>
                 <button class="tab-btn" onclick="switchAdminTab('system', this)">KI-Steuerung</button>
-                <button class="tab-btn" onclick="switchAdminTab('logs', this)">Logs</button>
+                <button class="tab-btn" onclick="switchAdminTab('logs', this)">System-Logs</button>
             </div>
 
             <!-- Tab 1: Users -->

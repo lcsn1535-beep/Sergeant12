@@ -1,5 +1,5 @@
 // ==========================================
-// 1. CONFIG & SYSTEM DEFAULTS v6 (YEAT & SPOTIFY)
+// 1. CONFIG & BULLETPROOF AUTH v7
 // ==========================================
 const CONFIG_DEFAULT_ADMIN_USER = 'admin';
 const CONFIG_DEFAULT_ADMIN_PASS = '123';
@@ -21,38 +21,53 @@ function getCurrentDateContext() {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: 'Du bist NEXUS AI OMNI v6, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, Rekorde, Bayern München, WM 2014) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093).
-WICHTIGE FAKTEN & ZEITKONTEXT:\n- Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026).\n- Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
+    systemPrompt: 'Du bist NEXUS AI OMNI v7, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, Rekorde, Bayern München, WM 2014) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093).\nWICHTIGE FAKTEN & ZEITKONTEXT:\n- Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026).\n- Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
     maintenance: false
 };
 
 function getUsers() {
-    const saved = localStorage.getItem('nexus_users_v6');
-    if (!saved) {
-        localStorage.setItem('nexus_users_v6', JSON.stringify(DEFAULT_USERS));
+    try {
+        const saved = localStorage.getItem('nexus_users_v7');
+        if (!saved) {
+            localStorage.setItem('nexus_users_v7', JSON.stringify(DEFAULT_USERS));
+            return DEFAULT_USERS;
+        }
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+            localStorage.setItem('nexus_users_v7', JSON.stringify(DEFAULT_USERS));
+            return DEFAULT_USERS;
+        }
+        return parsed;
+    } catch (e) {
+        localStorage.setItem('nexus_users_v7', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
-    return JSON.parse(saved);
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v6', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v7', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass_v6') || CONFIG_DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v7') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
-    const saved = localStorage.getItem('nexus_system_v6');
-    return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
+    try {
+        const saved = localStorage.getItem('nexus_system_v7');
+        return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
+    } catch (e) {
+        return DEFAULT_SYSTEM;
+    }
 }
 
 function addLog(text) {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v6') || '[]');
-    const time = new Date().toLocaleString('de-DE');
-    logs.unshift('[' + time + '] ' + text);
-    localStorage.setItem('nexus_logs_v6', JSON.stringify(logs.slice(0, 100)));
+    try {
+        const logs = JSON.parse(localStorage.getItem('nexus_logs_v7') || '[]');
+        const time = new Date().toLocaleString('de-DE');
+        logs.unshift('[' + time + '] ' + text);
+        localStorage.setItem('nexus_logs_v7', JSON.stringify(logs.slice(0, 100)));
+    } catch (e) {}
 }
 
 // ==========================================
@@ -73,11 +88,22 @@ const loginError = document.getElementById('login-error');
 const regError = document.getElementById('reg-error');
 const toggleAuthBtn = document.getElementById('toggle-auth-mode-btn');
 const authSubtitle = document.getElementById('auth-subtitle');
+const resetStorageBtn = document.getElementById('reset-storage-btn');
 
 let isRegisterMode = false;
 
+resetStorageBtn.addEventListener('click', function() {
+    if (confirm('Möchtest du alle Konten & Einstellungen auf Standard zurücksetzen? (Admin: admin / 123)')) {
+        localStorage.clear();
+        alert('Daten wurden zurückgesetzt. Bitte neu einloggen.');
+        location.reload();
+    }
+});
+
 toggleAuthBtn.addEventListener('click', function() {
     isRegisterMode = !isRegisterMode;
+    loginError.innerText = '';
+    regError.innerText = '';
     if (isRegisterMode) {
         loginForm.classList.add('hidden');
         registerForm.classList.remove('hidden');
@@ -86,13 +112,14 @@ toggleAuthBtn.addEventListener('click', function() {
     } else {
         registerForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v6';
+        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v7';
         toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
     }
 });
 
 registerForm.addEventListener('submit', function(e) {
     e.preventDefault();
+    regError.innerText = '';
     const u = document.getElementById('reg-user').value.trim();
     const p = document.getElementById('reg-pass').value.trim();
 
@@ -113,7 +140,7 @@ registerForm.addEventListener('submit', function(e) {
     addLog('Neuer Benutzer registriert: "' + u + '"');
 
     currentUser = newUser;
-    sessionStorage.setItem('nexus_session_v6', JSON.stringify(newUser));
+    sessionStorage.setItem('nexus_session_v7', JSON.stringify(newUser));
     initApp();
 });
 
@@ -121,6 +148,7 @@ document.getElementById('live-date-badge').innerText = new Date().toLocaleDateSt
 
 loginForm.addEventListener('submit', function(e) {
     e.preventDefault();
+    loginError.innerText = '';
     const u = document.getElementById('login-user').value.trim();
     const p = document.getElementById('login-pass').value.trim();
 
@@ -147,7 +175,7 @@ loginForm.addEventListener('submit', function(e) {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v6', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v7', JSON.stringify(found));
     addLog('Login: "' + found.username + '" (' + found.role + ')');
     initApp();
 });
@@ -157,7 +185,7 @@ function initApp() {
     appContainer.classList.remove('hidden');
 
     document.getElementById('current-user-name').innerText = currentUser.username;
-    document.getElementById('current-user-avatar').innerText = currentUser.username[0];
+    document.getElementById('current-user-avatar').innerText = currentUser.username[0].toUpperCase();
     document.getElementById('current-user-role').innerText = currentUser.role.toUpperCase();
     document.getElementById('hero-username').innerText = currentUser.username;
 
@@ -173,20 +201,20 @@ function applySystemSettings() {
     document.getElementById('maintenance-toggle').checked = sys.maintenance;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v6');
+const savedSession = sessionStorage.getItem('nexus_session_v7');
 if (savedSession) {
     try {
         currentUser = JSON.parse(savedSession);
         initApp();
     } catch (e) {
-        sessionStorage.removeItem('nexus_session_v6');
+        sessionStorage.removeItem('nexus_session_v7');
     }
 }
 
 document.getElementById('logout-btn').addEventListener('click', function() {
     stopScreenShare();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v6');
+    sessionStorage.removeItem('nexus_session_v7');
     location.reload();
 });
 
@@ -240,7 +268,7 @@ document.getElementById('admin-unlock-form').addEventListener('submit', function
 document.getElementById('save-master-pass-btn').addEventListener('click', function() {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass_v6', np);
+    localStorage.setItem('nexus_admin_master_pass_v7', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
@@ -593,7 +621,7 @@ async function sendMessage() {
                         '<div class="ai-image-wrapper">' +
                         '<img src="' + imageUrl + '" alt="KI Bild">' +
                         '<div class="ai-image-footer">' +
-                        '<span>NEXUS Vision HD v6</span>' +
+                        '<span>NEXUS Vision HD v7</span>' +
                         '<a href="' + imageUrl + '" target="_blank" download="nexus-ai-bild.jpg" class="download-img-btn"><i class="fas fa-download"></i> Öffnen / Speichern</a>' +
                         '</div></div>';
                 }
@@ -616,17 +644,28 @@ async function sendMessage() {
 
     if (screenStream && !visionImageToSend) {
         visionImageToSend = captureScreenFrameBase64();
-        displayMessage = '🖥️ *[Live-Bildschirm erfasst]*\n\n' + rawText;
+        displayMessage = '🖥️ *[Live-Bildschirm erfasst]*
+
+' + rawText;
     }
 
     if (attachedFileData) {
-        displayMessage = '📎 **Datei:** `' + attachedFileData.name + '`\n\n' + (rawText || 'Bitte analysiere diese Datei.');
-        promptForAI = 'Analysiere diese hochgeladene Datei (' + attachedFileData.name + '):\n```\n' + attachedFileData.content + '\n```\n\nFrage: ' + (rawText || 'Fasse den Inhalt zusammen.');
+        displayMessage = '📎 **Datei:** `' + attachedFileData.name + '`
+
+' + (rawText || 'Bitte analysiere diese Datei.');
+        promptForAI = 'Analysiere diese hochgeladene Datei (' + attachedFileData.name + '):
+```
+' + attachedFileData.content + '
+```
+
+Frage: ' + (rawText || 'Fasse den Inhalt zusammen.');
         attachedFileData = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
     } else if (attachedImageBase64) {
-        displayMessage = '🖼️ *[Bild eingefügt/angehängt]*\n\n' + (rawText || 'Was ist auf diesem Bild zu sehen?');
+        displayMessage = '🖼️ *[Bild eingefügt/angehängt]*
+
+' + (rawText || 'Was ist auf diesem Bild zu sehen?');
         attachedImageBase64 = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
@@ -668,7 +707,8 @@ async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
         };
     });
 
-    const dynamicSystemPrompt = sys.systemPrompt + '\nAktuelles Datum heute: ' + getCurrentDateContext() + '.';
+    const dynamicSystemPrompt = sys.systemPrompt + '
+Aktuelles Datum heute: ' + getCurrentDateContext() + '.';
 
     if (modelChoice === 'custom-api' && customKey) {
         const userContent = base64Image
@@ -726,8 +766,14 @@ async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
     try {
         const shortContext = compactHistory.map(function(m) {
             return (m.role === 'user' ? 'Nutzer' : 'KI') + ': ' + m.content;
-        }).join('\n');
-        const fallbackPrompt = dynamicSystemPrompt + '\n\nVerlauf:\n' + shortContext + '\n\nAntworte:';
+        }).join('
+');
+        const fallbackPrompt = dynamicSystemPrompt + '
+
+Verlauf:
+' + shortContext + '
+
+Antworte:';
 
         const fallbackRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent(fallbackPrompt) + '?model=openai&seed=' + Date.now());
         if (fallbackRes.ok) {
@@ -806,9 +852,14 @@ document.getElementById('export-chat-btn').addEventListener('click', function() 
         alert('Kein Chat-Verlauf vorhanden zum Exportieren.');
         return;
     }
-    let mdContent = '# NEXUS AI Chat-Export v6 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
+    let mdContent = '# NEXUS AI Chat-Export v7 (' + new Date().toLocaleDateString('de-DE') + ')
+
+';
     currentChatMessages.forEach(function(m) {
-        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '\n' + m.content + '\n\n';
+        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '
+' + m.content + '
+
+';
     });
     const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -902,7 +953,7 @@ document.getElementById('save-system-btn').addEventListener('click', function() 
         systemPrompt: document.getElementById('system-prompt-input').value.trim(),
         maintenance: document.getElementById('maintenance-toggle').checked
     };
-    localStorage.setItem('nexus_system_v6', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v7', JSON.stringify(sys));
     applySystemSettings();
     alert('Gespeichert!');
 });
@@ -915,11 +966,11 @@ document.getElementById('save-api-btn').addEventListener('click', function() {
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v6') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v7') || '[]');
     document.getElementById('admin-logs-list').innerHTML = logs.map(function(l) { return '<div>' + l + '</div>'; }).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', function() {
-    localStorage.removeItem('nexus_logs_v6');
+    localStorage.removeItem('nexus_logs_v7');
     renderLogs();
 });

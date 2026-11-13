@@ -1,8 +1,6 @@
-# 🚀 NEXUS AI OMNI v6 (YEAT & SPOTIFY EDITION)
+# 🚀 NEXUS AI OMNI v7 (ROBUST FIX)
 
-## 🔥 Neue Features in v6:
-1. **Clipboard Image Paste (`Ctrl + V`):** Du kannst jetzt Bilder aus der Zwischenablage direkt in das Chat-Eingabefeld einfügen (`Strg+V`), und sie werden automatisch an die KI übergeben!
-2. **Spotify & Yeat Musikplayer:** Direkt in der Sidebar integrierter Spotify-Player / Vibe-Widget, damit du während des Chats Musik hören kannst (inkl. Yeat Vibe).
-3. **Ultra-Robustes Multi-Fallback System:** Keine "Verbindung zum KI-Dienst fehlgeschlagen"-Fehler mehr dank automatischer Server-Ausweichrouten.
-4. **Perfektionierte Prompts & Thomas Müller Support:** Spezialisierte Motiverkennung für Promis und Sportler wie Thomas Müller bei der Bildgenerierung und im Weltwissen.
-5. **Admin-Bereich, Chat-Export & Sprachsteuerung.**
+## 🛠️ Fixes in v7:
+1. **Bulletproof Auth & LocalStorage Repair:** Fehler bei Login und Registrierung wurden durch robuste `try/catch`-Abfragen und einen automatischen Daten-Zurücksetzen-Button (`[Daten zurücksetzen bei Login-Fehlern]`) behoben.
+2. **Standard-Admin Zugang:** `admin` / `123` ist sofort garantiert lauffähig.
+3. **Alle v6 Features intakt:** Clipboard Image Paste (`Ctrl + V`), Spotify & Yeat Musikplayer, Multi-Fallback KI-System, Thomas Müller Porträts und Admin-Panel.

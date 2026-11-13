@@ -6,6 +6,7 @@
     --accent: #7c3aed;
     --accent-glow: rgba(124, 58, 237, 0.45);
     --cyan: #06b6d4;
+    --spotify-green: #1db954;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --border: rgba(255, 255, 255, 0.08);
@@ -74,13 +75,13 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--accent));
-    box-shadow: 0 0 20px var(--accent);
+    background: linear-gradient(135deg, var(--spotify-green), var(--accent));
+    box-shadow: 0 0 20px var(--spotify-green);
     animation: pulseOrb 3s infinite alternate;
 }
 
 @keyframes pulseOrb {
-    0% { transform: scale(0.95); box-shadow: 0 0 15px var(--cyan); }
+    0% { transform: scale(0.95); box-shadow: 0 0 15px var(--spotify-green); }
     100% { transform: scale(1.08); box-shadow: 0 0 30px var(--accent); }
 }
 
@@ -90,7 +91,7 @@ body {
     letter-spacing: 2px;
 }
 
-.login-logo span { color: var(--cyan); }
+.login-logo span { color: var(--spotify-green); }
 
 .login-subtitle {
     color: var(--text-muted);
@@ -124,15 +125,15 @@ body {
 }
 
 .input-group input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 15px var(--accent-glow);
+    border-color: var(--spotify-green);
+    box-shadow: 0 0 15px rgba(29, 185, 84, 0.3);
 }
 
 .btn-glow {
     width: 100%;
     padding: 14px;
     margin-top: 8px;
-    background: linear-gradient(135deg, var(--accent), #4f46e5);
+    background: linear-gradient(135deg, var(--spotify-green), #14833b);
     border: none;
     border-radius: 10px;
     color: white;
@@ -140,12 +141,12 @@ body {
     font-size: 15px;
     cursor: pointer;
     transition: 0.25s;
-    box-shadow: 0 4px 20px var(--accent-glow);
+    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.4);
 }
 
 .btn-glow:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(124, 58, 237, 0.7);
+    box-shadow: 0 6px 25px rgba(29, 185, 84, 0.7);
 }
 
 .error-msg {
@@ -168,7 +169,7 @@ body {
 }
 
 .auth-switch button:hover {
-    color: var(--cyan);
+    color: var(--spotify-green);
 }
 
 .login-hint {
@@ -187,7 +188,7 @@ body {
 }
 
 .sidebar {
-    width: 285px;
+    width: 300px;
     background: var(--bg-panel);
     border-right: 1px solid var(--border);
     display: flex;
@@ -201,22 +202,22 @@ body {
     gap: 10px;
     font-size: 20px;
     letter-spacing: 1px;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
 }
 
 .orb-small {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--accent));
-    box-shadow: 0 0 12px var(--accent);
+    background: linear-gradient(135deg, var(--spotify-green), var(--accent));
+    box-shadow: 0 0 10px var(--spotify-green);
 }
 
 .badge-pro {
     font-size: 10px;
-    background: rgba(6, 182, 212, 0.15);
-    color: var(--cyan);
-    border: 1px solid rgba(6, 182, 212, 0.4);
+    background: rgba(29, 185, 84, 0.15);
+    color: var(--spotify-green);
+    border: 1px solid rgba(29, 185, 84, 0.4);
     padding: 2px 6px;
     border-radius: 6px;
     font-weight: 700;
@@ -224,8 +225,8 @@ body {
 
 .new-chat-btn {
     width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(6, 182, 212, 0.15));
+    padding: 11px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(29, 185, 84, 0.15));
     border: 1px solid rgba(124, 58, 237, 0.45);
     color: white;
     border-radius: 10px;
@@ -244,7 +245,7 @@ body {
     font-size: 11px;
     color: var(--text-muted);
     letter-spacing: 1px;
-    margin: 18px 0 8px 4px;
+    margin: 14px 0 6px 4px;
 }
 
 .chat-history {
@@ -253,10 +254,11 @@ body {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    max-height: 180px;
 }
 
 .history-item {
-    padding: 10px 12px;
+    padding: 8px 10px;
     border-radius: 8px;
     font-size: 13px;
     color: var(--text-muted);
@@ -272,13 +274,107 @@ body {
     color: white;
 }
 
+/* Spotify / Yeat Music Widget in Sidebar */
+.music-box {
+    background: var(--bg-card);
+    border: 1px solid rgba(29, 185, 84, 0.3);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+}
+
+.music-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--spotify-green);
+    margin-bottom: 8px;
+}
+
+#music-collapse-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.music-player-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.now-playing-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#track-cover {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.track-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.track-meta span:first-child {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+}
+
+.track-meta span:last-child {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.audio-visualizer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    height: 14px;
+}
+
+.audio-visualizer span {
+    width: 3px;
+    height: 100%;
+    background: var(--spotify-green);
+    border-radius: 2px;
+    animation: waveMusic 0.8s infinite ease-in-out;
+}
+
+.audio-visualizer span:nth-child(2) { animation-delay: 0.15s; }
+.audio-visualizer span:nth-child(3) { animation-delay: 0.3s; }
+.audio-visualizer span:nth-child(4) { animation-delay: 0.1s; }
+.audio-visualizer span:nth-child(5) { animation-delay: 0.4s; }
+.audio-visualizer span:nth-child(6) { animation-delay: 0.25s; }
+
+@keyframes waveMusic {
+    0%, 100% { height: 3px; }
+    50% { height: 14px; }
+}
+
+.spotify-embed-wrapper {
+    margin-top: 4px;
+}
+
 /* Voice Box in Sidebar */
 .voice-box {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
 }
 
 .voice-header {
@@ -288,7 +384,7 @@ body {
     font-size: 12px;
     font-weight: 600;
     color: var(--cyan);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .voice-toggle-btn {
@@ -314,7 +410,7 @@ body {
     padding: 6px 8px;
     border-radius: 6px;
     font-size: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     outline: none;
 }
 
@@ -328,7 +424,7 @@ body {
     background: var(--bg-hover);
     border: 1px solid var(--border);
     color: var(--text-main);
-    padding: 5px;
+    padding: 4px;
     border-radius: 6px;
     font-size: 11px;
     cursor: pointer;
@@ -345,7 +441,7 @@ body {
     border-radius: 8px;
     font-size: 12px;
     cursor: pointer;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -356,10 +452,10 @@ body {
 
 .sidebar-footer {
     border-top: 1px solid var(--border);
-    padding-top: 12px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .user-card {
@@ -369,10 +465,10 @@ body {
 }
 
 .user-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    background: linear-gradient(135deg, var(--accent), var(--spotify-green));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -381,14 +477,14 @@ body {
 }
 
 .user-details { display: flex; flex-direction: column; }
-.user-details span:first-child { font-size: 14px; font-weight: 600; }
-.role-badge { font-size: 10px; color: var(--cyan); font-weight: 700; }
+.user-details span:first-child { font-size: 13px; font-weight: 600; }
+.role-badge { font-size: 10px; color: var(--spotify-green); font-weight: 700; }
 
 .footer-actions { display: flex; gap: 6px; }
 
 .icon-btn {
     flex: 1;
-    padding: 8px;
+    padding: 7px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     color: var(--text-main);
@@ -428,7 +524,7 @@ body {
     border: 1px solid var(--border);
 }
 
-.model-selector i { color: var(--cyan); }
+.model-selector i { color: var(--spotify-green); }
 .model-selector select {
     background: transparent;
     border: none;
@@ -565,8 +661,8 @@ body {
     height: 68px;
     margin: 0 auto 20px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--accent));
-    box-shadow: 0 0 45px var(--accent-glow);
+    background: linear-gradient(135deg, var(--spotify-green), var(--accent));
+    box-shadow: 0 0 45px rgba(29, 185, 84, 0.35);
 }
 
 .welcome-hero h2 { font-size: 28px; margin-bottom: 10px; }
@@ -589,12 +685,12 @@ body {
 }
 
 .q-card:hover {
-    border-color: var(--accent);
+    border-color: var(--spotify-green);
     transform: translateY(-3px);
     background: var(--bg-hover);
 }
 
-.q-card i { font-size: 20px; color: var(--cyan); margin-bottom: 12px; }
+.q-card i { font-size: 20px; color: var(--spotify-green); margin-bottom: 12px; }
 .q-card h4 { font-size: 15px; margin-bottom: 6px; }
 .q-card p { font-size: 12px; margin: 0; }
 
@@ -626,7 +722,7 @@ body {
 }
 
 .msg-row.user .msg-avatar { background: var(--bg-hover); border: 1px solid var(--border); }
-.msg-row.ai .msg-avatar { background: linear-gradient(135deg, var(--accent), var(--cyan)); box-shadow: 0 0 15px var(--accent-glow); }
+.msg-row.ai .msg-avatar { background: linear-gradient(135deg, var(--accent), var(--spotify-green)); box-shadow: 0 0 15px var(--accent-glow); }
 
 .msg-bubble {
     flex: 1;
@@ -660,7 +756,7 @@ body {
     margin-top: 12px;
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(6, 182, 212, 0.4);
+    border: 1px solid rgba(29, 185, 84, 0.4);
     background: #0a0b10;
     max-width: 512px;
 }
@@ -681,7 +777,7 @@ body {
 }
 
 .download-img-btn {
-    color: var(--cyan);
+    color: var(--spotify-green);
     text-decoration: none;
     font-weight: 600;
 }
@@ -710,7 +806,7 @@ body {
 .sound-wave span {
     width: 3px;
     height: 100%;
-    background: var(--cyan);
+    background: var(--spotify-green);
     border-radius: 2px;
     animation: wave 0.8s infinite ease-in-out;
 }
@@ -749,9 +845,9 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(6, 182, 212, 0.15);
-    border: 1px solid var(--cyan);
-    color: var(--cyan);
+    background: rgba(29, 185, 84, 0.15);
+    border: 1px solid var(--spotify-green);
+    color: var(--spotify-green);
     padding: 6px 12px;
     border-radius: 8px;
     font-size: 13px;
@@ -775,7 +871,7 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
-.input-container:focus-within { border-color: var(--accent); }
+.input-container:focus-within { border-color: var(--spotify-green); }
 
 .tool-btn {
     background: var(--bg-card);
@@ -789,7 +885,7 @@ body {
     flex-shrink: 0;
 }
 
-.tool-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+.tool-btn:hover { color: var(--spotify-green); border-color: var(--spotify-green); }
 .mic-btn.recording {
     background: var(--danger);
     color: white;
@@ -810,7 +906,7 @@ body {
 }
 
 .send-btn {
-    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    background: linear-gradient(135deg, var(--spotify-green), #14833b);
     border: none;
     color: white;
     width: 38px;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI INTELLIGENCE v7 (ROBUST FIX)</title>
+    <title>NEXUS AI // OMNI INTELLIGENCE v9 (COMPLETE & FIXED)</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG v7</p>
+            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG v9</p>
             
             <!-- Login Form -->
             <form id="login-form">
@@ -48,7 +48,7 @@
                     <input type="password" id="reg-pass" placeholder="Passwort vergeben" required>
                 </div>
                 <div id="reg-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">KONTO ERSTELLEN & STARTEN <i class="fas fa-check"></i></button>
+                <button type="submit" class="btn-glow">KONTO REGISTRIEREN <i class="fas fa-check"></i></button>
             </form>
 
             <div class="auth-switch">
@@ -57,7 +57,7 @@
 
             <div class="login-hint">
                 <span>Standard-Admin: <b>admin</b> / Passwort: <b>123</b></span>
-                <br><button type="button" id="reset-storage-btn" style="background:none; border:none; color:#ef4444; font-size:11px; cursor:pointer; margin-top:6px; text-decoration:underline;">[Daten zurücksetzen bei Login-Fehlern]</button>
+                <br><button type="button" id="reset-storage-btn" style="background:none; border:none; color:#ef4444; font-size:11px; cursor:pointer; margin-top:6px; text-decoration:underline;">[Daten zurücksetzen]</button>
             </div>
         </div>
     </div>
@@ -69,7 +69,7 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro">OMNI v7</span>
+                <span class="badge-pro">OMNI v9</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -98,7 +98,7 @@
                     </div>
                     <!-- Embedded Spotify Player for Yeat Playlist -->
                     <div class="spotify-embed-wrapper">
-                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/3sW3OWE0aTvYeZq2vnzprM?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/3sW3OWE0aTvYeZq2vnzprM?utm_source=generator&theme=0" width="100%" height="80" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                     </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                 <div class="model-selector">
                     <i class="fas fa-microchip"></i>
                     <select id="model-select">
-                        <option value="omni-auto">Nexus-Omni v7 (Ultra-Präzise Personas + Robuste Auth)</option>
+                        <option value="omni-auto">Nexus-Omni v9 (Complete & Fixed)</option>
                         <option value="openai-large">GPT-4o / Maximum Knowledge (Weltwissen & Promis)</option>
                         <option value="search-grounded">Deep-Search Modus (Live-Fakten 2026)</option>
                         <option value="custom-api">Eigener API-Key (OpenAI / OpenRouter)</option>
@@ -248,7 +248,7 @@
                     </button>
                 </div>
                 <div class="input-footer">
-                    <span>Clipboard Strg+V Bild-Paste aktiv &bull; Spotify / Yeat Musikplayer &bull; Robuste Auth v7</span>
+                    <span>Clipboard Strg+V Bild-Paste aktiv &bull; Spotify / Yeat Musikplayer &bull; Admin-Freigabe an lcsn1535@gmail.com</span>
                 </div>
             </div>
         </main>
@@ -278,12 +278,13 @@
     <div id="admin-modal" class="modal-backdrop hidden">
         <div class="modal-card admin-card">
             <div class="modal-header">
-                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v7</h3>
+                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v9</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
             
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchAdminTab('users', this)">Benutzer & Passwörter</button>
+                <button class="tab-btn active" onclick="switchAdminTab('users', this)">Benutzer & Freigaben</button>
+                <button class="tab-btn" onclick="switchAdminTab('email', this)">E-Mail Benachrichtigung</button>
                 <button class="tab-btn" onclick="switchAdminTab('security', this)">Admin-Passwort</button>
                 <button class="tab-btn" onclick="switchAdminTab('system', this)">KI-Steuerung</button>
                 <button class="tab-btn" onclick="switchAdminTab('logs', this)">System-Logs</button>
@@ -292,7 +293,7 @@
             <!-- Tab 1: Users -->
             <div id="tab-users" class="tab-content active">
                 <div class="add-user-box">
-                    <h4>Neuen Zugang für andere Nutzer erstellen</h4>
+                    <h4>Neuen Zugang manuell erstellen</h4>
                     <div class="form-row">
                         <input type="text" id="new-username" placeholder="Benutzername">
                         <input type="text" id="new-password" placeholder="Passwort">
@@ -304,13 +305,12 @@
                     </div>
                 </div>
 
-                <h4>Alle registrierten Konten</h4>
+                <h4>Registrierte Konten & Freigabe-Status (Benötigen Admin-Freigabe)</h4>
                 <div class="table-wrapper">
                     <table class="user-table">
                         <thead>
                             <tr>
                                 <th>Benutzername</th>
-                                <th>Passwort</th>
                                 <th>Rolle</th>
                                 <th>Status</th>
                                 <th>Aktionen</th>
@@ -321,7 +321,23 @@
                 </div>
             </div>
 
-            <!-- Tab 2: Admin Master Security -->
+            <!-- Tab 2: Email Setup -->
+            <div id="tab-email" class="tab-content hidden">
+                <div class="sys-setting">
+                    <label><i class="fas fa-envelope"></i> Administrator E-Mail für Benachrichtigungen</label>
+                    <input type="text" id="admin-email-input" value="lcsn1535@gmail.com">
+                </div>
+                <div class="sys-setting toggle-row">
+                    <span>E-Mail-Simulationsmodus (Öffnet direkt den Mail-Client mit vorgefertigter Bestätigungsmail)</span>
+                    <input type="checkbox" id="email-sim-toggle" checked>
+                </div>
+                <p class="modal-desc" style="margin-top:10px;">
+                    Da statische Webseiten (wie GitHub Pages) keinen eigenen SMTP-Server betreiben können, öffnet sich bei einer neuen Registrierung automatisch ein vorbereiteter E-Mail-Entwurf an <b>lcsn1535@gmail.com</b>, mit dem du den neuen Nutzer mit 1 Klick bestätigen oder freigeben kannst! Alternativ kannst du neue Nutzer auch direkt hier im Admin-Panel freischalten.
+                </p>
+                <button id="save-email-settings-btn" class="btn-primary">E-Mail Einstellungen speichern</button>
+            </div>
+
+            <!-- Tab 3: Admin Master Security -->
             <div id="tab-security" class="tab-content hidden">
                 <div class="sys-setting">
                     <label>Aktuelles Admin-Master-Passwort ändern</label>
@@ -330,7 +346,7 @@
                 <button id="save-master-pass-btn" class="btn-primary">Neues Master-Passwort speichern</button>
             </div>
 
-            <!-- Tab 3: System -->
+            <!-- Tab 4: System -->
             <div id="tab-system" class="tab-content hidden">
                 <div class="sys-setting">
                     <label>System-Persönlichkeit & Wissensbasis der KI</label>
@@ -347,7 +363,7 @@
                 <button id="save-system-btn" class="btn-primary">System-Einstellungen speichern</button>
             </div>
 
-            <!-- Tab 4: Logs -->
+            <!-- Tab 5: Logs -->
             <div id="tab-logs" class="tab-content hidden">
                 <div class="logs-box" id="admin-logs-list"></div>
                 <button id="clear-logs-btn" class="btn-danger-outline" style="margin-top:10px;">Logs löschen</button>

@@ -1,12 +1,13 @@
 // ==========================================
-// 1. CONFIG & BULLETPROOF AUTH v7
+// 1. CONFIG & ADMIN APPROVAL v9 (COMPLETE)
 // ==========================================
 const CONFIG_DEFAULT_ADMIN_USER = 'admin';
 const CONFIG_DEFAULT_ADMIN_PASS = '123';
 const CONFIG_DEFAULT_MASTER_PASS = 'admin123';
+const TARGET_ADMIN_EMAIL = 'lcsn1535@gmail.com';
 
 const DEFAULT_USERS = [
-    { username: CONFIG_DEFAULT_ADMIN_USER, password: CONFIG_DEFAULT_ADMIN_PASS, role: 'admin', active: true }
+    { username: CONFIG_DEFAULT_ADMIN_USER, password: CONFIG_DEFAULT_ADMIN_PASS, role: 'admin', active: true, approved: true }
 ];
 
 function getCurrentDateContext() {
@@ -21,40 +22,42 @@ function getCurrentDateContext() {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: 'Du bist NEXUS AI OMNI v7, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, Rekorde, Bayern München, WM 2014) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093).\nWICHTIGE FAKTEN & ZEITKONTEXT:\n- Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026).\n- Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
-    maintenance: false
+    systemPrompt: 'Du bist NEXUS AI OMNI v9, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, Rekorde, Bayern München, WM 2014) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093). WICHTIGE FAKTEN & ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
+    maintenance: false,
+    adminEmail: TARGET_ADMIN_EMAIL,
+    emailSimulation: true
 };
 
 function getUsers() {
     try {
-        const saved = localStorage.getItem('nexus_users_v7');
+        const saved = localStorage.getItem('nexus_users_v9');
         if (!saved) {
-            localStorage.setItem('nexus_users_v7', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v9', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         const parsed = JSON.parse(saved);
         if (!Array.isArray(parsed) || parsed.length === 0) {
-            localStorage.setItem('nexus_users_v7', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v9', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         return parsed;
     } catch (e) {
-        localStorage.setItem('nexus_users_v7', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('nexus_users_v9', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v7', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v9', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass_v7') || CONFIG_DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v9') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
     try {
-        const saved = localStorage.getItem('nexus_system_v7');
+        const saved = localStorage.getItem('nexus_system_v9');
         return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
     } catch (e) {
         return DEFAULT_SYSTEM;
@@ -63,10 +66,10 @@ function getSystem() {
 
 function addLog(text) {
     try {
-        const logs = JSON.parse(localStorage.getItem('nexus_logs_v7') || '[]');
+        const logs = JSON.parse(localStorage.getItem('nexus_logs_v9') || '[]');
         const time = new Date().toLocaleString('de-DE');
         logs.unshift('[' + time + '] ' + text);
-        localStorage.setItem('nexus_logs_v7', JSON.stringify(logs.slice(0, 100)));
+        localStorage.setItem('nexus_logs_v9', JSON.stringify(logs.slice(0, 100)));
     } catch (e) {}
 }
 
@@ -112,7 +115,7 @@ toggleAuthBtn.addEventListener('click', function() {
     } else {
         registerForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v7';
+        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v9';
         toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
     }
 });
@@ -134,15 +137,38 @@ registerForm.addEventListener('submit', function(e) {
         return;
     }
 
-    const newUser = { username: u, password: p, role: 'user', active: true };
+    const newUser = { username: u, password: p, role: 'user', active: true, approved: false };
     users.push(newUser);
     saveUsers(users);
-    addLog('Neuer Benutzer registriert: "' + u + '"');
+    addLog('Neuer Benutzer registriert (wartet auf Freigabe): "' + u + '"');
 
-    currentUser = newUser;
-    sessionStorage.setItem('nexus_session_v7', JSON.stringify(newUser));
-    initApp();
+    triggerAdminEmailNotification(u);
+
+    alert('Konto erfolgreich registriert! Deine Registrierung wurde an den Admin (' + TARGET_ADMIN_EMAIL + ') gemeldet. Sobald der Admin dich freigibt, kannst du dich einloggen.');
+    
+    registerForm.reset();
+    registerForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+    isRegisterMode = false;
+    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v9';
+    toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
 });
+
+function triggerAdminEmailNotification(newUsername) {
+    const sys = getSystem();
+    const adminMail = sys.adminEmail || TARGET_ADMIN_EMAIL;
+    const subject = encodeURIComponent('🔑 Neue NEXUS AI Registrierung: Freigabe erforderlich für "' + newUsername + '"');
+    const body = encodeURIComponent('Hallo Administrator,\n\nEin neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:\n\n- Benutzername: ' + newUsername + '\n- Datum: ' + new Date().toLocaleString('de-DE') + '\n\nUm diesen Nutzer freizugeben, öffne dein Admin-Kontrollzentrum auf der Website und klicke bei dem Nutzer auf "Freigeben".\n\nDein NEXUS AI System v9');
+
+    if (sys.emailSimulation) {
+        const mailtoLink = 'mailto:' + adminMail + '?subject=' + subject + '&body=' + body;
+        const a = document.createElement('a');
+        a.href = mailtoLink;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        try { a.click(); document.body.removeChild(a); } catch (e) {}
+    }
+}
 
 document.getElementById('live-date-badge').innerText = new Date().toLocaleDateString('de-DE');
 
@@ -164,6 +190,11 @@ loginForm.addEventListener('submit', function(e) {
         return;
     }
 
+    if (!found.approved && found.role !== 'admin') {
+        loginError.innerText = 'Dein Konto wartet noch auf die Freigabe durch den Administrator (' + sys.adminEmail + ').';
+        return;
+    }
+
     if (!found.active) {
         loginError.innerText = 'Dieses Konto wurde vom Administrator gesperrt.';
         return;
@@ -175,7 +206,7 @@ loginForm.addEventListener('submit', function(e) {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v7', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v9', JSON.stringify(found));
     addLog('Login: "' + found.username + '" (' + found.role + ')');
     initApp();
 });
@@ -199,22 +230,24 @@ function applySystemSettings() {
     document.getElementById('system-prompt-input').value = sys.systemPrompt;
     document.getElementById('custom-ai-name').value = sys.aiName;
     document.getElementById('maintenance-toggle').checked = sys.maintenance;
+    document.getElementById('admin-email-input').value = sys.adminEmail || TARGET_ADMIN_EMAIL;
+    document.getElementById('email-sim-toggle').checked = sys.emailSimulation !== false;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v7');
+const savedSession = sessionStorage.getItem('nexus_session_v9');
 if (savedSession) {
     try {
         currentUser = JSON.parse(savedSession);
         initApp();
     } catch (e) {
-        sessionStorage.removeItem('nexus_session_v7');
+        sessionStorage.removeItem('nexus_session_v9');
     }
 }
 
 document.getElementById('logout-btn').addEventListener('click', function() {
     stopScreenShare();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v7');
+    sessionStorage.removeItem('nexus_session_v9');
     location.reload();
 });
 
@@ -268,10 +301,20 @@ document.getElementById('admin-unlock-form').addEventListener('submit', function
 document.getElementById('save-master-pass-btn').addEventListener('click', function() {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass_v7', np);
+    localStorage.setItem('nexus_admin_master_pass_v9', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
+});
+
+document.getElementById('save-email-settings-btn').addEventListener('click', function() {
+    const mail = document.getElementById('admin-email-input').value.trim();
+    const sim = document.getElementById('email-sim-toggle').checked;
+    const sys = getSystem();
+    sys.adminEmail = mail || TARGET_ADMIN_EMAIL;
+    sys.emailSimulation = sim;
+    localStorage.setItem('nexus_system_v9', JSON.stringify(sys));
+    alert('E-Mail Einstellungen erfolgreich gespeichert! Benachrichtigungen gehen an: ' + sys.adminEmail);
 });
 
 function closeModals() {
@@ -494,7 +537,6 @@ fileUpload.addEventListener('change', function(e) {
     processSelectedFile(file);
 });
 
-// CLIPBOARD PASTE EVENT (Strg + V image paste support)
 window.addEventListener('paste', function(e) {
     const items = (e.clipboardData || e.originalEvent.clipboardData).items;
     for (let i = 0; i < items.length; i++) {
@@ -580,7 +622,6 @@ async function sendMessage() {
     const welcomeHero = document.getElementById('welcome-hero');
     if (welcomeHero) welcomeHero.style.display = 'none';
 
-    // Image generation mode with advanced prompt enhancement for celebrities like Thomas Müller
     if (isImageGenerationRequest(rawText) && !attachedFileData && !attachedImageBase64) {
         appendMessage('user', rawText);
         promptInput.value = '';
@@ -621,7 +662,7 @@ async function sendMessage() {
                         '<div class="ai-image-wrapper">' +
                         '<img src="' + imageUrl + '" alt="KI Bild">' +
                         '<div class="ai-image-footer">' +
-                        '<span>NEXUS Vision HD v7</span>' +
+                        '<span>NEXUS Vision HD v9</span>' +
                         '<a href="' + imageUrl + '" target="_blank" download="nexus-ai-bild.jpg" class="download-img-btn"><i class="fas fa-download"></i> Öffnen / Speichern</a>' +
                         '</div></div>';
                 }
@@ -644,28 +685,17 @@ async function sendMessage() {
 
     if (screenStream && !visionImageToSend) {
         visionImageToSend = captureScreenFrameBase64();
-        displayMessage = '🖥️ *[Live-Bildschirm erfasst]*
-
-' + rawText;
+        displayMessage = '🖥️ *[Live-Bildschirm erfasst]*\n\n' + rawText;
     }
 
     if (attachedFileData) {
-        displayMessage = '📎 **Datei:** `' + attachedFileData.name + '`
-
-' + (rawText || 'Bitte analysiere diese Datei.');
-        promptForAI = 'Analysiere diese hochgeladene Datei (' + attachedFileData.name + '):
-```
-' + attachedFileData.content + '
-```
-
-Frage: ' + (rawText || 'Fasse den Inhalt zusammen.');
+        displayMessage = '📎 **Datei:** `' + attachedFileData.name + '`\n\n' + (rawText || 'Bitte analysiere diese Datei.');
+        promptForAI = 'Analysiere diese hochgeladene Datei (' + attachedFileData.name + '):\n```\n' + attachedFileData.content + '\n```\n\nFrage: ' + (rawText || 'Fasse den Inhalt zusammen.');
         attachedFileData = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
     } else if (attachedImageBase64) {
-        displayMessage = '🖼️ *[Bild eingefügt/angehängt]*
-
-' + (rawText || 'Was ist auf diesem Bild zu sehen?');
+        displayMessage = '🖼️ *[Bild eingefügt/angehängt]*\n\n' + (rawText || 'Was ist auf diesem Bild zu sehen?');
         attachedImageBase64 = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
@@ -707,8 +737,7 @@ async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
         };
     });
 
-    const dynamicSystemPrompt = sys.systemPrompt + '
-Aktuelles Datum heute: ' + getCurrentDateContext() + '.';
+    const dynamicSystemPrompt = sys.systemPrompt + '\nAktuelles Datum heute: ' + getCurrentDateContext() + '.';
 
     if (modelChoice === 'custom-api' && customKey) {
         const userContent = base64Image
@@ -733,7 +762,6 @@ Aktuelles Datum heute: ' + getCurrentDateContext() + '.';
         return data.choices[0].message.content;
     }
 
-    // Attempt 1: Pollinations OpenAI endpoint with timeout
     try {
         const fullMessages = [
             { role: 'system', content: dynamicSystemPrompt },
@@ -762,18 +790,11 @@ Aktuelles Datum heute: ' + getCurrentDateContext() + '.';
         }
     } catch (e) {}
 
-    // Attempt 2: Pollinations text GET endpoint (extremely reliable fallback)
     try {
         const shortContext = compactHistory.map(function(m) {
             return (m.role === 'user' ? 'Nutzer' : 'KI') + ': ' + m.content;
-        }).join('
-');
-        const fallbackPrompt = dynamicSystemPrompt + '
-
-Verlauf:
-' + shortContext + '
-
-Antworte:';
+        }).join('\n');
+        const fallbackPrompt = dynamicSystemPrompt + '\n\nVerlauf:\n' + shortContext + '\n\nAntworte:';
 
         const fallbackRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent(fallbackPrompt) + '?model=openai&seed=' + Date.now());
         if (fallbackRes.ok) {
@@ -846,20 +867,14 @@ promptInput.addEventListener('keypress', function(e) {
     }
 });
 
-// Export Chat as Markdown
 document.getElementById('export-chat-btn').addEventListener('click', function() {
     if (currentChatMessages.length === 0) {
         alert('Kein Chat-Verlauf vorhanden zum Exportieren.');
         return;
     }
-    let mdContent = '# NEXUS AI Chat-Export v7 (' + new Date().toLocaleDateString('de-DE') + ')
-
-';
+    let mdContent = '# NEXUS AI Chat-Export v9 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
     currentChatMessages.forEach(function(m) {
-        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '
-' + m.content + '
-
-';
+        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '\n' + m.content + '\n\n';
     });
     const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -884,14 +899,18 @@ function renderUserTable() {
     tbody.innerHTML = '';
 
     users.forEach(function(u, index) {
+        const statusHtml = u.approved 
+            ? '<span style="color:#10b981"><i class="fas fa-check-circle"></i> Freigegeben</span>' 
+            : '<span style="color:#f59e0b"><i class="fas fa-clock"></i> Wartet auf Freigabe</span>';
+
         const tr = document.createElement('tr');
         tr.innerHTML = '<td><b>' + u.username + '</b></td>' +
-            '<td><code>' + u.password + '</code></td>' +
             '<td>' + u.role.toUpperCase() + '</td>' +
-            '<td>' + (u.active ? '<span style="color:#10b981">Aktiv</span>' : '<span style="color:#ef4444">Gesperrt</span>') + '</td>' +
+            '<td>' + statusHtml + '</td>' +
             '<td>' +
+            (!u.approved ? '<button class="action-sm btn-approve" onclick="approveUser(' + index + ')">Freigeben</button>' : '') +
             '<button class="action-sm btn-edit" onclick="changeUserPass(' + index + ')">Passwort</button>' +
-            '<button class="action-sm btn-ban" onclick="toggleUserBan(' + index + ')">' + (u.active ? 'Sperren' : 'Freigeben') + '</button>' +
+            '<button class="action-sm btn-ban" onclick="toggleUserBan(' + index + ')">' + (u.active ? 'Sperren' : 'Entsperren') + '</button>' +
             (u.username !== 'admin' ? '<button class="action-sm btn-del" onclick="deleteUser(' + index + ')">Löschen</button>' : '') +
             '</td>';
         tbody.appendChild(tr);
@@ -910,14 +929,23 @@ document.getElementById('create-user-btn').addEventListener('click', function() 
         return alert('Benutzer existiert bereits!');
     }
 
-    users.push({ username: username, password: password, role: role, active: true });
+    users.push({ username: username, password: password, role: role, active: true, approved: true });
     saveUsers(users);
-    addLog('Admin erstellte Nutzer "' + username + '"');
+    addLog('Admin erstellte Nutzer direkt: "' + username + '"');
 
     document.getElementById('new-username').value = '';
     document.getElementById('new-password').value = '';
     renderUserTable();
 });
+
+window.approveUser = function(index) {
+    const users = getUsers();
+    users[index].approved = true;
+    saveUsers(users);
+    addLog('Nutzer freigegeben: "' + users[index].username + '"');
+    renderUserTable();
+    alert('Nutzer "' + users[index].username + '" wurde erfolgreich freigegeben! Er kann sich nun einloggen.');
+};
 
 window.changeUserPass = function(index) {
     const users = getUsers();
@@ -948,12 +976,11 @@ window.deleteUser = function(index) {
 };
 
 document.getElementById('save-system-btn').addEventListener('click', function() {
-    const sys = {
-        aiName: document.getElementById('custom-ai-name').value.trim() || 'NEXUS AI',
-        systemPrompt: document.getElementById('system-prompt-input').value.trim(),
-        maintenance: document.getElementById('maintenance-toggle').checked
-    };
-    localStorage.setItem('nexus_system_v7', JSON.stringify(sys));
+    const sys = getSystem();
+    sys.aiName = document.getElementById('custom-ai-name').value.trim() || 'NEXUS AI';
+    sys.systemPrompt = document.getElementById('system-prompt-input').value.trim();
+    sys.maintenance = document.getElementById('maintenance-toggle').checked;
+    localStorage.setItem('nexus_system_v9', JSON.stringify(sys));
     applySystemSettings();
     alert('Gespeichert!');
 });
@@ -966,11 +993,11 @@ document.getElementById('save-api-btn').addEventListener('click', function() {
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v7') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v9') || '[]');
     document.getElementById('admin-logs-list').innerHTML = logs.map(function(l) { return '<div>' + l + '</div>'; }).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', function() {
-    localStorage.removeItem('nexus_logs_v7');
+    localStorage.removeItem('nexus_logs_v9');
     renderLogs();
 });

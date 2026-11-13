@@ -1,11 +1,11 @@
 // ==========================================
-// NEXUS AI OMNI v29 - ULTIMATE STABLE EDITION
+// NEXUS AI OMNI v30 - ABSOLUTE STABLE EDITION
 // ==========================================
 const RELEASE_DATE = '13.11.2026';
 const TARGET_ADMIN_EMAIL = 'lcsn1535@gmail.com';
 
 function getUsersDB() {
-    const stored = localStorage.getItem('nexus_users_v29');
+    const stored = localStorage.getItem('nexus_users_v30');
     if (stored) {
         try { return JSON.parse(stored); } catch(e){}
     }
@@ -14,12 +14,12 @@ function getUsersDB() {
         { username: 'premium_user', pass: '123', role: 'premium', approved: true, status: 'Aktiv', earlyAccess: true },
         { username: 'free_user', pass: '123', role: 'user', approved: false, status: 'Aktiv', earlyAccess: false }
     ];
-    localStorage.setItem('nexus_users_v29', JSON.stringify(defaults));
+    localStorage.setItem('nexus_users_v30', JSON.stringify(defaults));
     return defaults;
 }
 
 function saveUsersDB(users) {
-    localStorage.setItem('nexus_users_v29', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v30', JSON.stringify(users));
 }
 
 var currentUser = null;
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 currentUser = found;
-                sessionStorage.setItem('nexus_session_v29', JSON.stringify(found));
+                sessionStorage.setItem('nexus_session_v30', JSON.stringify(found));
                 initApp();
             } else {
                 document.getElementById('login-error').innerText = 'Ungültiger Benutzername oder Passwort!';
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isAdm) {
                 currentUser = newUser;
-                sessionStorage.setItem('nexus_session_v29', JSON.stringify(newUser));
+                sessionStorage.setItem('nexus_session_v30', JSON.stringify(newUser));
                 initApp();
             } else {
                 alert('Account erfolgreich erstellt! Bitte warte, bis ein Administrator deinen Account freigibt.');
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('nexus_session_v29');
+            sessionStorage.removeItem('nexus_session_v30');
             location.reload();
         });
     }
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initWorldKnowledgeModal();
     initAdminModal();
 
-    const saved = sessionStorage.getItem('nexus_session_v29');
+    const saved = sessionStorage.getItem('nexus_session_v30');
     if (saved) {
         try {
             currentUser = JSON.parse(saved);
@@ -144,7 +144,7 @@ function initApp() {
     const adminBtn = document.getElementById('admin-panel-btn');
 
     roleLabel.innerText = currentUser.role.toUpperCase();
-    sideBadge.innerText = 'v29 ' + (currentUser.earlyAccess ? 'EARLY ACCESS' : currentUser.role.toUpperCase());
+    sideBadge.innerText = 'v30 ' + (currentUser.earlyAccess ? 'EARLY ACCESS' : currentUser.role.toUpperCase());
 
     if (currentUser.role !== 'admin') {
         if (adminBtn) adminBtn.style.display = 'none';
@@ -179,7 +179,7 @@ function initChatControls() {
     }
     if (newChatBtn) {
         newChatBtn.addEventListener('click', () => {
-            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace v29</h2></div>';
+            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace v30</h2></div>';
         });
     }
     if (magicBtn) {
@@ -241,7 +241,7 @@ function sendAIQuery() {
 
     if (isImageRequest(text)) {
         const loadId = 'img-' + Date.now();
-        appendMessage('ai', `<div id="${loadId}-prog"><i class="fas fa-wand-magic-sparkles fa-spin" style="color:#3b82f6;"></i> Nexus v29 analysiert Prompt & initialisiert Diffusion Engine... (0%)</div>`, loadId, true);
+        appendMessage('ai', `<div id="${loadId}-prog"><i class="fas fa-wand-magic-sparkles fa-spin" style="color:#3b82f6;"></i> Nexus v30 analysiert Prompt & initialisiert Diffusion Engine... (0%)</div>`, loadId, true);
 
         setTimeout(() => {
             const el1 = document.getElementById(`${loadId}-prog`);
@@ -263,19 +263,19 @@ function sendAIQuery() {
             if (bubble) {
                 bubble.innerHTML = `<p>Hier ist dein fotorealistisches, frisch generiertes KI-Bild für: <i>"${cleanPrompt}"</i></p>` +
                     `<div class="ai-image-wrapper">` +
-                    `<img src="${imageUrl}" alt="Nexus v29 AI Render" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1000';">` +
+                    `<img src="${imageUrl}" alt="Nexus v30 AI Render" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1000';">` +
                     `<div class="ai-image-footer">` +
-                    `<span>Nexus AI Studio v29 // Universal Render Engine</span>` +
-                    `<a href="${imageUrl}" target="_blank" download="nexus-v29-ai-image.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
+                    `<span>Nexus AI Studio v30 // Universal Render Engine</span>` +
+                    `<a href="${imageUrl}" target="_blank" download="nexus-v30-ai-image.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
                     `</div></div>`;
             }
         }, 4500);
         return;
     }
 
-    // Universal Knowledge Engine using Template Literals (No multiline string syntax errors)
+    // Universal Knowledge Engine using Template Literals
     const loadId = 'msg-' + Date.now();
-    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Nexus v29 durchsucht das weltweite Google-Weltwissen...', loadId, true);
+    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Nexus v30 durchsucht das weltweite Google-Weltwissen...', loadId, true);
 
     setTimeout(() => {
         let reply = '';
@@ -317,22 +317,22 @@ function sendAIQuery() {
         } else if (lower.includes('ki') || lower.includes('intelligenz') || lower.includes('ai')) {
             reply = `### Künstliche Intelligenz 2026
 - **Aktueller Stand:** Multimodale LLMs, Echtzeit-Websuche und autonome Agenten-Workflows prägen das Jahr 2026.
-- **Fakten:** Als Nexus v29 greife ich auf ein universelles Wissensnetzwerk zurück, um jede erdenkliche Frage präzise zu beantworten.`;
+- **Fakten:** Als Nexus v30 greife ich auf ein universelles Wissensnetzwerk zurück, um jede erdenkliche Frage präzise zu beantworten.`;
         } else if (lower.includes('code') || lower.includes('html') || lower.includes('javascript')) {
             reply = `Hier ist dein professioneller Web-Code:
 \`\`\`html
 <!DOCTYPE html>
 <html>
-<head><title>Nexus v29 App</title></head>
+<head><title>Nexus v30 App</title></head>
 <body style="background:#0b0f19; color:white; font-family:Inter; padding:40px;">
-  <h1>Nexus v29 Code Engine</h1>
+  <h1>Nexus v30 Code Engine</h1>
   <p>Erfolgreich generiert und sofort einsatzbereit!</p>
 </body>
 </html>
 \`\`\``;
         } else {
             // Universal Dynamic Knowledge Synthesizer using Template Literals for ANY question in the world!
-            reply = `### Universelle Antwort von Nexus v29
+            reply = `### Universelle Antwort von Nexus v30
 Zu deiner Anfrage (*"${text}"*):
 - **Google-Weltwissen & Analyse:** Die globale Datenbank wurde nach exakten historischen, wissenschaftlichen und aktuellen Fakten durchsucht.
 - **Antwort:** Deine Frage wurde vollständig analysiert und korrekt beantwortet. Als universelle Super-KI stehe ich dir ohne jegliche Themen-Einschränkungen zur Seite.
@@ -431,15 +431,21 @@ function renderAdminUsersTable() {
     tbody.innerHTML = '';
     users.forEach((u, idx) => {
         const tr = document.createElement('tr');
-        tr.innerHTML = '<td><b>' + u.username + '</b></td>' +
-            '<td><select onchange="updateUserField(' + idx + ', 'role', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;">' +
-            '<option value="user" ' + (u.role==='user'?'selected':'') + '>User</option>' +
-            '<option value="premium" ' + (u.role==='premium'?'selected':'') + '>Premium</option>' +
-            '<option value="admin" ' + (u.role==='admin'?'selected':'') + '>Admin</option></select></td>' +
-            '<td><button onclick="toggleUserApproval(' + idx + ')" class="btn-status-sm ' + (u.approved ? 'active' : 'inactive') + '">' + (u.approved ? 'Freigegeben' : 'Ausstehend') + '</button></td>' +
-            '<td><button onclick="toggleUserBan(' + idx + ')" class="btn-status-sm ' + (u.status==='Aktiv' ? 'active' : 'danger') + '">' + u.status + '</button></td>' +
-            '<td><button onclick="toggleEarlyAccess(' + idx + ')" class="btn-status-sm ' + (u.earlyAccess ? 'active' : 'inactive') + '">' + (u.earlyAccess ? 'Ja (Aktiv)' : 'Nein') + '</button></td>' +
-            '<td><button onclick="deleteUser(' + idx + ')" class="btn-danger-sm"><i class="fas fa-trash"></i></button></td>';
+        // FIXED: Using clean template literals to avoid any quote conflicts with 'role'
+        tr.innerHTML = `
+            <td><b>${u.username}</b></td>
+            <td>
+                <select onchange="updateUserField(${idx}, 'role', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;">
+                    <option value="user" ${u.role === 'user' ? 'selected' : ''}>User</option>
+                    <option value="premium" ${u.role === 'premium' ? 'selected' : ''}>Premium</option>
+                    <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                </select>
+            </td>
+            <td><button onclick="toggleUserApproval(${idx})" class="btn-status-sm ${u.approved ? 'active' : 'inactive'}">${u.approved ? 'Freigegeben' : 'Ausstehend'}</button></td>
+            <td><button onclick="toggleUserBan(${idx})" class="btn-status-sm ${u.status === 'Aktiv' ? 'active' : 'danger'}">${u.status}</button></td>
+            <td><button onclick="toggleEarlyAccess(${idx})" class="btn-status-sm ${u.earlyAccess ? 'active' : 'inactive'}">${u.earlyAccess ? 'Ja (Aktiv)' : 'Nein'}</button></td>
+            <td><button onclick="deleteUser(${idx})" class="btn-danger-sm"><i class="fas fa-trash"></i></button></td>
+        `;
         tbody.appendChild(tr);
     });
 }

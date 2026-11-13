@@ -1,11 +1,14 @@
 // ==========================================
-// 1. DATENBANK, PASSWÖRTER & AKTUELLES WELTWISSEN
+// 1. STANDARD-ZUGANGSDATEN (HIER EINFACH ÄNDERN!)
 // ==========================================
-const DEFAULT_USERS = [
-    { username: 'admin', password: '123', role: 'admin', active: true }
-];
+// Du kannst hier den Standard-Benutzernamen und das Passwort für den Admin anpassen:
+const CONFIG_DEFAULT_ADMIN_USER = 'admin';
+const CONFIG_DEFAULT_ADMIN_PASS = '123'; // Hier neues Passwort eintragen falls gewünscht
+const CONFIG_DEFAULT_MASTER_PASS = 'admin123'; // Master-Passwort fürs Admin-Menü
 
-const DEFAULT_MASTER_PASS = 'admin123';
+const DEFAULT_USERS = [
+    { username: CONFIG_DEFAULT_ADMIN_USER, password: CONFIG_DEFAULT_ADMIN_PASS, role: 'admin', active: true }
+];
 
 function getCurrentDateContext() {
     const now = new Date();
@@ -19,47 +22,47 @@ function getCurrentDateContext() {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: `Du bist NEXUS AI OMNI, eine hochentwickelte KI wie ChatGPT und Claude.
+    systemPrompt: `Du bist NEXUS AI OMNI v4, eine hochentwickelte KI wie ChatGPT und Claude.
 WICHTIGE FAKTEN & ZEITKONTEXT:
 - Das heutige Datum ist ${getCurrentDateContext()} (Jahr 2026). Berechne jedes Alter von Personen immer exakt bis zum heutigen Datum im Jahr 2026!
 - Beispiel: Markus Rühl wurde am 22. Februar 1972 geboren -> Er ist im Jahr 2026 exakt 54 Jahre alt.
 - Wenn du über aktuelle Daten oder Personen gefragt wirst, nutze dein vollständiges Wissen und rechne exakt nach.
-- Antworte immer klar, intelligent, strukturiert und auf Deutsch (außer der Nutzer schreibt in einer anderen Sprache).
+- Antworte immer klar, intelligent, strukturiert und auf Deutsch.
 - Wenn dir ein Bild oder ein Bildschirm-Screenshot mitgeschickt wird, analysiere genau, was darauf zu sehen ist, und hilf dem Nutzer Schritt für Schritt.`,
     maintenance: false
 };
 
 function getUsers() {
-    const saved = localStorage.getItem('nexus_users_v3');
+    const saved = localStorage.getItem('nexus_users_v4');
     if (!saved) {
-        localStorage.setItem('nexus_users_v3', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('nexus_users_v4', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
     return JSON.parse(saved);
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v3', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v4', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass') || DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v4') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
-    const saved = localStorage.getItem('nexus_system_v3');
+    const saved = localStorage.getItem('nexus_system_v4');
     return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
 }
 
 function addLog(text) {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v3') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v4') || '[]');
     const time = new Date().toLocaleString('de-DE');
     logs.unshift(`[${time}] ${text}`);
-    localStorage.setItem('nexus_logs_v3', JSON.stringify(logs.slice(0, 100)));
+    localStorage.setItem('nexus_logs_v4', JSON.stringify(logs.slice(0, 100)));
 }
 
 // ==========================================
-// 2. LOGIN & AUTHENTIFIZIERUNG
+// 2. LOGIN, REGISTRIERUNG & AUTHENTIFIZIERUNG
 // ==========================================
 let currentUser = null;
 let attachedFileData = null;
@@ -70,7 +73,55 @@ let screenStream = null;
 const loginScreen = document.getElementById('login-screen');
 const appContainer = document.getElementById('app-container');
 const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
 const loginError = document.getElementById('login-error');
+const regError = document.getElementById('reg-error');
+const toggleAuthBtn = document.getElementById('toggle-auth-mode-btn');
+const authSubtitle = document.getElementById('auth-subtitle');
+
+let isRegisterMode = false;
+
+toggleAuthBtn.addEventListener('click', () => {
+    isRegisterMode = !isRegisterMode;
+    if (isRegisterMode) {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        authSubtitle.innerText = 'NEUES KONTO REGISTRIEREN';
+        toggleAuthBtn.innerHTML = 'Bereits ein Konto? <b>Zum Login</b>';
+    } else {
+        registerForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+        authSubtitle.innerText = 'OMNI INTELLIGENCE &bull; SYSTEMZUGANG';
+        toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
+    }
+});
+
+// Registrierungs-Logik
+registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const u = document.getElementById('reg-user').value.trim();
+    const p = document.getElementById('reg-pass').value.trim();
+
+    if (!u || !p) {
+        regError.innerText = 'Bitte alle Felder ausfüllen!';
+        return;
+    }
+
+    const users = getUsers();
+    if (users.some(acc => acc.username.toLowerCase() === u.toLowerCase())) {
+        regError.innerText = 'Dieser Benutzername existiert bereits!';
+        return;
+    }
+
+    const newUser = { username: u, password: p, role: 'user', active: true };
+    users.push(newUser);
+    saveUsers(users);
+    addLog(`Neuer Benutzer registriert: "${u}"`);
+
+    currentUser = newUser;
+    sessionStorage.setItem('nexus_session_v4', JSON.stringify(newUser));
+    initApp();
+});
 
 document.getElementById('live-date-badge').innerText = new Date().toLocaleDateString('de-DE');
 
@@ -100,7 +151,7 @@ loginForm.addEventListener('submit', (e) => {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v3', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v4', JSON.stringify(found));
     addLog(`Login: "${found.username}" (${found.role})`);
     initApp();
 });
@@ -126,7 +177,7 @@ function applySystemSettings() {
     document.getElementById('maintenance-toggle').checked = sys.maintenance;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v3');
+const savedSession = sessionStorage.getItem('nexus_session_v4');
 if (savedSession) {
     currentUser = JSON.parse(savedSession);
     initApp();
@@ -135,7 +186,7 @@ if (savedSession) {
 document.getElementById('logout-btn').addEventListener('click', () => {
     stopScreenShare();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v3');
+    sessionStorage.removeItem('nexus_session_v4');
     location.reload();
 });
 
@@ -171,7 +222,7 @@ document.getElementById('admin-unlock-form').addEventListener('submit', (e) => {
 document.getElementById('save-master-pass-btn').addEventListener('click', () => {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass', np);
+    localStorage.setItem('nexus_admin_master_pass_v4', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
@@ -191,7 +242,7 @@ function switchAdminTab(tabName, btnEl) {
 }
 
 // ==========================================
-// 4. SPRACHAUSGABE (STIMMEN WÄHLBAR) & SPRACHEINGABE
+// 4. SPRACHAUSGABE & SPRACHEINGABE
 // ==========================================
 const voiceSelect = document.getElementById('voice-select');
 let availableVoices = [];
@@ -201,7 +252,6 @@ function loadVoices() {
     if (!availableVoices.length) return;
 
     voiceSelect.innerHTML = '';
-    // Sortiere deutsche Stimmen nach oben
     const sorted = [...availableVoices].sort((a, b) => {
         const aDe = a.lang.toLowerCase().includes('de') ? 0 : 1;
         const bDe = b.lang.toLowerCase().includes('de') ? 0 : 1;
@@ -223,7 +273,6 @@ function speakText(text) {
     if (!document.getElementById('auto-speak-toggle').checked) return;
     window.speechSynthesis.cancel();
 
-    // Entferne Markdown-Sonderzeichen für sauberes Vorlesen
     const cleanText = text
         .replace(/```[\s\S]*?```/g, 'Hier ist der Code-Block.')
         .replace(/[#*`_~]/g, '')
@@ -249,11 +298,10 @@ document.getElementById('stop-speech-btn').addEventListener('click', () => {
 document.getElementById('test-voice-btn').addEventListener('click', () => {
     const prev = document.getElementById('auto-speak-toggle').checked;
     document.getElementById('auto-speak-toggle').checked = true;
-    speakText('Hallo! So klingt meine ausgewählte Stimme. Ich bin bereit für deine Fragen.');
+    speakText('Hallo! So klingt meine ausgewählte Stimme.');
     document.getElementById('auto-speak-toggle').checked = prev;
 });
 
-// Spracheingabe (Mikrofon)
 const micBtn = document.getElementById('mic-btn');
 const listeningBar = document.getElementById('voice-listening-bar');
 const liveTranscript = document.getElementById('live-transcript');
@@ -285,9 +333,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         micBtn.classList.remove('recording');
         listeningBar.classList.add('hidden');
         const finalPrompt = document.getElementById('prompt-input').value.trim();
-        if (finalPrompt) {
-            sendMessage();
-        }
+        if (finalPrompt) sendMessage();
     };
 
     recognition.onerror = () => {
@@ -298,15 +344,11 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
 micBtn.addEventListener('click', () => {
     if (!recognition) {
-        alert('Dein Browser unterstützt keine Spracheingabe. Bitte nutze Google Chrome oder Microsoft Edge.');
+        alert('Dein Browser unterstützt keine Spracheingabe.');
         return;
     }
     window.speechSynthesis.cancel();
-    try {
-        recognition.start();
-    } catch (e) {
-        recognition.stop();
-    }
+    try { recognition.start(); } catch (e) { recognition.stop(); }
 });
 
 document.getElementById('cancel-voice-btn').addEventListener('click', () => {
@@ -316,7 +358,7 @@ document.getElementById('cancel-voice-btn').addEventListener('click', () => {
 });
 
 // ==========================================
-// 5. LIVE BILDSCHIRMÜBERTRAGUNG & SCREEN-VISION
+// 5. BILDSCHIRMÜBERTRAGUNG (SCREEN-VISION)
 // ==========================================
 const screenShareBtn = document.getElementById('screen-share-btn');
 const screenPreviewPanel = document.getElementById('screen-preview-panel');
@@ -420,7 +462,7 @@ document.getElementById('remove-file-btn').addEventListener('click', () => {
 });
 
 // ==========================================
-// 7. BILDGENERIERUNG + STABILER ENDLOS-CHAT (KEIN ABBRUCH MEHR!)
+// 7. BILDGENERIERUNG + STABILER CHAT
 // ==========================================
 const chatFeed = document.getElementById('chat-feed');
 const promptInput = document.getElementById('prompt-input');
@@ -458,7 +500,6 @@ async function sendMessage() {
     const welcomeHero = document.getElementById('welcome-hero');
     if (welcomeHero) welcomeHero.style.display = 'none';
 
-    // 1. Prüfe ob der Nutzer ein KI-BILD generieren lassen möchte
     if (isImageGenerationRequest(rawText) && !attachedFileData && !attachedImageBase64) {
         appendMessage('user', rawText);
         promptInput.value = '';
@@ -468,7 +509,6 @@ async function sendMessage() {
         appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Erschaffe dein KI-Bild in HD...', loadingId, true);
 
         try {
-            // Prompt ins Englische für beste Bildqualität übersetzen
             const cleanSubject = rawText
                 .replace(/erstelle (mir )?ein bild (von |über )?/gi, '')
                 .replace(/generiere (mir )?ein bild (von |über )?/gi, '')
@@ -488,7 +528,6 @@ async function sendMessage() {
             const seed = Math.floor(Math.random() * 999999);
             const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(englishPrompt)}?width=1024&height=1024&nologo=true&seed=${seed}`;
 
-            // Bild vorladen, damit es sicher angezeigt wird
             const imgLoader = new Image();
             imgLoader.onload = () => {
                 const bubble = document.getElementById(loadingId);
@@ -508,46 +547,32 @@ async function sendMessage() {
                 saveToHistory('🎨 ' + cleanSubject);
             };
             imgLoader.onerror = () => {
-                updateAIMessage(loadingId, '⚠️ Das Bild konnte gerade nicht geladen werden. Bitte versuche es noch einmal.');
+                updateAIMessage(loadingId, '⚠️ Das Bild konnte gerade nicht geladen werden.');
             };
             imgLoader.src = imageUrl;
-
         } catch (err) {
             updateAIMessage(loadingId, '⚠️ Fehler bei der Bildgenerierung.');
         }
         return;
     }
 
-    // 2. Normaler Chat / Datenanalyse / Bildschirm-Vision
     let displayMessage = rawText;
     let promptForAI = rawText;
     let visionImageToSend = attachedImageBase64;
 
-    // Falls Bildschirmübertragung aktiv ist -> automatisch aktuellen Frame erfassen!
     if (screenStream && !visionImageToSend) {
         visionImageToSend = captureScreenFrameBase64();
-        displayMessage = `🖥️ *[Live-Bildschirm erfasst]*
-
-${rawText}`;
+        displayMessage = `🖥️ *[Live-Bildschirm erfasst]*\n\n${rawText}`;
     }
 
     if (attachedFileData) {
-        displayMessage = `📎 **Datei:** \`${attachedFileData.name}\`
-
-${rawText || 'Bitte analysiere diese Datei.'}`;
-        promptForAI = `Analysiere diese hochgeladene Datei (${attachedFileData.name}):
-\`\`\`
-${attachedFileData.content}
-\`\`\`
-
-Frage des Nutzers: ${rawText || 'Fasse den Inhalt detailliert zusammen.'}`;
+        displayMessage = `📎 **Datei:** \`${attachedFileData.name}\`\n\n${rawText || 'Bitte analysiere diese Datei.'}`;
+        promptForAI = `Analysiere diese hochgeladene Datei (${attachedFileData.name}):\n\`\`\`\n${attachedFileData.content}\n\`\`\`\n\nFrage: ${rawText || 'Fasse den Inhalt zusammen.'}`;
         attachedFileData = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
     } else if (attachedImageBase64) {
-        displayMessage = `🖼️ *[Bild angehängt]*
-
-${rawText || 'Was ist auf diesem Bild zu sehen?'}`;
+        displayMessage = `🖼️ *[Bild angehängt]*\n\n${rawText || 'Was ist auf diesem Bild zu sehen?'}`;
         attachedImageBase64 = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
@@ -570,30 +595,23 @@ ${rawText || 'Was ist auf diesem Bild zu sehen?'}`;
         speakText(reply);
         saveToHistory(rawText || 'Analyse');
     } catch (err) {
-        updateAIMessage(loadingId, '⚠️ Kurze Verbindungsstörung. Bitte klicke einfach nochmal auf Senden.');
+        updateAIMessage(loadingId, '⚠️ Kurze Verbindungsstörung. Bitte klicke noch einmal auf Senden.');
     }
 }
 
-// ==========================================
-// 8. BUGFIX: ENDLOS STABILE KI-ENGINE (BRICHT NIE MEHR AB!)
-// ==========================================
 async function fetchStableAIResponse(latestPrompt, base64Image = null) {
     const sys = getSystem();
     const modelChoice = document.getElementById('model-select').value;
     const customKey = localStorage.getItem('nexus_custom_key');
     const customUrl = localStorage.getItem('nexus_custom_url') || 'https://api.openai.com/v1/chat/completions';
 
-    // Halte den Kontext kompakt (letzte 4 Nachrichten, gekürzt auf max 1200 Zeichen pro Nachricht),
-    // damit die API niemals wegen Payload-Limit nach 3 Nachrichten abbricht!
     const compactHistory = currentChatMessages.slice(-4).map(m => ({
         role: m.role,
         content: typeof m.content === 'string' ? m.content.slice(0, 1500) : m.content
     }));
 
-    const dynamicSystemPrompt = `${sys.systemPrompt}
-Aktuelles Datum heute: ${getCurrentDateContext()}.`;
+    const dynamicSystemPrompt = `${sys.systemPrompt}\nAktuelles Datum heute: ${getCurrentDateContext()}.`;
 
-    // Option A: Eigener API Key
     if (modelChoice === 'custom-api' && customKey) {
         const userContent = base64Image
             ? [{ type: 'text', text: latestPrompt || 'Analysiere dieses Bild.' }, { type: 'image_url', image_url: { url: base64Image } }]
@@ -617,14 +635,13 @@ Aktuelles Datum heute: ${getCurrentDateContext()}.`;
         return data.choices[0].message.content;
     }
 
-    // Option B: Vision-Anfrage (Bildschirmübertragung oder hochgeladenes Bild)
     if (base64Image) {
         const visionMessages = [
             { role: 'system', content: dynamicSystemPrompt },
             {
                 role: 'user',
                 content: [
-                    { type: 'text', text: latestPrompt || 'Beschreibe genau, was du auf diesem Bildschirm/Bild siehst, und hilf mir dabei.' },
+                    { type: 'text', text: latestPrompt || 'Beschreibe, was du auf diesem Bildschirm siehst.' },
                     { type: 'image_url', image_url: { url: base64Image } }
                 ]
             }
@@ -633,28 +650,21 @@ Aktuelles Datum heute: ${getCurrentDateContext()}.`;
         const res = await fetch('https://text.pollinations.ai/openai', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                model: 'openai',
-                messages: visionMessages
-            })
+            body: JSON.stringify({ model: 'openai', messages: visionMessages })
         });
 
         if (res.ok) {
             const data = await res.json();
-            if (data.choices && data.choices[0]) {
-                return data.choices[0].message.content;
-            }
+            if (data.choices && data.choices[0]) return data.choices[0].message.content;
         }
     }
 
-    // Option C: Standard Text-Chat mit automatischem Retry & Fallback (bricht NIEMALS ab!)
     const selectedModel = modelChoice === 'search-grounded' ? 'searchgpt' : 'openai';
     const fullMessages = [
         { role: 'system', content: dynamicSystemPrompt },
         ...compactHistory
     ];
 
-    // Versuch 1: POST an OpenAI-kompatiblen Endpunkt
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 25000);
@@ -676,26 +686,15 @@ Aktuelles Datum heute: ${getCurrentDateContext()}.`;
             const text = json?.choices?.[0]?.message?.content;
             if (text && text.trim().length > 0) return text;
         }
-    } catch (e) {
-        console.warn('Primärer Endpunkt langsam, wechsle auf Backup-Endpunkt...', e);
-    }
+    } catch (e) {}
 
-    // Versuch 2: Direkter GET-Fallback mit Kontext-Zusammenfassung (100% ausfallsicher!)
-    const shortContext = compactHistory.map(m => `${m.role === 'user' ? 'Nutzer' : 'KI'}: ${m.content}`).join('
-');
-    const fallbackPrompt = `${dynamicSystemPrompt}
-
-Bisheriger Gesprächsverlauf:
-${shortContext}
-
-Antworte jetzt als KI auf die letzte Nachricht:`;
+    const shortContext = compactHistory.map(m => `${m.role === 'user' ? 'Nutzer' : 'KI'}: ${m.content}`).join('\n');
+    const fallbackPrompt = `${dynamicSystemPrompt}\n\nVerlauf:\n${shortContext}\n\nAntworte:`;
 
     const fallbackRes = await fetch(`https://text.pollinations.ai/${encodeURIComponent(fallbackPrompt)}?model=openai&seed=${Date.now()}`);
-    if (fallbackRes.ok) {
-        return await fallbackRes.text();
-    }
+    if (fallbackRes.ok) return await fallbackRes.text();
 
-    throw new Error('Alle Endpunkte beschäftigt');
+    throw new Error('Endpunkte beschäftigt');
 }
 
 function appendMessage(role, content, id = null, isRawHtml = false) {
@@ -746,7 +745,7 @@ document.getElementById('new-chat-btn').addEventListener('click', () => {
     currentChatMessages = [];
     window.speechSynthesis.cancel();
     chatFeed.innerHTML = '';
-    appendMessage('ai', 'Neuer Chat bereit! Frag mich alles, lass mich Bilder erstellen oder zeig mir deinen Bildschirm.');
+    appendMessage('ai', 'Neuer Chat bereit!');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -758,7 +757,7 @@ promptInput.addEventListener('keypress', (e) => {
 });
 
 // ==========================================
-// 9. BENUTZERVERWALTUNG & SYSTEM-EINSTELLUNGEN
+// 8. BENUTZERVERWALTUNG & SYSTEM
 // ==========================================
 document.getElementById('api-settings-btn').addEventListener('click', () => {
     document.getElementById('custom-api-key').value = localStorage.getItem('nexus_custom_key') || '';
@@ -792,16 +791,16 @@ document.getElementById('create-user-btn').addEventListener('click', () => {
     const password = document.getElementById('new-password').value.trim();
     const role = document.getElementById('new-role').value;
 
-    if (!username || !password) return alert('Bitte Benutzername und Passwort eingeben!');
+    if (!username || !password) return alert('Bitte ausfüllen!');
 
     const users = getUsers();
     if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
-        return alert('Dieser Benutzername existiert bereits!');
+        return alert('Benutzer existiert bereits!');
     }
 
     users.push({ username, password, role, active: true });
     saveUsers(users);
-    addLog(`Admin erstellte Nutzer "${username}" (${role})`);
+    addLog(`Admin erstellte Nutzer "${username}"`);
 
     document.getElementById('new-username').value = '';
     document.getElementById('new-password').value = '';
@@ -810,11 +809,11 @@ document.getElementById('create-user-btn').addEventListener('click', () => {
 
 window.changeUserPass = function(index) {
     const users = getUsers();
-    const newPass = prompt(`Neues Passwort für "${users[index].username}" eingeben:`, users[index].password);
+    const newPass = prompt(`Neues Passwort für "${users[index].username}":`, users[index].password);
     if (newPass && newPass.trim()) {
         users[index].password = newPass.trim();
         saveUsers(users);
-        addLog(`Admin änderte Passwort für "${users[index].username}"`);
+        addLog(`Passwort geändert für "${users[index].username}"`);
         renderUserTable();
     }
 };
@@ -824,14 +823,12 @@ window.toggleUserBan = function(index) {
     if (users[index].username === 'admin') return alert('Haupt-Admin kann nicht gesperrt werden.');
     users[index].active = !users[index].active;
     saveUsers(users);
-    addLog(`Admin änderte Status für "${users[index].username}"`);
     renderUserTable();
 };
 
 window.deleteUser = function(index) {
     const users = getUsers();
-    if (confirm(`Nutzer "${users[index].username}" wirklich löschen?`)) {
-        addLog(`Admin löschte Nutzer "${users[index].username}"`);
+    if (confirm(`Nutzer löschen?`)) {
         users.splice(index, 1);
         saveUsers(users);
         renderUserTable();
@@ -844,9 +841,8 @@ document.getElementById('save-system-btn').addEventListener('click', () => {
         systemPrompt: document.getElementById('system-prompt-input').value.trim(),
         maintenance: document.getElementById('maintenance-toggle').checked
     };
-    localStorage.setItem('nexus_system_v3', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v4', JSON.stringify(sys));
     applySystemSettings();
-    addLog('System-Einstellungen gespeichert');
     alert('Gespeichert!');
 });
 
@@ -854,15 +850,15 @@ document.getElementById('save-api-btn').addEventListener('click', () => {
     localStorage.setItem('nexus_custom_key', document.getElementById('custom-api-key').value.trim());
     localStorage.setItem('nexus_custom_url', document.getElementById('custom-api-url').value.trim());
     closeModals();
-    alert('KI-Konfiguration gespeichert!');
+    alert('Gespeichert!');
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v3') || '[]');
-    document.getElementById('admin-logs-list').innerHTML = logs.map(l => `<div>${l}</div>`).join('') || 'Keine Logs vorhanden.';
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v4') || '[]');
+    document.getElementById('admin-logs-list').innerHTML = logs.map(l => `<div>${l}</div>`).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', () => {
-    localStorage.removeItem('nexus_logs_v3');
+    localStorage.removeItem('nexus_logs_v4');
     renderLogs();
 });

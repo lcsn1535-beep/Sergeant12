@@ -51,7 +51,7 @@ body {
 
 .login-box {
     position: relative;
-    background: rgba(16, 18, 27, 0.9);
+    background: rgba(16, 18, 27, 0.92);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(124, 58, 237, 0.35);
     box-shadow: 0 0 60px rgba(124, 58, 237, 0.25);
@@ -95,7 +95,7 @@ body {
 .login-subtitle {
     color: var(--text-muted);
     font-size: 13px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .input-group {
@@ -155,8 +155,24 @@ body {
     margin-bottom: 6px;
 }
 
+.auth-switch {
+    margin-top: 16px;
+}
+
+.auth-switch button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.auth-switch button:hover {
+    color: var(--cyan);
+}
+
 .login-hint {
-    margin-top: 22px;
+    margin-top: 20px;
     padding-top: 14px;
     border-top: 1px solid var(--border);
     font-size: 12px;
@@ -457,9 +473,7 @@ body {
     background: #000;
 }
 
-.screen-overlay-info {
-    flex: 1;
-}
+.screen-overlay-info { flex: 1; }
 
 .live-rec {
     color: #ef4444;

@@ -1,13 +1,18 @@
-# 🚀 NEXUS AI OMNI v3 (GitHub Pages Ready)
+# 🚀 NEXUS AI OMNI v4 (GitHub Pages Ready)
 
-## 🔑 Zugangsdaten
-* **Login:** Benutzername `admin` | Passwort `123`
-* **Admin-Sperre (Master-Passwort):** `admin123` *(kann im Admin-Menü unter "Admin-Passwort" geändert werden)*
+## 🔑 Zugangsdaten & Direktes Ändern
+* **Standard-Admin Login:** Benutzername `admin` | Passwort `123`
+* **Admin-Sperre (Master-Passwort):** `admin123`
 
-## ✨ Neue Features in v3
-1. **Passwort-Sperre für das Admin-Menü:** Selbst wenn jemand eingeloggt ist, öffnet sich das Admin-Panel nur mit dem separaten Master-Passwort.
-2. **Kein Chat-Abbruch mehr:** Kompaktes Kontext-Management + automatischer Backup-Fallback sorgen dafür, dass du endlos viele Nachrichten hintereinander schreiben kannst.
-3. **Echtzeit-Wissen (2026):** Die KI kennt das exakte aktuelle Datum und berechnet Alter/Fakten korrekt (z. B. Markus Rühl = 54 Jahre). Zudem gibt es oben den **Deep-Search Modus**.
-4. **KI-Bildgenerierung:** Schreibe einfach *"Erstelle ein Bild von einem KI-Apfel"* – die KI übersetzt deinen Wunsch und generiert sofort ein HD-Bild direkt im Chat.
-5. **Live-Bildschirmübertragung (Screen-Vision):** Klicke oben auf **Bildschirm zeigen** – die KI sieht live deinen Bildschirm und hilft dir bei allem, was du gerade machst.
-6. **Sprachfunktion & Stimmenauswahl:** Klicke auf das **Mikrofon** zum Sprechen und wähle links in der Seitenleiste deine Wunsch-Stimme zum Vorlesen aus.
+### 💡 WICHTIG: Wie du Standard-Benutzername und Passwort im Code änderst:
+Öffne die Datei `app.js` mit einem Editor (z.B. Notepad) und schaue ganz nach oben in **Zeile 5 und 6**:
+```javascript
+const CONFIG_DEFAULT_ADMIN_USER = 'admin'; // Hier deinen Wunsch-Namen eintragen
+const CONFIG_DEFAULT_ADMIN_PASS = '123';   // Hier dein Wunsch-Passwort eintragen
+```
+Wenn du das dort anpasst und auf GitHub hochlädst, gilt genau das ab sofort als Standard!
+
+## ✨ Highlights in v4
+1. **Registrieren-Button auf dem Login:** Neue Nutzer können sich jetzt direkt selbst über die Website registrieren.
+2. **Admin-Schutz:** Admin-Menü durch separates Master-Passwort geschützt.
+3. **Endlos-Chat & Bildgenerierung & Screen-Vision:** Alle Features voll aktiv und fehlerfrei.

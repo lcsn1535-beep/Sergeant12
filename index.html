@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI INTELLIGENCE v3</title>
+    <title>NEXUS AI // OMNI INTELLIGENCE v4</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 </head>
 <body>
 
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN / REGISTER SCREEN -->
     <div id="login-screen" class="login-overlay">
         <div class="cyber-grid"></div>
         <div class="login-box">
@@ -22,8 +22,9 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG</p>
+            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG</p>
             
+            <!-- Login Form -->
             <form id="login-form">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
@@ -37,8 +38,26 @@
                 <button type="submit" class="btn-glow">SYSTEM ENTSPERREN <i class="fas fa-arrow-right"></i></button>
             </form>
 
+            <!-- Register Form (Hidden by default) -->
+            <form id="register-form" class="hidden">
+                <div class="input-group">
+                    <i class="fas fa-user-plus"></i>
+                    <input type="text" id="reg-user" placeholder="Neuer Benutzername" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="reg-pass" placeholder="Passwort vergeben" required>
+                </div>
+                <div id="reg-error" class="error-msg"></div>
+                <button type="submit" class="btn-glow">KONTO ERSTELLEN & STARTEN <i class="fas fa-check"></i></button>
+            </form>
+
+            <div class="auth-switch">
+                <button id="toggle-auth-mode-btn" type="button">Noch kein Konto? <b>Jetzt registrieren</b></button>
+            </div>
+
             <div class="login-hint">
-                <span>Standard-Login: <b>admin</b> / Passwort: <b>123</b></span>
+                <span>Standard-Admin: <b>admin</b> / Passwort: <b>123</b></span>
             </div>
         </div>
     </div>
@@ -50,7 +69,7 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro">OMNI</span>
+                <span class="badge-pro">OMNI v4</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -104,7 +123,7 @@
                 <div class="model-selector">
                     <i class="fas fa-microchip"></i>
                     <select id="model-select">
-                        <option value="omni-auto">Nexus-Omni v3 (Echtzeit-Wissen + Stabil + Bilder)</option>
+                        <option value="omni-auto">Nexus-Omni v4 (Echtzeit-Wissen + Stabil + Bilder)</option>
                         <option value="openai-large">GPT-4o / Reasoning (Maximale Intelligenz)</option>
                         <option value="search-grounded">Deep-Search Modus (Live-Fakten & Aktuelles)</option>
                         <option value="custom-api">Eigener API-Key (OpenAI / OpenRouter)</option>
@@ -140,7 +159,7 @@
             <div class="chat-feed" id="chat-feed">
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
-                    <h2>Bereit, <span id="hero-username">Admin</span>.</h2>
+                    <h2>Willkommen, <span id="hero-username">Admin</span>.</h2>
                     <p>Sprich mit mir, zeig mir deinen Bildschirm, lass mich Bilder erschaffen oder analysiere Daten & Code.</p>
                     
                     <div class="quick-cards">

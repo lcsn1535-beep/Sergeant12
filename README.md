@@ -1,3 +1,4 @@
-# NEXUS AI OMNI v17 (Canvas Generator Cleaned)
-- Updated `generateCanvasImage` so it no longer dumps the entire raw prompt text as long paragraphs onto the canvas.
-- Instead, it formats a clean, professional graphical card title (e.g. "THOMAS MÜLLER // FC BAYERN").
+# NEXUS AI OMNI v18 (Cache Buster & Clean Canvas Fix)
+- Added explicit `?v=18` cache busters on CSS/JS.
+- Added Hard Reload buttons in Login and Sidebar so browser cache cannot serve v16 anymore.
+- Guaranteed clean deterministic title cards instead of raw prompt text in `generateCleanCanvasImage`.

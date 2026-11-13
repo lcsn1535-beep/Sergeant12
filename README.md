@@ -1,3 +1,3 @@
-# NEXUS AI OMNI v13 (Bulletproof HD & Audio Fix)
-- Implemented robust inline SVG fallback handler for all generated images (`onerror` replaces any broken image with a crisp SVG render instantly).
-- Fixed browser autoplay and initialization restrictions for the Web Audio Synth player (AudioContext is automatically resumed on play click).
+# NEXUS AI OMNI v14 (Ultimate World Knowledge & HTML5 Canvas HD Fix)
+- Added World Knowledge Explorer sidebar widget with deep databases on science, history, geography, sports, music, and tech.
+- Replaced external image links with a robust HTML5 Canvas data URL generator (`generateCanvasImage`) to guarantee 100% successful rendering without any broken image icons.

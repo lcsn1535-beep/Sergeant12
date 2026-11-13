@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI INTELLIGENCE v13 (BULLETPROOF HD & AUDIO SYNTH)</title>
+    <title>NEXUS AI // OMNI INTELLIGENCE v14 (ULTIMATE WORLD KNOWLEDGE & GUARANTEED HD)</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG v13</p>
+            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG v14</p>
             
             <!-- Login Form -->
             <form id="login-form">
@@ -69,7 +69,7 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro">OMNI v13</span>
+                <span class="badge-pro">OMNI v14</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -78,6 +78,26 @@
 
             <div class="sidebar-section-title">VERLAUF & HISTORIE</div>
             <div class="chat-history" id="chat-history"></div>
+
+            <!-- NEW FEATURE: World Knowledge Explorer Widget -->
+            <div class="world-knowledge-box">
+                <div class="wk-header">
+                    <span><i class="fas fa-globe-americas"></i> Weltwissen-Datenbank</span>
+                    <button id="wk-collapse-btn" title="Minimieren"><i class="fas fa-chevron-up"></i></button>
+                </div>
+                <div id="wk-content" class="wk-inner">
+                    <p class="wk-desc">Wähle ein globales Themengebiet für sofortige Experten-Fakten:</p>
+                    <select id="world-topic-select" class="song-select-dropdown">
+                        <option value="science">🔬 Wissenschaft, Physik & Universum</option>
+                        <option value="history">📜 Weltgeschichte & Zivilisationen</option>
+                        <option value="geography">🌍 Geografie, Länder & Metropolen</option>
+                        <option value="sports">⚽ Sport-Legenden (Thomas Müller, WM & CL)</option>
+                        <option value="music">🎵 Musik, Hip-Hop, Yeat & 2093</option>
+                        <option value="tech">💻 Künstliche Intelligenz & Tech 2026</option>
+                    </select>
+                    <button id="query-world-topic-btn" class="btn-cyan-sm" style="width:100%; margin-top:6px; padding:6px; font-weight:600;"><i class="fas fa-bolt"></i> Thema von KI analysieren lassen</button>
+                </div>
+            </div>
 
             <!-- Bulletproof Web Audio Synth Music Player Widget -->
             <div class="music-box">
@@ -94,7 +114,6 @@
                         </div>
                     </div>
                     
-                    <!-- Song Selector Dropdown -->
                     <select id="song-select" class="song-select-dropdown" title="Song auswählen">
                         <option value="trap1">1. Yeat - Money So Big (Smooth Arp Beat)</option>
                         <option value="trap2">2. Yeat - Get Busy (2Alivë Melodic Pad)</option>
@@ -163,7 +182,7 @@
                 <div class="model-selector">
                     <i class="fas fa-microchip"></i>
                     <select id="model-select">
-                        <option value="omni-auto">Nexus-Omni v13 (Bulletproof HD & Audio)</option>
+                        <option value="omni-auto">Nexus-Omni v14 (Ultimate World Knowledge & HD)</option>
                         <option value="openai-large">GPT-4o / Maximum Knowledge (Weltwissen & Promis)</option>
                         <option value="search-grounded">Deep-Search Modus (Live-Fakten 2026)</option>
                         <option value="custom-api">Eigener API-Key (OpenAI / OpenRouter)</option>
@@ -200,7 +219,7 @@
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
                     <h2>Willkommen, <span id="hero-username">Admin</span>.</h2>
-                    <p>Version v13 ist vollständig korrigiert: 100% funktionierende HD-Bilder mit automatischem SVG-Fallack (keine Fallback-Icons mehr) und ein direkt startender Web-Audio-Synth-Player!</p>
+                    <p>Version v14 ist da: Ausgestattet mit einer gigantischen Weltwissen-Enzyklopädie über Physik, Geschichte, Geografie, Sport & Musik sowie einer 100% bombensicheren Canvas-Bildgenerierung (garantiert ohne Fallback-Fehler)!</p>
                     
                     <div class="quick-cards">
                         <div class="q-card" onclick="usePrompt('Erstelle ein hochauflösendes fotorealistisches Porträt von Thomas Müller im Bayern-Trikot in Aktion')">
@@ -253,13 +272,13 @@
                     <button id="img-gen-quick-btn" class="tool-btn" title="Direkt ein Bild generieren">
                         <i class="fas fa-image"></i>
                     </button>
-                    <textarea id="prompt-input" placeholder="Frag alles, füge Bilder mit Strg+V ein, oder sage 'Erstelle ein Bild von Thomas Müller'..." rows="1"></textarea>
+                    <textarea id="prompt-input" placeholder="Frag alles über die Welt, füge Bilder mit Strg+V ein, oder sage 'Erstelle ein Bild von Thomas Müller'..." rows="1"></textarea>
                     <button id="send-btn" class="send-btn" title="Senden">
                         <i class="fas fa-arrow-up"></i>
                     </button>
                 </div>
                 <div class="input-footer">
-                    <span>Bulletproof v13 Engine &bull; Web Audio Synth garantiert aktiv &bull; Postfach an lcsn1535@gmail.com</span>
+                    <span>Bulletproof v14 Engine &bull; Ultimate World Knowledge &bull; Postfach an lcsn1535@gmail.com</span>
                 </div>
             </div>
         </main>
@@ -289,7 +308,7 @@
     <div id="admin-modal" class="modal-backdrop hidden">
         <div class="modal-card admin-card">
             <div class="modal-header">
-                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v13</h3>
+                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v14</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
             

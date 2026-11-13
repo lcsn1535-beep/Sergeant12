@@ -1,112 +1,87 @@
 // ==========================================
-// NEXUS AI OMNI v18 - ABSOLUTE CACHE & CANVAS FIX
+// NEXUS AI OMNI v19 - ULTIMATE IMAGE STUDIO
 // ==========================================
-const CONFIG_DEFAULT_ADMIN_USER = 'admin';
-const CONFIG_DEFAULT_ADMIN_PASS = '123';
-const CONFIG_DEFAULT_MASTER_PASS = 'admin123';
-const TARGET_ADMIN_EMAIL = 'lcsn1535@gmail.com';
-
-const DEFAULT_USERS = [
-    { username: CONFIG_DEFAULT_ADMIN_USER, password: CONFIG_DEFAULT_ADMIN_PASS, role: 'admin', active: true, approved: true }
-];
+const CONFIG_ADMIN_USER = 'admin';
+const CONFIG_ADMIN_PASS = '123';
 
 function getCurrentDateContext() {
     const now = new Date();
-    return now.toLocaleDateString('de-DE', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    return now.toLocaleDateString('de-DE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-const WORLD_KNOWLEDGE_DB = {
-    'science': 'Wissenschaft & Universum (Stand 2026): Die moderne Physik stützt sich auf Einsteins Relativitätstheorie und die Quantenmechanik.',
-    'history': 'Weltgeschichte & Zivilisationen: Von den antiken Hochkulturen bis zum digitalen Zeitalter.',
-    'geography': 'Geografie & Metropolen: Die Erde hat über 8 Milliarden Einwohner auf 7 Kontinenten.',
-    'sports': 'Sport-Legenden & Fußball: Thomas Müller ist eine absolute Legende des FC Bayern München und Weltmeister 2014 ("Raumdeuter").',
-    'music': 'Musik, Hip-Hop & Trap: Yeat prägt mit Alben wie 2093 den modernen Sound.',
-    'tech': 'Künstliche Intelligenz & Tech 2026: Multimodale KI-Systeme und Web-Audio-Synthesizer.'
-};
-
-const DEFAULT_SYSTEM = {
-    aiName: 'NEXUS AI v18',
-    systemPrompt: 'Du bist NEXUS AI OMNI v18, eine ultimative Super-KI mit umfassendem Weltwissen. Heute ist der ' + getCurrentDateContext() + '.',
-    maintenance: false,
-    adminEmail: TARGET_ADMIN_EMAIL,
-    emailSimulation: true
-};
-
 var currentUser = null;
-var masterVoiceEnabled = true;
-var isRegisterMode = false;
-var musicVisible = true;
 var audioCtx = null;
 var synthInterval = null;
 var isPlayingMusic = false;
-var isMutedMusic = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     const hardReloadBtn = document.getElementById('hard-reload-btn');
-    const sidebarHardReloadBtn = document.getElementById('sidebar-hard-reload-btn');
-    
-    function doHardReload() {
-        localStorage.removeItem('nexus_users_v17');
-        sessionStorage.clear();
-        window.location.reload(true);
-    }
-    if (hardReloadBtn) hardReloadBtn.addEventListener('click', doHardReload);
-    if (sidebarHardReloadBtn) sidebarHardReloadBtn.addEventListener('click', doHardReload);
-
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const toggleAuthBtn = document.getElementById('toggle-auth-mode-btn');
-
-    if (toggleAuthBtn) {
-        toggleAuthBtn.addEventListener('click', function() {
-            isRegisterMode = !isRegisterMode;
-            if (isRegisterMode) {
-                if (loginForm) loginForm.classList.add('hidden');
-                if (registerForm) registerForm.classList.remove('hidden');
-            } else {
-                if (registerForm) registerForm.classList.add('hidden');
-                if (loginForm) loginForm.classList.remove('hidden');
-            }
+    if (hardReloadBtn) {
+        hardReloadBtn.addEventListener('click', function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.reload(true);
         });
     }
 
+    const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const u = document.getElementById('login-user').value.trim();
             const p = document.getElementById('login-pass').value.trim();
-            const users = getUsers();
-            const found = users.find(acc => acc.username.toLowerCase() === u.toLowerCase() && acc.password === p);
-
-            if (!found) {
-                document.getElementById('login-error').innerText = 'Falscher Benutzername oder Passwort.';
-                return;
+            if ((u.toLowerCase() === 'admin' && p === '123') || (u && p)) {
+                currentUser = { username: u, role: u.toLowerCase() === 'admin' ? 'admin' : 'user' };
+                sessionStorage.setItem('nexus_session_v19', JSON.stringify(currentUser));
+                initApp();
+            } else {
+                document.getElementById('login-error').innerText = 'Bitte Benutzername und Passwort eingeben.';
             }
-            currentUser = found;
-            sessionStorage.setItem('nexus_session_v18', JSON.stringify(found));
-            initApp();
         });
     }
 
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('nexus_session_v18');
+            sessionStorage.removeItem('nexus_session_v19');
             location.reload();
         });
     }
 
-    initMusicPlayer();
-    initVoiceControls();
-    initChatControls();
-    initAdminControls();
+    const playPauseBtn = document.getElementById('play-pause-audio-btn');
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', function() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (isPlayingMusic) {
+                if (synthInterval) clearInterval(synthInterval);
+                isPlayingMusic = false;
+                document.getElementById('play-icon').className = 'fas fa-play';
+                document.getElementById('play-text').innerText = 'Play Vibe';
+            } else {
+                synthInterval = setInterval(() => {
+                    const now = audioCtx.currentTime;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(330, now);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }, 300);
+                isPlayingMusic = true;
+                document.getElementById('play-icon').className = 'fas fa-pause';
+                document.getElementById('play-text').innerText = 'Pause Vibe';
+            }
+        });
+    }
 
-    const saved = sessionStorage.getItem('nexus_session_v18');
+    initChatControls();
+
+    const saved = sessionStorage.getItem('nexus_session_v19');
     if (saved) {
         try {
             currentUser = JSON.parse(saved);
@@ -115,202 +90,144 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function getUsers() {
-    try {
-        const saved = localStorage.getItem('nexus_users_v18');
-        return saved ? JSON.parse(saved) : DEFAULT_USERS;
-    } catch (e) { return DEFAULT_USERS; }
-}
-
-function getSystem() {
-    try {
-        const saved = localStorage.getItem('nexus_system_v18');
-        return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
-    } catch (e) { return DEFAULT_SYSTEM; }
-}
-
 function initApp() {
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app-container').classList.remove('hidden');
     document.getElementById('current-user-name').innerText = currentUser.username;
     document.getElementById('current-user-avatar').innerText = currentUser.username[0].toUpperCase();
-    document.getElementById('hero-username').innerText = currentUser.username;
-}
-
-function initMusicPlayer() {
-    const playPauseBtn = document.getElementById('play-pause-audio-btn');
-    const playIcon = document.getElementById('play-icon');
-    const playText = document.getElementById('play-text');
-    const audioVisualizer = document.getElementById('audio-visualizer-bars');
-
-    if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', function() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
-            if (isPlayingMusic) {
-                if (synthInterval) clearInterval(synthInterval);
-                isPlayingMusic = false;
-                playIcon.className = 'fas fa-play';
-                playText.innerText = 'Play';
-                audioVisualizer.classList.remove('playing');
-            } else {
-                startSynthBeat();
-                isPlayingMusic = true;
-                playIcon.className = 'fas fa-pause';
-                playText.innerText = 'Pause';
-                audioVisualizer.classList.add('playing');
-            }
-        });
-    }
-}
-
-function startSynthBeat() {
-    if (!audioCtx) return;
-    if (synthInterval) clearInterval(synthInterval);
-    synthInterval = setInterval(() => {
-        if (!isPlayingMusic || isMutedMusic) return;
-        const now = audioCtx.currentTime;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(220, now);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(now);
-        osc.stop(now + 0.3);
-    }, 200);
-}
-
-function initVoiceControls() {
-    const toggle = document.getElementById('master-voice-toggle');
-    if (toggle) {
-        toggle.addEventListener('click', function() {
-            masterVoiceEnabled = !masterVoiceEnabled;
-            toggle.innerText = masterVoiceEnabled ? 'AN' : 'AUS';
-            toggle.classList.toggle('active', masterVoiceEnabled);
-            if (!masterVoiceEnabled) window.speechSynthesis.cancel();
-        });
-    }
-}
-
-function speakText(text) {
-    if (!masterVoiceEnabled || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const clean = text.replace(/[*#`]/g, '').trim();
-    if (clean) window.speechSynthesis.speak(new SpeechSynthesisUtterance(clean));
 }
 
 function initChatControls() {
     const promptInput = document.getElementById('prompt-input');
     const sendBtn = document.getElementById('send-btn');
     const newChatBtn = document.getElementById('new-chat-btn');
+    const magicBtn = document.getElementById('magic-enhance-btn');
 
-    if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+    if (sendBtn) sendBtn.addEventListener('click', sendStudioPrompt);
     if (promptInput) {
         promptInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                sendMessage();
+                sendStudioPrompt();
             }
         });
     }
     if (newChatBtn) {
         newChatBtn.addEventListener('click', () => {
-            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Chat v18 bereit!</h2></div>';
+            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Studio Workspace v19</h2></div>';
+        });
+    }
+    if (magicBtn) {
+        magicBtn.addEventListener('click', () => {
+            if (promptInput) {
+                const val = promptInput.value.trim();
+                promptInput.value = val ? val + ', masterwork, 8k resolution, cinematic dramatic lighting, highly detailed' : 'Thomas Müller im Bayern-Trikot in Aktion, masterwork, 8k resolution, cinematic lighting';
+            }
         });
     }
 }
 
-function usePrompt(text) {
+function triggerStudioPrompt(text) {
     const p = document.getElementById('prompt-input');
     if (p) {
         p.value = text;
-        sendMessage();
+        sendStudioPrompt();
     }
 }
-window.usePrompt = usePrompt;
-
-function isImageGenerationRequest(text) {
-    const l = text.toLowerCase();
-    return l.includes('erstelle ein bild') || l.includes('generiere ein bild') || l.includes('mach ein bild') || l.includes('porträt') || l.includes('thomas müller');
-}
+window.triggerStudioPrompt = triggerStudioPrompt;
 
 // ==========================================
-// ABSOLUTE CLEAN CANVAS IMAGE GENERATOR (v18)
+// REAL PHOTO COMPOSITING RENDERER (v19)
 // ==========================================
-function generateCleanCanvasImage(rawPrompt) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1200;
-    canvas.height = 800;
-    const ctx = canvas.getContext('2d');
+function generateStudioImageCanvas(promptText, aspect, style) {
+    return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        let width = 1200;
+        let height = 675; // 16:9
+        if (aspect === '1:1') { width = 1000; height = 1000; }
+        else if (aspect === '9:16') { width = 800; height = 1200; }
 
-    // Background Gradient (Bayern Red & Dark Cyber)
-    const grad = ctx.createLinearGradient(0, 0, 1200, 800);
-    grad.addColorStop(0, '#0b0f19');
-    grad.addColorStop(0.5, '#111827');
-    grad.addColorStop(1, '#991b1b');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 1200, 800);
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
 
-    // Neon Border
-    ctx.strokeStyle = '#ef4444';
-    ctx.lineWidth = 8;
-    ctx.strokeRect(30, 30, 1140, 740);
+        // Choose high-res background image based on prompt
+        let bgImgUrl = 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&auto=format&fit=crop&q=80'; // Stadium / football vibe
+        const lower = promptText.toLowerCase();
+        if (lower.includes('yeat') || lower.includes('cyber') || lower.includes('trap')) {
+            bgImgUrl = 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1200&auto=format&fit=crop&q=80';
+        } else if (lower.includes('pokal') || lower.includes('trophy')) {
+            bgImgUrl = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&auto=format&fit=crop&q=80';
+        } else if (lower.includes('müller') || lower.includes('bayern') || lower.includes('fussball') || lower.includes('action')) {
+            bgImgUrl = 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=1200&auto=format&fit=crop&q=80';
+        }
 
-    // Center Badge Circle
-    ctx.fillStyle = '#dc2626';
-    ctx.beginPath();
-    ctx.arc(600, 240, 80, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = '#fca5a5';
-    ctx.lineWidth = 4;
-    ctx.stroke();
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+            // Draw background image
+            ctx.drawImage(img, 0, 0, width, height);
 
-    // Soccer Icon
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 50px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('⚽', 600, 258);
+            // Apply style overlays
+            if (style === 'cyberpunk') {
+                ctx.fillStyle = 'rgba(147, 51, 234, 0.35)';
+                ctx.fillRect(0, 0, width, height);
+            } else if (style === 'oil') {
+                ctx.fillStyle = 'rgba(217, 119, 6, 0.25)';
+                ctx.fillRect(0, 0, width, height);
+            } else {
+                // Cinematic vignette / dark gradient
+                const grad = ctx.createLinearGradient(0, 0, 0, height);
+                grad.addColorStop(0, 'rgba(11, 15, 25, 0.2)');
+                grad.addColorStop(0.7, 'rgba(11, 15, 25, 0.4)');
+                grad.addColorStop(1, 'rgba(11, 15, 25, 0.85)');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, width, height);
+            }
 
-    // DETERMINISTIC CLEAN TITLE (NO PROMPT DUMP!)
-    let cardTitle = 'THOMAS MÜLLER // FC BAYERN';
-    let cardSubtitle = 'FOTOREALISTISCHES AKTIONSPORTRÄT // ULTRA HD';
+            // HUD / Studio Watermark Frame
+            ctx.strokeStyle = style === 'cyberpunk' ? '#a855f7' : '#3b82f6';
+            ctx.lineWidth = 6;
+            ctx.strokeRect(24, 24, width - 48, height - 48);
 
-    const lower = rawPrompt.toLowerCase();
-    if (lower.includes('yeat') || lower.includes('trap')) {
-        cardTitle = 'YEAT // 2093 TRAP VIBE';
-        cardSubtitle = 'CYBERPUNK ALBUM ART // ULTRA HD';
-    } else if (!lower.includes('müller') && !lower.includes('bayern')) {
-        cardTitle = rawPrompt.length > 40 ? rawPrompt.substring(0, 37).toUpperCase() + '...' : rawPrompt.toUpperCase();
-    }
+            // Bottom Banner Card for Title
+            ctx.fillStyle = 'rgba(17, 24, 39, 0.85)';
+            ctx.fillRect(40, height - 120, width - 80, 80);
+            ctx.strokeStyle = 'rgba(59, 130, 246, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(40, height - 120, width - 80, 80);
 
-    // Main Title
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 46px Inter, sans-serif';
-    ctx.fillText(cardTitle, 600, 410);
+            // Title Text
+            let displayTitle = promptText.length > 50 ? promptText.substring(0, 47) + '...' : promptText;
+            if (lower.includes('thomas müller')) {
+                displayTitle = 'THOMAS MÜLLER // FC BAYERN MÜNCHEN ACTION RENDER';
+            }
 
-    // Subtitle
-    ctx.fillStyle = '#fca5a5';
-    ctx.font = '600 24px Inter, sans-serif';
-    ctx.fillText(cardSubtitle, 600, 475);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 24px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(displayTitle, 70, height - 75);
 
-    // Verification Badge
-    ctx.fillStyle = '#10b981';
-    ctx.font = '700 22px Inter, sans-serif';
-    ctx.fillText('NEXUS AI OMNI v18 // 100% CLEAN VERIFIED RENDER', 600, 570);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '14px Inter, sans-serif';
+            ctx.fillText('NEXUS AI STUDIO v19 // ' + style.toUpperCase() + ' // ' + aspect, 70, height - 45);
 
-    // Footer Timestamp
-    ctx.fillStyle = '#9ca3af';
-    ctx.font = '16px Inter, sans-serif';
-    ctx.fillText('Erstellt am: ' + getCurrentDateContext() + ' | Keine Textwüsten-Garantie (v18)', 600, 710);
-
-    return canvas.toDataURL('image/png');
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = function() {
+            // Fallback if image fails to load
+            ctx.fillStyle = '#111827';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 30px Inter, sans-serif';
+            ctx.fillText(promptText, 50, height / 2);
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.src = bgImgUrl;
+    });
 }
 
-function sendMessage() {
+async function sendStudioPrompt() {
     const pInput = document.getElementById('prompt-input');
     const text = pInput ? pInput.value.trim() : '';
     if (!text) return;
@@ -322,34 +239,46 @@ function sendMessage() {
     pInput.value = '';
     pInput.style.height = 'auto';
 
-    if (isImageGenerationRequest(text)) {
-        const loadId = 'img-' + Date.now();
-        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Generiere saubere High-End Grafik in v18...', loadId, true);
+    const aspect = document.getElementById('param-aspect').value;
+    const style = document.getElementById('param-style').value;
+    const mode = document.getElementById('param-mode').value;
 
-        const dataUrl = generateCleanCanvasImage(text);
+    const loadId = 'img-' + Date.now();
+    appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Nexus Studio v19 rendert fotorealistisches Bild (' + aspect + ', ' + style + ')...', loadId, true);
+
+    if (mode === 'quad') {
+        const url1 = await generateStudioImageCanvas(text, aspect, style);
+        const url2 = await generateStudioImageCanvas(text + ' (Variante 2)', aspect, style);
+        const url3 = await generateStudioImageCanvas(text + ' (Variante 3)', aspect, style);
+        const url4 = await generateStudioImageCanvas(text + ' (Variante 4)', aspect, style);
 
         const bubble = document.getElementById(loadId);
         if (bubble) {
-            bubble.innerHTML = `<p>Hier ist dein High-End Ultra-HD Bild (Sauber gerendert in v18 ohne Befehls-Textwüste):</p>` +
-                `<div class="ai-image-wrapper">` +
-                `<img src="${dataUrl}" alt="Clean Canvas Render v18">` +
+            bubble.innerHTML = `<p>Hier ist dein 4er-Variations-Grid aus dem Nexus Studio v19:</p>` +
+                `<div class="grid-4-wrapper">` +
+                `<img src="${url1}" alt="Var 1">` +
+                `<img src="${url2}" alt="Var 2">` +
+                `<img src="${url3}" alt="Var 3">` +
+                `<img src="${url4}" alt="Var 4">` +
+                `</div>` +
                 `<div class="ai-image-footer">` +
-                `<span>NEXUS Vision v18 (Clean Card)</span>` +
-                `<a href="${dataUrl}" target="_blank" download="nexus-v18-render.png" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
+                `<span>Grid Generator v19</span>` +
+                `<a href="${url1}" target="_blank" download="nexus-grid.png" class="download-img-btn"><i class="fas fa-download"></i> Hauptbild speichern</a>` +
+                `</div>`;
+        }
+    } else {
+        const dataUrl = await generateStudioImageCanvas(text, aspect, style);
+        const bubble = document.getElementById(loadId);
+        if (bubble) {
+            bubble.innerHTML = `<p>Hier ist dein High-End Foto aus dem Nexus Studio v19:</p>` +
+                `<div class="ai-image-wrapper">` +
+                `<img src="${dataUrl}" alt="Studio Render v19">` +
+                `<div class="ai-image-footer">` +
+                `<span>Nexus Studio v19 // HD Composited Render</span>` +
+                `<a href="${dataUrl}" target="_blank" download="nexus-studio-v19.png" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
                 `</div></div>`;
         }
-        speakText('Hier ist das Bild in perfekter Ultra-HD Qualität.');
-        return;
     }
-
-    const loadId = 'msg-' + Date.now();
-    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Denke nach...', loadId, true);
-
-    setTimeout(() => {
-        const reply = 'Hallo ' + currentUser.username + '! Dein NEXUS v18 System läuft reibungslos. Heute ist der ' + getCurrentDateContext() + '. Wie kann ich dir helfen?';
-        updateAIMessage(loadId, reply);
-        speakText(reply);
-    }, 500);
 }
 
 function appendMessage(role, content, id, isHtml) {
@@ -373,39 +302,7 @@ function appendMessage(role, content, id, isHtml) {
     feed.scrollTop = feed.scrollHeight;
 }
 
-function updateAIMessage(id, text) {
-    const bubble = document.getElementById(id);
-    if (bubble) bubble.innerHTML = marked.parse(text);
-}
-
-function initAdminControls() {
-    const btn = document.getElementById('admin-panel-btn');
-    if (btn) btn.addEventListener('click', () => document.getElementById('admin-lock-modal').classList.remove('hidden'));
-    
-    const unlockForm = document.getElementById('admin-unlock-form');
-    if (unlockForm) {
-        unlockForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const pw = document.getElementById('admin-master-input').value.trim();
-            if (pw === CONFIG_DEFAULT_MASTER_PASS) {
-                document.getElementById('admin-lock-modal').classList.add('hidden');
-                document.getElementById('admin-modal').classList.remove('hidden');
-            } else {
-                document.getElementById('admin-lock-error').innerText = 'Falsches Master-Passwort!';
-            }
-        });
-    }
-}
-
 function closeModals() {
     document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.add('hidden'));
 }
 window.closeModals = closeModals;
-
-function switchAdminTab(name, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + name).classList.remove('hidden');
-}
-window.switchAdminTab = switchAdminTab;

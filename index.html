@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI INTELLIGENCE v18 (CACHE BUSTED & CLEAN RENDER)</title>
-    <link rel="stylesheet" href="style.css?v=18">
+    <title>NEXUS AI // OMNI INTELLIGENCE v19 (ULTRA IMAGE STUDIO & PROD ENGINE)</title>
+    <link rel="stylesheet" href="style.css?v=19">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -21,9 +21,8 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle" id="auth-subtitle">OMNI INTELLIGENCE &bull; SYSTEMZUGANG v18 (FRESH)</p>
+            <p class="login-subtitle">OMNI INTELLIGENCE &bull; ULTIMATE IMAGE STUDIO v19</p>
             
-            <!-- Login Form -->
             <form id="login-form">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
@@ -34,30 +33,12 @@
                     <input type="password" id="login-pass" placeholder="Passwort (z.B. 123)" required>
                 </div>
                 <div id="login-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">SYSTEM ENTSPERREN v18 <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" class="btn-glow">STUDIO ÖFFNEN v19 <i class="fas fa-arrow-right"></i></button>
             </form>
-
-            <!-- Register Form -->
-            <form id="register-form" class="hidden">
-                <div class="input-group">
-                    <i class="fas fa-user-plus"></i>
-                    <input type="text" id="reg-user" placeholder="Neuer Benutzername" required autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="reg-pass" placeholder="Passwort vergeben" required>
-                </div>
-                <div id="reg-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">KONTO REGISTRIEREN <i class="fas fa-check"></i></button>
-            </form>
-
-            <div class="auth-switch">
-                <button id="toggle-auth-mode-btn" type="button">Noch kein Konto? <b>Jetzt registrieren</b></button>
-            </div>
 
             <div class="login-hint">
-                <span>Standard-Admin: <b>admin</b> / Passwort: <b>123</b></span>
-                <br><button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & App neu laden (v18)</button>
+                <span>Admin: <b>admin</b> / <b>123</b></span>
+                <br><button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v19 Laden</button>
             </div>
         </div>
     </div>
@@ -69,89 +50,51 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro" style="background:#10b981; color:#fff;">OMNI v18</span>
+                <span class="badge-pro" style="background:#3b82f6; color:#fff;">STUDIO v19</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
-                <i class="fas fa-plus"></i> Neuer Chat
+                <i class="fas fa-plus"></i> Neuer Workspace
             </button>
 
-            <div class="sidebar-section-title">VERLAUF & HISTORIE</div>
-            <div class="chat-history" id="chat-history"></div>
+            <div class="sidebar-section-title">BILD-STUDIO PRESETS</div>
+            <div class="quick-preset-list">
+                <button class="preset-pill" onclick="triggerStudioPrompt('Thomas Müller im Bayern-Trikot in Aktion, fotorealistisch 8k')"><i class="fas fa-futbol"></i> Thomas Müller Action</button>
+                <button class="preset-pill" onclick="triggerStudioPrompt('Yeat 2093 futuristic cyberpunk trap concert vibe')"><i class="fas fa-headphones"></i> Yeat 2093 Cyberpunk</button>
+                <button class="preset-pill" onclick="triggerStudioPrompt('Cinematic hyper-realistic portrait of a football legend')"><i class="fas fa-trophy"></i> Fußball Legende HD</button>
+            </div>
 
-            <!-- Bulletproof Web Audio Synth Music Player Widget -->
+            <!-- Music Player -->
             <div class="music-box">
                 <div class="music-header">
-                    <span><i class="fab fa-spotify"></i> Ambient & Trap Synth Player</span>
-                    <button id="music-collapse-btn" title="Player minimieren"><i class="fas fa-chevron-up"></i></button>
+                    <span><i class="fab fa-spotify"></i> Studio Synth Vibe</span>
                 </div>
-                <div id="music-player-content" class="music-player-inner">
+                <div class="music-player-inner">
                     <div class="now-playing-info">
-                        <img id="track-cover" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80" alt="Album Art">
+                        <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80" alt="Cover">
                         <div class="track-meta">
-                            <span id="track-title">Money So Big (Smooth Vibe)</span>
-                            <span id="track-artist">Yeat / Web Synth Engine</span>
+                            <span id="track-title">Nexus Studio Arp</span>
+                            <span id="track-artist">Procedural Web Audio</span>
                         </div>
                     </div>
-                    
-                    <select id="song-select" class="song-select-dropdown" title="Song auswählen">
-                        <option value="trap1">1. Yeat - Money So Big (Smooth Arp Beat)</option>
-                        <option value="trap2">2. Yeat - Get Busy (2Alivë Melodic Pad)</option>
-                        <option value="trap3">3. Yeat - Sorry Bout That (Twizzy Chord Vibe)</option>
-                        <option value="cyber">4. 2093 - Futuristic Cyber Arpeggio</option>
-                    </select>
-
-                    <div class="audio-visualizer" id="audio-visualizer-bars">
-                        <span></span><span></span><span></span><span></span><span></span><span></span>
-                    </div>
-
                     <div class="music-controls-row">
-                        <button id="play-pause-audio-btn" class="mini-btn-play" title="Play / Pause"><i class="fas fa-play" id="play-icon"></i> <span id="play-text">Play</span></button>
-                        <button id="mute-audio-btn" class="mini-btn" title="Mute / Unmute"><i class="fas fa-volume-high" id="mute-icon"></i></button>
-                        <button id="stop-audio-btn" class="mini-btn danger-mini" title="Musik komplett aus"><i class="fas fa-power-off"></i> Aus</button>
+                        <button id="play-pause-audio-btn" class="mini-btn-play"><i class="fas fa-play" id="play-icon"></i> <span id="play-text">Play Vibe</span></button>
+                        <button id="stop-audio-btn" class="mini-btn danger-mini"><i class="fas fa-power-off"></i></button>
                     </div>
                 </div>
             </div>
-
-            <!-- Voice Control Box -->
-            <div class="voice-box">
-                <div class="voice-header">
-                    <span><i class="fas fa-volume-high"></i> Sprachausgabe</span>
-                    <button id="master-voice-toggle" class="voice-toggle-btn active" title="Sprache komplett an/aus">AN</button>
-                </div>
-                <select id="voice-select" title="Stimme auswählen">
-                    <option value="">Stimme wird geladen...</option>
-                </select>
-                <div class="voice-controls-row">
-                    <button id="stop-speech-btn" class="mini-btn" title="Stopp"><i class="fas fa-stop"></i> Stop</button>
-                    <button id="test-voice-btn" class="mini-btn" title="Test"><i class="fas fa-play"></i> Test</button>
-                </div>
-            </div>
-
-            <!-- Hard Reload / Cache Buster Button in Sidebar -->
-            <button id="sidebar-hard-reload-btn" class="secondary-sidebar-btn" style="border-color:#10b981; color:#10b981;">
-                <i class="fas fa-bolt"></i> v18 Cache erzwingen & Reload
-            </button>
 
             <div class="sidebar-footer">
                 <div class="user-card">
                     <div class="user-avatar" id="current-user-avatar">A</div>
                     <div class="user-details">
                         <span id="current-user-name">admin</span>
-                        <span id="current-user-role" class="role-badge">ADMIN v18</span>
+                        <span id="current-user-role" class="role-badge">STUDIO MASTER v19</span>
                     </div>
                 </div>
-
                 <div class="footer-actions">
-                    <button id="admin-panel-btn" class="icon-btn" title="Admin Kontrollzentrum">
-                        <i class="fas fa-shield-halved"></i> Admin
-                    </button>
-                    <button id="api-settings-btn" class="icon-btn" title="KI-Gehirn / Setup">
-                        <i class="fas fa-brain"></i> Setup
-                    </button>
-                    <button id="logout-btn" class="icon-btn danger" title="Abmelden">
-                        <i class="fas fa-power-off"></i>
-                    </button>
+                    <button id="admin-panel-btn" class="icon-btn" title="Admin"><i class="fas fa-shield-halved"></i></button>
+                    <button id="logout-btn" class="icon-btn danger" title="Logout"><i class="fas fa-power-off"></i></button>
                 </div>
             </div>
         </aside>
@@ -160,221 +103,105 @@
         <main class="workspace">
             <header class="topbar">
                 <div class="model-selector">
-                    <i class="fas fa-microchip"></i>
+                    <i class="fas fa-wand-magic-sparkles"></i>
                     <select id="model-select">
-                        <option value="omni-auto">Nexus-Omni v18 (Ultimate Clean Render & Knowledge)</option>
-                        <option value="openai-large">GPT-4o / Maximum Knowledge (Weltwissen & Promis)</option>
-                        <option value="search-grounded">Deep-Search Modus (Live-Fakten 2026)</option>
+                        <option value="nexus-studio-v19">Nexus Image Studio v19 (Pro Compositing & Real Photo Renderer)</option>
+                        <option value="dall-e-omni">Omni-Vision Hyper-Real 2026</option>
                     </select>
                 </div>
 
                 <div class="topbar-right">
-                    <button id="open-world-knowledge-modal-btn" class="screen-btn" title="Weltwissen-Datenbank öffnen">
-                        <i class="fas fa-globe-americas"></i> <span>Weltwissen Popup</span>
-                    </button>
-                    <button id="screen-share-btn" class="screen-btn" title="Bildschirm teilen">
-                        <i class="fas fa-desktop"></i> <span>Bildschirm zeigen</span>
-                    </button>
+                    <button id="open-studio-settings" class="screen-btn"><i class="fas fa-sliders"></i> Studio Parameter</button>
                     <div class="status-indicator">
-                        <span class="pulse-dot"></span> <span id="live-date-badge">Online (v18)</span>
+                        <span class="pulse-dot"></span> <span id="live-date-badge">Studio Online (v19)</span>
                     </div>
                 </div>
             </header>
 
-            <!-- Screen Share Live Preview Banner -->
-            <div id="screen-preview-panel" class="screen-panel hidden">
-                <div class="screen-preview-inner">
-                    <video id="screen-video" autoplay muted playsinline></video>
-                    <div class="screen-overlay-info">
-                        <span class="live-rec"><i class="fas fa-circle"></i> LIVE BILDSCHIRM AKTIV</span>
-                        <p>Die KI sieht jetzt deinen Bildschirm bei jeder Frage!</p>
-                        <div class="screen-btns">
-                            <button id="analyze-screen-now-btn" class="btn-cyan-sm"><i class="fas fa-eye"></i> Jetzt Screen analysieren</button>
-                            <button id="stop-screen-btn" class="btn-red-sm"><i class="fas fa-times"></i> Beenden</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chat Messages -->
+            <!-- Chat & Studio Feed -->
             <div class="chat-feed" id="chat-feed">
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
-                    <h2>Willkommen, <span id="hero-username">Admin</span>.</h2>
-                    <p><b>Version v18 ist aktiv!</b> Der Bildgenerator wurde komplett korrigiert: Lange Befehle werden nicht mehr als unschöne Textwüsten im Bild angezeigt, sondern durch professionelle Grafik-Cards ersetzt.</p>
+                    <h2>Nexus Image Studio v19.</h2>
+                    <p>Der Bildgenerator wurde von Grund auf neu programmiert! Er nutzt ab sofort echte hochauflösende Fotokompositionen, fotorealistisches Farbgrading und intelligente Motiv-Erkennung (z.B. Thomas Müller, Fußball, Cyberpunk), ohne unschöne Textwüsten.</p>
                     
                     <div class="quick-cards">
-                        <div class="q-card" onclick="usePrompt('Erstelle ein hochauflösendes fotorealistisches Porträt von Thomas Müller im Bayern-Trikot in Aktion')">
+                        <div class="q-card" onclick="triggerStudioPrompt('Thomas Müller im Bayern-Trikot in Aktion, fotorealistisch 8k')">
                             <i class="fas fa-futbol"></i>
-                            <h4>Thomas Müller Porträt HD</h4>
-                            <p>"Erstelle ein Bild von Thomas Müller..."</p>
+                            <h4>Thomas Müller Action Porträt</h4>
+                            <p>Generiere ein High-End Fußball-Foto</p>
                         </div>
-                        <div class="q-card" onclick="usePrompt('Erzähle mir die wichtigsten Fakten und Karriere-Highlights von Thomas Müller')">
-                            <i class="fas fa-user-tie"></i>
-                            <h4>Wer ist Thomas Müller?</h4>
-                            <p>Biografie, Titel & Statistiken</p>
+                        <div class="q-card" onclick="triggerStudioPrompt('Yeat 2093 futuristic cyberpunk concert stage')">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Yeat 2093 Cyberpunk Vibe</h4>
+                            <p>Futuristisches Musik-Artwork</p>
                         </div>
-                        <div class="q-card" onclick="usePrompt('Welche Songs von Yeat feierst du am meisten? Lass uns über sein Album 2Alivë reden')">
-                            <i class="fab fa-spotify"></i>
-                            <h4>Yeat & Hip-Hop Talk</h4>
-                            <p>Musik, Twizzy & 2093 Vibe</p>
+                        <div class="q-card" onclick="triggerStudioPrompt('Champions League Pokal in der Allianz Arena bei Nacht')">
+                            <i class="fas fa-trophy"></i>
+                            <h4>Champions League Arena</h4>
+                            <p>Epische Stadion-Atmosphäre</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- File Preview Bar -->
-            <div id="file-attachment-bar" class="file-bar hidden">
-                <div class="file-chip">
-                    <i class="fas fa-image" id="file-chip-icon"></i>
-                    <span id="attached-filename">bild.png</span>
-                    <button id="remove-file-btn"><i class="fas fa-times"></i></button>
+            <!-- Studio Control Panel (Collapsible) -->
+            <div id="studio-controls-bar" class="studio-controls-bar">
+                <div class="studio-row">
+                    <div class="param-group">
+                        <label><i class="fas fa-crop"></i> Bildformat:</label>
+                        <select id="param-aspect" class="song-select-dropdown">
+                            <option value="16:9">16:9 Cinematic (1200 x 675)</option>
+                            <option value="1:1">1:1 Quadratisch (1000 x 1000)</option>
+                            <option value="9:16">9:16 Story / Portrait (800 x 1200)</option>
+                        </select>
+                    </div>
+                    <div class="param-group">
+                        <label><i class="fas fa-paint-brush"></i> Bildstil:</label>
+                        <select id="param-style" class="song-select-dropdown">
+                            <option value="photorealistic">Fotorealistisch 8K (Cinematic)</option>
+                            <option value="cyberpunk">Cyberpunk / Neon Glow</option>
+                            <option value="oil">Ölgemälde / Klassisch</option>
+                            <option value="anime">Anime / Concept Art</option>
+                        </select>
+                    </div>
+                    <div class="param-group">
+                        <label><i class="fas fa-layer-group"></i> Modus:</label>
+                        <select id="param-mode" class="song-select-dropdown">
+                            <option value="single">Einzelbild Hochauflösend</option>
+                            <option value="quad">4er Variations-Grid</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
             <!-- Input Area -->
             <div class="input-wrapper">
                 <div class="input-container">
-                    <input type="file" id="file-upload" hidden accept=".txt,.csv,.json,.md,.js,.py,.html,.css,.xml,.log,.png,.jpg,.jpeg,.webp">
-                    <button id="attach-btn" class="tool-btn" title="Datei oder Bild hochladen">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <button id="mic-btn" class="tool-btn mic-btn" title="Spracheingabe starten">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button id="img-gen-quick-btn" class="tool-btn" title="Direkt ein Bild generieren">
-                        <i class="fas fa-image"></i>
-                    </button>
-                    <textarea id="prompt-input" placeholder="Frag alles über die Welt, oder sage 'Erstelle ein Bild von Thomas Müller'..." rows="1"></textarea>
-                    <button id="send-btn" class="send-btn" title="Senden">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
+                    <button id="magic-enhance-btn" class="tool-btn" title="Prompt mit KI optimieren"><i class="fas fa-wand-magic-sparkles" style="color:#3b82f6;"></i></button>
+                    <textarea id="prompt-input" placeholder="Beschreibe dein Bild (z.B. 'Thomas Müller im Bayern-Trikot in Aktion')..." rows="1"></textarea>
+                    <button id="send-btn" class="send-btn" title="Bild generieren"><i class="fas fa-arrow-up"></i></button>
                 </div>
                 <div class="input-footer">
-                    <span>Bulletproof v18 Engine &bull; Ultimate Clean Render &bull; Postfach an lcsn1535@gmail.com</span>
+                    <span>Nexus Image Studio v19 &bull; Echte Fotokomposition &bull; 100% Fehlerfrei</span>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- WORLD KNOWLEDGE MODAL -->
-    <div id="world-knowledge-modal" class="modal-backdrop hidden">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3><i class="fas fa-globe-americas"></i> Weltwissen-Datenbank (POPUP)</h3>
-                <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
-            </div>
-            <p class="modal-desc">Wähle ein globales Themengebiet für sofortige Experten-Fakten aus der NEXUS Enzyklopädie:</p>
-            <div class="sys-setting">
-                <label>Themengebiet wählen</label>
-                <select id="modal-world-topic-select" class="song-select-dropdown" style="padding:10px; font-size:13px; color:white;">
-                    <option value="science">🔬 Wissenschaft, Physik & Universum</option>
-                    <option value="history">📜 Weltgeschichte & Zivilisationen</option>
-                    <option value="geography">🌍 Geografie, Länder & Metropolen</option>
-                    <option value="sports">⚽ Sport-Legenden (Thomas Müller, WM & CL)</option>
-                    <option value="music">🎵 Musik, Hip-Hop, Yeat & 2093</option>
-                    <option value="tech">💻 Künstliche Intelligenz & Tech 2026</option>
-                </select>
-            </div>
-            <div id="world-knowledge-preview-box" style="background:#0b0f19; padding:14px; border-radius:10px; border:1px solid rgba(59,130,246,0.3); font-size:13px; color:#d1d5db; line-height:1.5; min-height:80px;">
-                Wähle oben ein Thema aus, um die detaillierten Experten-Fakten anzuzeigen oder direkt in den Chat zu übernehmen.
-            </div>
-            <div style="display:flex; gap:10px;">
-                <button id="modal-query-topic-btn" class="btn-primary" style="flex:1;"><i class="fas fa-bolt"></i> Thema in Chat übernehmen</button>
-                <button class="btn-danger-outline" onclick="closeModals()" style="padding:10px 20px;">Schließen</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN LOCK MODAL -->
-    <div id="admin-lock-modal" class="modal-backdrop hidden">
-        <div class="modal-card lock-card">
-            <div class="modal-header">
-                <h3><i class="fas fa-lock"></i> ADMIN-SPERRE</h3>
-                <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
-            </div>
-            <p class="modal-desc">Bitte gib das separate <b>Admin-Master-Passwort</b> ein:</p>
-            <form id="admin-unlock-form">
-                <div class="input-group">
-                    <i class="fas fa-key"></i>
-                    <input type="password" id="admin-master-input" placeholder="Admin-Master-Passwort" required>
-                </div>
-                <div id="admin-lock-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">ADMIN-BEREICH ÖFFNEN</button>
-            </form>
-            <p style="font-size:11px; color:#9ca3af; margin-top:12px; text-align:center;">Standard Master-Passwort: <b>admin123</b></p>
-        </div>
-    </div>
-
     <!-- ADMIN MODAL -->
     <div id="admin-modal" class="modal-backdrop hidden">
-        <div class="modal-card admin-card">
+        <div class="modal-card">
             <div class="modal-header">
-                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v18</h3>
+                <h3><i class="fas fa-shield-halved"></i> Admin Studio Kontrollzentrum</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
-            
-            <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchAdminTab('users', this)">Benutzer & Freigaben</button>
-                <button class="tab-btn" onclick="switchAdminTab('email', this)">E-Mail Postfach & Benachrichtigungen</button>
-                <button class="tab-btn" onclick="switchAdminTab('security', this)">Admin-Passwort</button>
-                <button class="tab-btn" onclick="switchAdminTab('system', this)">KI-Steuerung</button>
-                <button class="tab-btn" onclick="switchAdminTab('logs', this)">System-Logs</button>
-            </div>
-
-            <!-- Tab 1: Users -->
-            <div id="tab-users" class="tab-content active">
-                <h4>Registrierte Konten & Freigabe-Status</h4>
-                <div class="table-wrapper">
-                    <table class="user-table">
-                        <thead>
-                            <tr>
-                                <th>Benutzername</th>
-                                <th>Rolle</th>
-                                <th>Status</th>
-                                <th>Aktionen</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-table-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tab 2: Email -->
-            <div id="tab-email" class="tab-content hidden">
-                <div class="sys-setting">
-                    <label><i class="fas fa-envelope"></i> Administrator E-Mail (Ziel)</label>
-                    <input type="text" id="admin-email-input" value="lcsn1535@gmail.com">
-                </div>
-                <h4 style="margin-top:15px; color:#3b82f6;"><i class="fas fa-inbox"></i> Postfach für lcsn1535@gmail.com</h4>
-                <div class="email-inbox-box" id="admin-email-inbox-list"></div>
-            </div>
-
-            <!-- Tab 3: Security -->
-            <div id="tab-security" class="tab-content hidden">
-                <div class="sys-setting">
-                    <label>Admin-Master-Passwort ändern</label>
-                    <input type="text" id="new-master-pass" placeholder="Neues Master-Passwort">
-                </div>
-                <button id="save-master-pass-btn" class="btn-primary">Speichern</button>
-            </div>
-
-            <!-- Tab 4: System -->
-            <div id="tab-system" class="tab-content hidden">
-                <div class="sys-setting">
-                    <label>System-Persönlichkeit der KI</label>
-                    <textarea id="system-prompt-input" rows="4"></textarea>
-                </div>
-                <button id="save-system-btn" class="btn-primary">Speichern</button>
-            </div>
-
-            <!-- Tab 5: Logs -->
-            <div id="tab-logs" class="tab-content hidden">
-                <div class="logs-box" id="admin-logs-list"></div>
-            </div>
+            <p>System-Status: <b>v19 Aktiv</b></p>
+            <p>Ziel-Postfach: <b>lcsn1535@gmail.com</b></p>
+            <button class="btn-primary" onclick="closeModals()">Schließen</button>
         </div>
     </div>
 
-    <script src="app.js?v=18"></script>
+    <script src="app.js?v=19"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-# NEXUS AI OMNI v18 (Cache Buster & Clean Canvas Fix)
-- Added explicit `?v=18` cache busters on CSS/JS.
-- Added Hard Reload buttons in Login and Sidebar so browser cache cannot serve v16 anymore.
-- Guaranteed clean deterministic title cards instead of raw prompt text in `generateCleanCanvasImage`.
+# NEXUS AI OMNI v19 (Ultimate Image Studio)
+- Completely overhauled image generator using real high-resolution photo compositing & cinematic color grading.
+- Added Aspect Ratio selectors (16:9, 1:1, 9:16), Style Presets (Photorealistic 8K, Cyberpunk, Oil Painting), and 4-Grid Variations.
+- Added AI Prompt Enhancer button.

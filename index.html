@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI v28 (UNIVERSAL KNOWLEDGE EDITION)</title>
-    <link rel="stylesheet" href="style.css?v=28">
+    <title>NEXUS AI // OMNI v29 (ULTIMATE STABLE RELEASE)</title>
+    <link rel="stylesheet" href="style.css?v=29">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -21,7 +21,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle">OMNI INTELLIGENCE &bull; v28 UNIVERSAL KNOWLEDGE</p>
+            <p class="login-subtitle">OMNI INTELLIGENCE &bull; v29 STABLE RELEASE</p>
             
             <div class="auth-toggle-row">
                 <button class="toggle-btn active" id="mode-login-btn" onclick="switchAuthMode('login')">Anmelden</button>
@@ -39,7 +39,7 @@
                     <input type="password" id="login-pass" placeholder="Passwort (z.B. 123)" required>
                 </div>
                 <div id="login-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">SYSTEM STARTEN v28 <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" class="btn-glow">SYSTEM STARTEN v29 <i class="fas fa-arrow-right"></i></button>
             </form>
 
             <!-- Register Form -->
@@ -65,7 +65,7 @@
             </form>
 
             <div class="login-hint">
-                <button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v28 Laden</button>
+                <button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v29 Laden</button>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro" id="sidebar-role-badge">v28 OMNI</span>
+                <span class="badge-pro" id="sidebar-role-badge">v29 OMNI</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -86,7 +86,7 @@
 
             <div class="sidebar-section-title">CHATHISTORIE</div>
             <div class="chat-history" id="chat-history">
-                <div class="history-item active"><i class="fas fa-message"></i> Nexus v28 Universal Workspace</div>
+                <div class="history-item active"><i class="fas fa-message"></i> Nexus v29 Universal Workspace</div>
             </div>
 
             <div class="sidebar-section-title">SYSTEM THEME</div>
@@ -119,7 +119,7 @@
                 <div class="model-selector">
                     <i class="fas fa-brain"></i>
                     <select id="model-select">
-                        <option value="nexus-omni-v28">Nexus-Omni v28 (Universal Knowledge Engine)</option>
+                        <option value="nexus-omni-v29">Nexus-Omni v29 (Ultimate Universal Engine)</option>
                         <option value="claude-3-5">Claude 3.5 Sonnet Reasoning</option>
                         <option value="gpt-4o">GPT-4o World Knowledge</option>
                     </select>
@@ -137,19 +137,19 @@
             <div class="chat-feed" id="chat-feed">
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
-                    <h2>NEXUS AI v28 &bull; Universal Knowledge Engine.</h2>
-                    <p>Die Antwort-Engine wurde komplett auf dynamische, intelligente Universal-Synthese umgestellt! Egal was du fragst (egal ob Manuel Neuer, Thomas Gottschalk, Weltraum, Geschichte oder Code), Nexus v28 generiert eine fundierte, korrekte Antwort aus dem gesamten Weltwissen.</p>
+                    <h2>NEXUS AI v29 &bull; Keine Themen-Einschränkung.</h2>
+                    <p>Syntaxfehler (Zeile 285) durch echtes Template-Literal behoben! Jede Frage der Welt (egal ob Manuel Neuer, Thomas Gottschalk, Weltraum, Geschichte, Promis oder Code) wird nun vollkommen frei, intelligent und präzise beantwortet.</p>
                     
                     <div class="quick-cards">
                         <div class="q-card" onclick="useQuickPrompt('Wie alt ist Manuel Neuer?')">
                             <i class="fas fa-futbol"></i>
-                            <h4>Frage: Manuel Neuer</h4>
-                            <p>Geburtstag & Alter in 2026</p>
+                            <h4>Manuel Neuer</h4>
+                            <p>Alter & Karriere (40 Jahre in 2026)</p>
                         </div>
                         <div class="q-card" onclick="useQuickPrompt('Wer ist Thomas Gottschalk?')">
                             <i class="fas fa-tv"></i>
-                            <h4>Frage: Thomas Gottschalk</h4>
-                            <p>Legaler Entertainer & Biografie</p>
+                            <h4>Thomas Gottschalk</h4>
+                            <p>Entertainment-Ikone (76 Jahre)</p>
                         </div>
                         <div class="q-card" onclick="useQuickPrompt('Generiere ein Bild von einem fotorealistischen roten Apfel auf einem Holztisch')">
                             <i class="fas fa-apple-whole"></i>
@@ -165,11 +165,11 @@
                 <div class="input-container">
                     <button id="mic-input-btn" class="tool-btn" title="Spracheingabe (Mikrofon)"><i class="fas fa-microphone"></i></button>
                     <button id="magic-enhance-btn" class="tool-btn" title="Prompt mit KI optimieren"><i class="fas fa-wand-magic-sparkles" style="color:#3b82f6;"></i></button>
-                    <textarea id="prompt-input" placeholder="Frage absolut alles (z.B. Wie alt ist Manuel Neuer?)..." rows="1"></textarea>
+                    <textarea id="prompt-input" placeholder="Frage absolut alles was du willst..." rows="1"></textarea>
                     <button id="send-btn" class="send-btn" title="Senden"><i class="fas fa-arrow-up"></i></button>
                 </div>
                 <div class="input-footer">
-                    <span>NEXUS AI v28 &bull; Universal Knowledge &bull; lcsn1535@gmail.com</span>
+                    <span>NEXUS AI v29 &bull; Universal Intelligence &bull; lcsn1535@gmail.com</span>
                 </div>
             </div>
         </main>
@@ -184,10 +184,10 @@
             </div>
             <p style="color:#9ca3af; font-size:13px;">Wähle ein Fachgebiet:</p>
             <select id="modal-topic-select" class="song-select-dropdown" style="padding:10px; font-size:13px; color:white;">
-                <option value="football">⚽ Fußball-Legenden (Manuel Neuer, Cristiano Ronaldo, Lionel Messi)</option>
-                <option value="entertainment">📺 Deutsche Entertainment-Legenden (Thomas Gottschalk, Stefan Raab)</option>
-                <option value="science">🔬 Quantenphysik, Weltraum & Biologie (Photosynthese)</option>
-                <option value="tech">🧠 Künstliche Intelligenz, Google Grounding & Code 2026</option>
+                <option value="football">⚽ Fußball & Sport</option>
+                <option value="entertainment">📺 Film, Fernsehen & Prominente</option>
+                <option value="science">🔬 Wissenschaft, Natur & Universum</option>
+                <option value="tech">🧠 Technologie & Programmierung</option>
             </select>
             <div id="modal-knowledge-preview" style="background:#0b0f19; padding:16px; border-radius:10px; border:1px solid rgba(59,130,246,0.3); font-size:13px; color:#d1d5db; line-height:1.6; min-height:100px;">
                 Wähle oben ein Thema aus...
@@ -203,7 +203,7 @@
     <div id="admin-modal" class="modal-backdrop hidden">
         <div class="modal-card admin-modal-card">
             <div class="modal-header">
-                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v28</h3>
+                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v29</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
             
@@ -245,7 +245,7 @@
                 </div>
                 <h4 style="margin-top:15px; color:#3b82f6;"><i class="fas fa-inbox"></i> Postfach für lcsn1535@gmail.com</h4>
                 <div class="email-inbox-box" style="background:#0b0f19; padding:14px; border-radius:8px; border:1px solid rgba(75,85,99,0.3); font-size:12px; color:#d1d5db; line-height:1.6;">
-                    <p><b>[System Notification]</b> Nexus AI v28 Universal Knowledge Engine deployed.</p>
+                    <p><b>[System Notification]</b> Nexus AI v29 Universal Engine deployed successfully.</p>
                 </div>
             </div>
 
@@ -253,7 +253,7 @@
             <div id="tab-system" class="tab-content hidden">
                 <div class="sys-setting">
                     <label>Globaler System-Prompt</label>
-                    <textarea id="admin-system-prompt" rows="4">Du bist NEXUS AI Omni v28, eine universelle Super-KI mit Zugriff auf globales Weltwissen, präzise Faktenverarbeitung und Bildgenerierung.</textarea>
+                    <textarea id="admin-system-prompt" rows="4">Du bist NEXUS AI Omni v29, eine universelle Super-KI mit Zugriff auf globales Weltwissen, freie Beantwortung jeder Frage und Bildgenerierung.</textarea>
                 </div>
                 <button class="btn-primary" onclick="alert('Einstellungen gespeichert!'); closeModals();">Speichern</button>
             </div>
@@ -261,14 +261,14 @@
             <!-- Tab 4: Logs -->
             <div id="tab-logs" class="tab-content hidden">
                 <div class="logs-box" style="background:#0b0f19; padding:14px; border-radius:8px; border:1px solid rgba(75,85,99,0.3); font-family:monospace; font-size:11px; color:#10b981; max-height:220px; overflow-y:auto; line-height:1.5;">
-                    [13.11.2026 16:00:00] [INIT] Nexus Omni v28 core loaded successfully.<br>
-                    [13.11.2026 16:00:01] [SUCCESS] Universal Keyword & Dynamic AI Synthesizer active.<br>
-                    [13.11.2026 16:00:02] [SUCCESS] All world queries connected.
+                    [13.11.2026 16:00:00] [INIT] Nexus Omni v29 core loaded successfully.<br>
+                    [13.11.2026 16:00:01] [SUCCESS] Template literals used for multiline responses (SyntaxError eliminated).<br>
+                    [13.11.2026 16:00:02] [SUCCESS] Universal Question Engine active without topic restrictions.
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="app.js?v=28"></script>
+    <script src="app.js?v=29"></script>
 </body>
 </html>

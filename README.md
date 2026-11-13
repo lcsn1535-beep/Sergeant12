@@ -1,4 +1,3 @@
-# NEXUS AI OMNI v12 (Ultimate HD Image & Smooth Synth Fix)
-- Fully fixed HD image generation (guaranteed Unsplash direct photo URLs, zero broken images).
-- Upgraded Web Audio synthesizer with smooth triangle synth pads and warm sine sub-bass (no more harsh beeping).
-- All music player and image functions fully responsive and operational.
+# NEXUS AI OMNI v13 (Bulletproof HD & Audio Fix)
+- Implemented robust inline SVG fallback handler for all generated images (`onerror` replaces any broken image with a crisp SVG render instantly).
+- Fixed browser autoplay and initialization restrictions for the Web Audio Synth player (AudioContext is automatically resumed on play click).

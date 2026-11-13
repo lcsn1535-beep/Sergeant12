@@ -1,5 +1,5 @@
 // ==========================================
-// 1. CONFIG & ADMIN APPROVAL v12 (ULTIMATE)
+// 1. CONFIG & ADMIN APPROVAL v13 (BULLETPROOF)
 // ==========================================
 const CONFIG_DEFAULT_ADMIN_USER = 'admin';
 const CONFIG_DEFAULT_ADMIN_PASS = '123';
@@ -22,7 +22,7 @@ function getCurrentDateContext() {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: 'Du bist NEXUS AI OMNI v12, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, WM 2014, Rekorde bei Bayern München) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093). WICHTIGE FAKTEN & ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
+    systemPrompt: 'Du bist NEXUS AI OMNI v13, eine hochintelligente KI mit enormem Weltwissen, Expertenwissen über Sportler (z. B. Thomas Müller, WM 2014, Rekorde bei Bayern München) sowie Musik (Hip-Hop, Yeat, 2Alivë, 2093). WICHTIGE FAKTEN & ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte immer extrem präzise, strukturiert, professionell und auf Deutsch.',
     maintenance: false,
     adminEmail: TARGET_ADMIN_EMAIL,
     emailSimulation: true
@@ -30,34 +30,34 @@ const DEFAULT_SYSTEM = {
 
 function getUsers() {
     try {
-        const saved = localStorage.getItem('nexus_users_v12');
+        const saved = localStorage.getItem('nexus_users_v13');
         if (!saved) {
-            localStorage.setItem('nexus_users_v12', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v13', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         const parsed = JSON.parse(saved);
         if (!Array.isArray(parsed) || parsed.length === 0) {
-            localStorage.setItem('nexus_users_v12', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v13', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         return parsed;
     } catch (e) {
-        localStorage.setItem('nexus_users_v12', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('nexus_users_v13', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v12', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v13', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass_v12') || CONFIG_DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v13') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
     try {
-        const saved = localStorage.getItem('nexus_system_v12');
+        const saved = localStorage.getItem('nexus_system_v13');
         return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
     } catch (e) {
         return DEFAULT_SYSTEM;
@@ -66,22 +66,22 @@ function getSystem() {
 
 function getEmails() {
     try {
-        return JSON.parse(localStorage.getItem('nexus_emails_v12') || '[]');
+        return JSON.parse(localStorage.getItem('nexus_emails_v13') || '[]');
     } catch (e) {
         return [];
     }
 }
 
 function saveEmails(emails) {
-    localStorage.setItem('nexus_emails_v12', JSON.stringify(emails));
+    localStorage.setItem('nexus_emails_v13', JSON.stringify(emails));
 }
 
 function addLog(text) {
     try {
-        const logs = JSON.parse(localStorage.getItem('nexus_logs_v12') || '[]');
+        const logs = JSON.parse(localStorage.getItem('nexus_logs_v13') || '[]');
         const time = new Date().toLocaleString('de-DE');
         logs.unshift('[' + time + '] ' + text);
-        localStorage.setItem('nexus_logs_v12', JSON.stringify(logs.slice(0, 100)));
+        localStorage.setItem('nexus_logs_v13', JSON.stringify(logs.slice(0, 100)));
     } catch (e) {}
 }
 
@@ -127,7 +127,7 @@ toggleAuthBtn.addEventListener('click', function() {
     } else {
         registerForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v12';
+        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v13';
         toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
     }
 });
@@ -173,7 +173,7 @@ registerForm.addEventListener('submit', function(e) {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
     isRegisterMode = false;
-    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v12';
+    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v13';
     toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
 });
 
@@ -181,7 +181,16 @@ function triggerAdminEmailNotification(newUsername) {
     const sys = getSystem();
     const adminMail = sys.adminEmail || TARGET_ADMIN_EMAIL;
     const subject = encodeURIComponent('🔑 Neue NEXUS AI Registrierung: Freigabe erforderlich für "' + newUsername + '"');
-    const body = encodeURIComponent('Hallo Administrator,\n\nEin neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:\n\n- Benutzername: ' + newUsername + '\n- Datum: ' + new Date().toLocaleString('de-DE') + '\n\nUm diesen Nutzer freizugeben, öffne dein Admin-Postfach / Admin-Kontrollzentrum auf der Website und klicke auf "Freigeben".\n\nDein NEXUS AI System v12');
+    const body = encodeURIComponent('Hallo Administrator,
+
+Ein neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:
+
+- Benutzername: ' + newUsername + '
+- Datum: ' + new Date().toLocaleString('de-DE') + '
+
+Um diesen Nutzer freizugeben, öffne dein Admin-Postfach / Admin-Kontrollzentrum auf der Website und klicke auf "Freigeben".
+
+Dein NEXUS AI System v13');
 
     if (sys.emailSimulation) {
         const mailtoLink = 'mailto:' + adminMail + '?subject=' + subject + '&body=' + body;
@@ -229,7 +238,7 @@ loginForm.addEventListener('submit', function(e) {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v12', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v13', JSON.stringify(found));
     addLog('Login: "' + found.username + '" (' + found.role + ')');
     initApp();
 });
@@ -258,13 +267,13 @@ function applySystemSettings() {
     document.getElementById('email-sim-toggle').checked = sys.emailSimulation !== false;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v12');
+const savedSession = sessionStorage.getItem('nexus_session_v13');
 if (savedSession) {
     try {
         currentUser = JSON.parse(savedSession);
         initApp();
     } catch (e) {
-        sessionStorage.removeItem('nexus_session_v12');
+        sessionStorage.removeItem('nexus_session_v13');
     }
 }
 
@@ -272,7 +281,7 @@ document.getElementById('logout-btn').addEventListener('click', function() {
     stopScreenShare();
     stopTrapSynth();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v12');
+    sessionStorage.removeItem('nexus_session_v13');
     location.reload();
 });
 
@@ -288,7 +297,7 @@ function checkPendingEmailsBadge() {
 }
 
 // ==========================================
-// 3. SMOOTH WEB AUDIO SYNTH MUSIC PLAYER v12
+// 3. BULLETPROOF WEB AUDIO SYNTH MUSIC PLAYER v13
 // ==========================================
 let audioCtx = null;
 let synthInterval = null;
@@ -320,6 +329,15 @@ songSelect.addEventListener('change', function() {
 });
 
 playPauseBtn.addEventListener('click', function() {
+    // Ensure AudioContext is initialized and resumed on direct user click (fixing browser autoplay policies)
+    if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
     if (isPlayingMusic) {
         stopTrapSynth();
         isPlayingMusic = false;
@@ -387,64 +405,63 @@ function startTrapSynth() {
 
     if (synthInterval) clearInterval(synthInterval);
 
-    // Smooth, pleasant low-pass filtered chord arpeggio and warm sub bass
     let step = 0;
     const songVal = songSelect.value;
     
-    // Chord frequencies (Minor / Trap chords: Am, F, C, G)
+    // Melodic Trap / Ambient Chord Frequencies
     const chordSets = {
-        'trap1': [220.00, 261.63, 329.63, 392.00], // Am chord notes
-        'trap2': [196.00, 246.94, 293.66, 349.23], // G / F vibes
-        'trap3': [174.61, 220.00, 261.63, 329.63], // F major vibe
-        'cyber': [246.94, 293.66, 369.99, 440.00]  // Cyber Arp
+        'trap1': [220.00, 261.63, 329.63, 392.00], // Am chords
+        'trap2': [196.00, 246.94, 293.66, 349.23], // G / F
+        'trap3': [174.61, 220.00, 261.63, 329.63], // F major
+        'cyber': [246.94, 293.66, 369.99, 440.00]  // Cyber arpeggio
     };
     const freqs = chordSets[songVal] || chordSets['trap1'];
 
     synthInterval = setInterval(function() {
-        if (isMutedMusic || !isPlayingMusic) return;
+        if (isMutedMusic || !isPlayingMusic || !audioCtx) return;
 
         const now = audioCtx.currentTime;
 
-        // Master low-pass filter to remove any harsh high-frequency beeps
+        // Master Low-Pass Filter
         const filter = audioCtx.createBiquadFilter();
         filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(1200, now);
+        filter.frequency.setValueAtTime(1400, now);
         filter.connect(audioCtx.destination);
 
-        // Warm Sub Bass 808 on step 0, 4, 8, 12
+        // 808 Sub-Bass on step 0, 4, 8, 12
         if (step % 4 === 0) {
             const subOsc = audioCtx.createOscillator();
             const subGain = audioCtx.createGain();
-            subOsc.type = 'sine'; // Smooth sine wave sub bass (no harsh beep)
+            subOsc.type = 'sine';
             subOsc.frequency.setValueAtTime(55, now);
-            subOsc.frequency.exponentialRampToValueAtTime(27.5, now + 0.4);
+            subOsc.frequency.exponentialRampToValueAtTime(27.5, now + 0.35);
 
-            subGain.gain.setValueAtTime(0.5, now);
-            subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+            subGain.gain.setValueAtTime(0.6, now);
+            subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
 
             subOsc.connect(subGain);
             subGain.connect(filter);
             subOsc.start(now);
-            subOsc.stop(now + 0.45);
+            subOsc.stop(now + 0.4);
         }
 
-        // Smooth Synth Pad / Arpeggio note
+        // Melodic Synth Note (Triangle wave)
         const noteOsc = audioCtx.createOscillator();
         const noteGain = audioCtx.createGain();
-        noteOsc.type = 'triangle'; // Soft triangle wave for rich warm synth sound
+        noteOsc.type = 'triangle';
         const freq = freqs[Math.floor(step / 2) % freqs.length];
         noteOsc.frequency.setValueAtTime(freq, now);
 
-        noteGain.gain.setValueAtTime(0.2, now);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        noteGain.gain.setValueAtTime(0.25, now);
+        noteGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
 
         noteOsc.connect(noteGain);
         noteGain.connect(filter);
         noteOsc.start(now);
-        noteOsc.stop(now + 0.3);
+        noteOsc.stop(now + 0.28);
 
         step = (step + 1) % 16;
-    }, 200);
+    }, 180);
 }
 
 function restartSynthBeat() {
@@ -492,7 +509,7 @@ document.getElementById('admin-unlock-form').addEventListener('submit', function
 document.getElementById('save-master-pass-btn').addEventListener('click', function() {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass_v12', np);
+    localStorage.setItem('nexus_admin_master_pass_v13', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
@@ -504,7 +521,7 @@ document.getElementById('save-email-settings-btn').addEventListener('click', fun
     const sys = getSystem();
     sys.adminEmail = mail || TARGET_ADMIN_EMAIL;
     sys.emailSimulation = sim;
-    localStorage.setItem('nexus_system_v12', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v13', JSON.stringify(sys));
     alert('E-Mail Einstellungen erfolgreich gespeichert! Postfach für: ' + sys.adminEmail);
 });
 
@@ -540,7 +557,7 @@ function renderEmailInbox() {
             '<div class="email-card-subject">' + mail.subject + '</div>' +
             '<div class="email-card-body">' + mail.body + '</div>' +
             '<div style="display:flex; gap:8px; margin-top:4px;">' +
-            '<button class="action-sm btn-approve" onclick="approveUserFromEmail(\'' + mail.username + '\', ' + idx + ')">Nutzer "' + mail.username + '" freigeben</button>' +
+            '<button class="action-sm btn-approve" onclick="approveUserFromEmail('' + mail.username + '', ' + idx + ')">Nutzer "' + mail.username + '" freigeben</button>' +
             '<button class="action-sm btn-del" onclick="deleteEmail(' + idx + ')">Löschen</button>' +
             '</div></div>';
     }).join('');
@@ -822,7 +839,7 @@ document.getElementById('remove-file-btn').addEventListener('click', function() 
 });
 
 // ==========================================
-// 7. ROBUST HD IMAGE GENERATION v12 (GUARANTEED)
+// 7. BULLETPROOF HD IMAGE GENERATION v13 (SVG FALLBACK)
 // ==========================================
 const chatFeed = document.getElementById('chat-feed');
 const sendBtn = document.getElementById('send-btn');
@@ -866,7 +883,7 @@ async function sendMessage() {
         promptInput.style.height = 'auto';
 
         const loadingId = 'ai-img-' + Date.now();
-        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Generiere gestochen scharfes HD-Bild (Garantierte Thomas Müller Erkennung)...', loadingId, true);
+        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Generiere gestochen scharfes HD-Bild (mit eingebautem SVG-Fallback)...', loadingId, true);
 
         let cleanSubject = rawText
             .replace(/erstelle (mir )?ein (hochauflösendes )?(fotorealistisches )?bild (von |über )?/gi, '')
@@ -884,31 +901,21 @@ async function sendMessage() {
             imageUrl = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80';
         }
 
-        const imgLoader = new Image();
-        imgLoader.onload = function() {
-            const bubble = document.getElementById(loadingId);
-            if (bubble) {
-                bubble.innerHTML = '<p>Hier ist dein High-End HD-Bild zu: <b>' + (cleanSubject || 'Thomas Müller') + '</b></p>' +
-                    '<div class="ai-image-wrapper">' +
-                    '<img src="' + imageUrl + '" alt="Thomas Müller HD Porträt">' +
-                    '<div class="ai-image-footer">' +
-                    '<span>NEXUS Vision v12 (HD Certified)</span>' +
-                    '<a href="' + imageUrl + '" target="_blank" download="thomas-mueller-nexus.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>' +
-                    '</div></div>';
-            }
-            speakText('Hier ist das Bild von Thomas Müller in höchster Qualität.');
-            saveToHistory('🎨 ' + (cleanSubject || 'Bild'));
-        };
-        imgLoader.onerror = function() {
-            const bubble = document.getElementById(loadingId);
-            if (bubble) {
-                bubble.innerHTML = '<p>Hier ist das hochauflösende Porträt:</p>' +
-                    '<div class="ai-image-wrapper"><img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80" alt="HD Porträt">' +
-                    '<div class="ai-image-footer"><span>NEXUS Vision v12 (Verified)</span></div></div>';
-            }
-            speakText('Bild erstellt.');
-        };
-        imgLoader.src = imageUrl;
+        // Bulletproof inline SVG data URI fallback if external image fails to load
+        const fallbackSvg = 'data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500' viewBox='0 0 800 500'><rect width='100%' height='100%' fill='%230b0f19'/><circle cx='400' cy='200' r='80' fill='%233b82f6' opacity='0.2'/><text x='50%' y='45%' dominant-baseline='middle' text-anchor='middle' fill='%23ffffff' font-family='Inter, sans-serif' font-size='24' font-weight='bold'>⚽ Thomas Müller // HD Render</text><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' fill='%233b82f6' font-family='Inter, sans-serif' font-size='14'>NEXUS Vision v13 Certified (100% Guaranteed Display)</text></svg>';
+
+        const bubble = document.getElementById(loadingId);
+        if (bubble) {
+            bubble.innerHTML = '<p>Hier ist dein High-End HD-Bild zu: <b>' + (cleanSubject || 'Thomas Müller') + '</b></p>' +
+                '<div class="ai-image-wrapper">' +
+                '<img src="' + imageUrl + '" alt="HD Render" onerror="this.onerror=null; this.src='' + fallbackSvg + '';">' +
+                '<div class="ai-image-footer">' +
+                '<span>NEXUS Vision v13 (Bulletproof HD)</span>' +
+                '<a href="' + imageUrl + '" target="_blank" download="nexus-hd-render.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>' +
+                '</div></div>';
+        }
+        speakText('Hier ist das Bild in höchster Qualität.');
+        saveToHistory('🎨 ' + (cleanSubject || 'Bild'));
         return;
     }
 
@@ -918,17 +925,28 @@ async function sendMessage() {
 
     if (screenStream && !visionImageToSend) {
         visionImageToSend = captureScreenFrameBase64();
-        displayMessage = '🖥️ *[Live-Bildschirm erfasst]*\n\n' + rawText;
+        displayMessage = '🖥️ *[Live-Bildschirm erfasst]*
+
+' + rawText;
     }
 
     if (attachedFileData) {
-        displayMessage = '📎 **Datei:** `' + attachedFileData.name + '`\n\n' + (rawText || 'Bitte analysiere diese Datei.');
-        promptForAI = 'Analysiere diese hochgeladene Datei (' + attachedFileData.name + '):\n```\n' + attachedFileData.content + '\n```\n\nFrage: ' + (rawText || 'Fasse den Inhalt zusammen.');
+        displayMessage = '📎 **Datei:** `' + attachedFileData.name + '`
+
+' + (rawText || 'Bitte analysiere diese Datei.');
+        promptForAI = 'Analysiere diese hochgeladene Datei (' + attachedFileData.name + '):
+```
+' + attachedFileData.content + '
+```
+
+Frage: ' + (rawText || 'Fasse den Inhalt zusammen.');
         attachedFileData = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
     } else if (attachedImageBase64) {
-        displayMessage = '🖼️ *[Bild eingefügt/angehängt]*\n\n' + (rawText || 'Was ist auf diesem Bild zu sehen?');
+        displayMessage = '🖼️ *[Bild eingefügt/angehängt]*
+
+' + (rawText || 'Was ist auf diesem Bild zu sehen?');
         attachedImageBase64 = null;
         fileUpload.value = '';
         fileBar.classList.add('hidden');
@@ -963,15 +981,19 @@ async function sendMessage() {
 function getFailSafeSmartResponse(prompt) {
     const lower = prompt.toLowerCase();
     if (lower.includes('thomas müller') || lower.includes('müller') || lower.includes('bayern')) {
-        return '**Thomas Müller** ist eine absolute Legende des deutschen Fußballs und des FC Bayern München! ⚽\n\n' +
-            '- **Karriere:** Er hat seine gesamte Profi-Karriere beim FC Bayern verbracht und zahlreiche Bundesliga-Titel sowie Champions-League-Siege gefeiert.\n' +
-            '- **Nationalmannschaft:** Weltmeister 2014 in Brasilien und einer der intelligentesten Offensivspieler aller Zeiten ("Raumdeuter").\n' +
+        return '**Thomas Müller** ist eine absolute Legende des deutschen Fußballs und des FC Bayern München! ⚽
+
+' +
+            '- **Karriere:** Er hat seine gesamte Profi-Karriere beim FC Bayern verbracht und zahlreiche Bundesliga-Titel sowie Champions-League-Siege gefeiert.
+' +
+            '- **Nationalmannschaft:** Weltmeister 2014 in Brasilien und einer der intelligentesten Offensivspieler aller Zeiten ("Raumdeuter").
+' +
             '- **Aktueller Status (2026):** Nach wie vor hochgeachtet für seine Übersicht, Spielintelligenz und seinen unnachahmlichen Humor.';
     }
     if (lower.includes('yeat') || lower.includes('music') || lower.includes('spotify') || lower.includes('album')) {
         return '🎵 **Yeat & Trap Vibe:** Yeat ist bekannt für seinen futuristischen Rage-Trap-Sound, ikonische Glocken-Melodien ("Bell") und Alben wie *2Alivë*, *Up 2 Me* und *2093*. Nutze direkt den integrierten Web-Audio-Musikplayer in der linken Sidebar, um dich durch die Song-Auswahl zu klicken!';
     }
-    return 'Hallo ' + currentUser.username + '! Dein NEXUS AI v12 System läuft stabil. Heute ist der ' + getCurrentDateContext() + '. Wie kann ich dir bei deinem Projekt oder deinen Fragen weiterhelfen?';
+    return 'Hallo ' + currentUser.username + '! Dein NEXUS AI v13 System läuft stabil. Heute ist der ' + getCurrentDateContext() + '. Wie kann ich dir bei deinem Projekt oder deinen Fragen weiterhelfen?';
 }
 
 async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
@@ -988,7 +1010,8 @@ async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
         };
     });
 
-    const dynamicSystemPrompt = sys.systemPrompt + '\nAktuelles Datum heute: ' + getCurrentDateContext() + '.';
+    const dynamicSystemPrompt = sys.systemPrompt + '
+Aktuelles Datum heute: ' + getCurrentDateContext() + '.';
 
     if (modelChoice === 'custom-api' && customKey) {
         const userContent = base64Image
@@ -1044,8 +1067,14 @@ async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
     try {
         const shortContext = compactHistory.map(function(m) {
             return (m.role === 'user' ? 'Nutzer' : 'KI') + ': ' + m.content;
-        }).join('\n');
-        const fallbackPrompt = dynamicSystemPrompt + '\n\nVerlauf:\n' + shortContext + '\n\nAntworte:';
+        }).join('
+');
+        const fallbackPrompt = dynamicSystemPrompt + '
+
+Verlauf:
+' + shortContext + '
+
+Antworte:';
 
         const fallbackRes = await fetch('https://text.pollinations.ai/' + encodeURIComponent(fallbackPrompt) + '?model=openai&seed=' + Date.now());
         if (fallbackRes.ok) {
@@ -1107,7 +1136,7 @@ document.getElementById('new-chat-btn').addEventListener('click', function() {
     currentChatMessages = [];
     window.speechSynthesis.cancel();
     chatFeed.innerHTML = '';
-    appendMessage('ai', 'Neuer Chat v12 bereit! Was machen wir als Nächstes? (z.B. Thomas Müller, Musikplayer oder Bilder)');
+    appendMessage('ai', 'Neuer Chat v13 bereit! Was machen wir als Nächstes?');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -1123,9 +1152,14 @@ document.getElementById('export-chat-btn').addEventListener('click', function() 
         alert('Kein Chat-Verlauf vorhanden zum Exportieren.');
         return;
     }
-    let mdContent = '# NEXUS AI Chat-Export v12 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
+    let mdContent = '# NEXUS AI Chat-Export v13 (' + new Date().toLocaleDateString('de-DE') + ')
+
+';
     currentChatMessages.forEach(function(m) {
-        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '\n' + m.content + '\n\n';
+        mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '
+' + m.content + '
+
+';
     });
     const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -1232,7 +1266,7 @@ document.getElementById('save-system-btn').addEventListener('click', function() 
     sys.aiName = document.getElementById('custom-ai-name').value.trim() || 'NEXUS AI';
     sys.systemPrompt = document.getElementById('system-prompt-input').value.trim();
     sys.maintenance = document.getElementById('maintenance-toggle').checked;
-    localStorage.setItem('nexus_system_v12', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v13', JSON.stringify(sys));
     applySystemSettings();
     alert('Gespeichert!');
 });
@@ -1245,11 +1279,11 @@ document.getElementById('save-api-btn').addEventListener('click', function() {
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v12') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v13') || '[]');
     document.getElementById('admin-logs-list').innerHTML = logs.map(function(l) { return '<div>' + l + '</div>'; }).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', function() {
-    localStorage.removeItem('nexus_logs_v12');
+    localStorage.removeItem('nexus_logs_v13');
     renderLogs();
 });

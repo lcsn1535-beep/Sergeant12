@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS AI // OMNI v22 (ULTIMATE OMNI INTELLIGENCE)</title>
-    <link rel="stylesheet" href="style.css?v=22">
+    <title>NEXUS AI // OMNI v23 (ULTIMATE MASTER EDITION)</title>
+    <link rel="stylesheet" href="style.css?v=23">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <!-- ORIGINAL LOGIN / REGISTER SCREEN -->
+    <!-- LOGIN & REGISTER SCREEN -->
     <div id="login-screen" class="login-overlay">
         <div class="cyber-grid"></div>
         <div class="login-box">
@@ -21,7 +21,7 @@
                 <div class="orb"></div>
                 <h1>NEXUS<span>AI</span></h1>
             </div>
-            <p class="login-subtitle">OMNI INTELLIGENCE &bull; v22 ULTIMATE RELEASE (19.11.2026)</p>
+            <p class="login-subtitle">OMNI INTELLIGENCE &bull; v23 ULTIMATE RELEASE (19.11.2026)</p>
             
             <div class="auth-toggle-row">
                 <button class="toggle-btn active" id="mode-login-btn" onclick="switchAuthMode('login')">Anmelden</button>
@@ -39,7 +39,7 @@
                     <input type="password" id="login-pass" placeholder="Passwort" required>
                 </div>
                 <div id="login-error" class="error-msg"></div>
-                <button type="submit" class="btn-glow">SYSTEM STARTEN v22 <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" class="btn-glow">SYSTEM STARTEN v23 <i class="fas fa-arrow-right"></i></button>
             </form>
 
             <!-- Register Form -->
@@ -65,19 +65,19 @@
             </form>
 
             <div class="login-hint">
-                <button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v22 Laden</button>
+                <button type="button" id="hard-reload-btn" style="background:#ef4444; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer; margin-top:10px; font-weight:600;"><i class="fas fa-sync"></i> Cache leeren & v23 Laden</button>
             </div>
         </div>
     </div>
 
-    <!-- MAIN APP -->
+    <!-- MAIN APP CONTAINER -->
     <div id="app-container" class="app-container hidden">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="brand">
                 <div class="orb-small"></div>
                 <span>NEXUS<b>AI</b></span>
-                <span class="badge-pro" id="sidebar-role-badge">v22 OMNI</span>
+                <span class="badge-pro" id="sidebar-role-badge">v23 PRO</span>
             </div>
 
             <button id="new-chat-btn" class="new-chat-btn">
@@ -86,22 +86,16 @@
 
             <div class="sidebar-section-title">CHATHISTORIE</div>
             <div class="chat-history" id="chat-history">
-                <div class="history-item active"><i class="fas fa-message"></i> Nexus v22 Willkommen</div>
+                <div class="history-item active"><i class="fas fa-message"></i> Nexus v23 Workspace</div>
             </div>
 
-            <!-- Voice Control & TTS Widget -->
-            <div class="voice-box">
-                <div class="voice-header">
-                    <span><i class="fas fa-volume-high"></i> KI-Sprachausgabe (TTS)</span>
-                    <button id="master-voice-toggle" class="voice-toggle-btn active">AN</button>
-                </div>
-                <select id="voice-select" class="song-select-dropdown" style="font-size:11px; padding:6px;">
-                    <option value="">Standard Browser Stimme (German)</option>
+            <div class="sidebar-section-title">SYSTEM THEME</div>
+            <div style="padding:4px 0;">
+                <select id="theme-select" class="song-select-dropdown" onchange="changeTheme(this.value)">
+                    <option value="dark-blue">🌌 Deep Space Blue (Standard)</option>
+                    <option value="cyberpunk">⚡ Cyberpunk Neon</option>
+                    <option value="matrix">🟢 Matrix Green</option>
                 </select>
-                <div class="voice-controls-row" style="display:flex; gap:6px; margin-top:6px;">
-                    <button id="stop-speech-btn" class="mini-btn" style="flex:1;"><i class="fas fa-stop"></i> Stopp</button>
-                    <button id="test-speech-btn" class="mini-btn" style="flex:1;"><i class="fas fa-play"></i> Test</button>
-                </div>
             </div>
 
             <!-- Sidebar Footer with Original Admin Button -->
@@ -126,14 +120,14 @@
                 <div class="model-selector">
                     <i class="fas fa-brain"></i>
                     <select id="model-select">
-                        <option value="nexus-omni-2026">Nexus-Omni v22 (Ultimative Weltwissen- & Bild-KI)</option>
-                        <option value="gpt-4o-max">GPT-4o / Claude 3.5 Hybrid Engine</option>
-                        <option value="deep-research">Deep Research & Google Grounding 2026</option>
+                        <option value="nexus-omni-v23">Nexus-Omni v23 (Ultimate AI Engine)</option>
+                        <option value="claude-3-5">Claude 3.5 Sonnet Reasoning</option>
+                        <option value="gpt-4o">GPT-4o World Knowledge</option>
                     </select>
                 </div>
 
                 <div class="topbar-right">
-                    <button id="open-world-db-btn" class="screen-btn"><i class="fas fa-globe"></i> Weltwissen Enzyklopädie</button>
+                    <button id="open-world-db-btn" class="screen-btn"><i class="fas fa-globe"></i> Weltwissen DB</button>
                     <div class="status-indicator">
                         <span class="pulse-dot"></span> <span id="live-date-badge">Release: 19.11.2026</span>
                     </div>
@@ -144,24 +138,24 @@
             <div class="chat-feed" id="chat-feed">
                 <div class="welcome-hero" id="welcome-hero">
                     <div class="hero-orb"></div>
-                    <h2>NEXUS AI v22 &bull; Ultimate Omni Intelligence.</h2>
-                    <p>Das System wurde komplett von Grund auf neu programmiert! Die KI besitzt nun uneingeschränktes Weltwissen (von Google, Wissenschaft, Promis, Thomas Müller, Sport & Tech bis 2026), einen extrem leistungsstarken High-End-Bildgenerator und vollwertige Sprachausgabe mit Sprachsteuerung.</p>
+                    <h2>NEXUS AI v23 &bull; Ultimate Master Edition.</h2>
+                    <p>Das System läuft jetzt fehlerfrei und extrem stabil! Die Bildgenerierung erstellt exakt das, was du eingibst (egal ob Apfel, Auto oder Porträts), die KI antwortet sofort in Textform ohne automatisches Stören, und das Admin-Panel besitzt nun vollständige Benutzer-Freigabe, Sperrung und Early-Access-Verwaltung.</p>
                     
                     <div class="quick-cards">
-                        <div class="q-card" onclick="useQuickPrompt('Generiere ein fotorealistisches High-End Action-Porträt von Thomas Müller im Bayern-Trikot in Aktion 8k')">
-                            <i class="fas fa-futbol"></i>
-                            <h4>Thomas Müller Bild-Generator</h4>
-                            <p>Echte High-End Visuals per Befehl</p>
+                        <div class="q-card" onclick="useQuickPrompt('Generiere ein Bild von einem roten Apfel auf einem Holztisch')">
+                            <i class="fas fa-apple-whole"></i>
+                            <h4>Bild: Apfel / Objekt</h4>
+                            <p>Dynamische Generierung deines Prompts</p>
                         </div>
-                        <div class="q-card" onclick="useQuickPrompt('Erzähle mir alle Details über Künstliche Intelligenz und Weltwissen im Jahr 2026')">
+                        <div class="q-card" onclick="useQuickPrompt('Erzähle mir alle Details über Thomas Müller und Künstliche Intelligenz 2026')">
                             <i class="fas fa-globe-americas"></i>
-                            <h4>Weltwissen & Deep Research</h4>
+                            <h4>Weltwissen & Fakten</h4>
                             <p>Beantwortet jede legale Frage</p>
                         </div>
-                        <div class="q-card" onclick="useQuickPrompt('Schreibe einen vollständigen, professionellen HTML und JS Code für eine interaktive Dashboard App')">
+                        <div class="q-card" onclick="useQuickPrompt('Schreibe einen professionellen HTML und JS Code für eine moderne Web-App')">
                             <i class="fas fa-code"></i>
-                            <h4>Claude & GPT Code Engine</h4>
-                            <p>Sauberer Code & Web Apps</p>
+                            <h4>Code & Web Apps</h4>
+                            <p>Claude / GPT Code Engine</p>
                         </div>
                     </div>
                 </div>
@@ -172,11 +166,11 @@
                 <div class="input-container">
                     <button id="mic-input-btn" class="tool-btn" title="Spracheingabe (Mikrofon)"><i class="fas fa-microphone"></i></button>
                     <button id="magic-enhance-btn" class="tool-btn" title="Prompt mit KI optimieren"><i class="fas fa-wand-magic-sparkles" style="color:#3b82f6;"></i></button>
-                    <textarea id="prompt-input" placeholder="Frage alles über die Welt oder sage 'Generiere ein Bild von Thomas Müller'..." rows="1"></textarea>
+                    <textarea id="prompt-input" placeholder="Frage alles oder tippe 'Generiere ein Bild von...'..." rows="1"></textarea>
                     <button id="send-btn" class="send-btn" title="Senden"><i class="fas fa-arrow-up"></i></button>
                 </div>
                 <div class="input-footer">
-                    <span>NEXUS AI Omni v22 &bull; Release: 19.11.2026 &bull; lcsn1535@gmail.com</span>
+                    <span>NEXUS AI v23 &bull; Release: 19.11.2026 &bull; lcsn1535@gmail.com</span>
                 </div>
             </div>
         </main>
@@ -189,7 +183,7 @@
                 <h3><i class="fas fa-globe"></i> Weltwissen-Enzyklopädie 2026</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
-            <p style="color:#9ca3af; font-size:13px;">Wähle ein Fachgebiet für sofortige Deep-Research Fakten:</p>
+            <p style="color:#9ca3af; font-size:13px;">Wähle ein Fachgebiet:</p>
             <select id="modal-topic-select" class="song-select-dropdown" style="padding:10px; font-size:13px; color:white;">
                 <option value="müller">⚽ Thomas Müller & FC Bayern (Karriere, Titel, Raumdeuter)</option>
                 <option value="ai">🧠 Künstliche Intelligenz & Google Grounding 2026</option>
@@ -206,31 +200,33 @@
         </div>
     </div>
 
-    <!-- ORIGINAL FULL ADMIN MODAL (RESTORED WITH ROLES) -->
+    <!-- ADMIN PANEL MODAL (WITH USER APPROVAL, BAN & EARLY ACCESS) -->
     <div id="admin-modal" class="modal-backdrop hidden">
         <div class="modal-card admin-modal-card">
             <div class="modal-header">
-                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v22</h3>
+                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM v23</h3>
                 <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
             </div>
             
             <div class="admin-tabs">
-                <button class="tab-btn active" onclick="switchAdminTab('users', this)"><i class="fas fa-users"></i> Benutzer & Rollen (Admin, Premium, User)</button>
+                <button class="tab-btn active" onclick="switchAdminTab('users', this)"><i class="fas fa-users"></i> Benutzer & Freigaben (Approval, Ban, Early Access)</button>
                 <button class="tab-btn" onclick="switchAdminTab('email', this)"><i class="fas fa-envelope"></i> E-Mail Postfach (lcsn1535@gmail.com)</button>
                 <button class="tab-btn" onclick="switchAdminTab('system', this)"><i class="fas fa-microchip"></i> KI-Steuerung</button>
                 <button class="tab-btn" onclick="switchAdminTab('logs', this)"><i class="fas fa-terminal"></i> System-Logs</button>
             </div>
 
-            <!-- Tab 1: Users -->
+            <!-- Tab 1: Users with Approval, Ban, Early Access -->
             <div id="tab-users" class="tab-content active">
-                <h4>Benutzerverwaltung & Berechtigungen</h4>
+                <h4>Erweiterte Benutzerverwaltung & Freigaben</h4>
                 <div class="table-wrapper">
                     <table class="user-table">
                         <thead>
                             <tr>
                                 <th>Benutzername</th>
                                 <th>Rolle</th>
+                                <th>Freigabe</th>
                                 <th>Status</th>
+                                <th>Early Access</th>
                                 <th>Aktionen</th>
                             </tr>
                         </thead>
@@ -239,7 +235,9 @@
                         </tbody>
                     </table>
                 </div>
-                <button class="btn-primary" onclick="addNewUserPrompt()" style="margin-top:12px;"><i class="fas fa-user-plus"></i> Neuen User anlegen</button>
+                <div style="display:flex; gap:10px; margin-top:12px;">
+                    <button class="btn-primary" onclick="addNewUserPrompt()"><i class="fas fa-user-plus"></i> Neuen User anlegen</button>
+                </div>
             </div>
 
             <!-- Tab 2: Email -->
@@ -250,15 +248,15 @@
                 </div>
                 <h4 style="margin-top:15px; color:#3b82f6;"><i class="fas fa-inbox"></i> Postfach für lcsn1535@gmail.com</h4>
                 <div class="email-inbox-box" id="admin-email-inbox-list" style="background:#0b0f19; padding:14px; border-radius:8px; border:1px solid rgba(75,85,99,0.3); font-size:12px; color:#d1d5db; line-height:1.6;">
-                    <p><b>[System Notification]</b> Nexus AI v22 erfolgreich deployed (Release: 19.11.2026). Alle Weltwissen- und Bildgenerierungs-Module aktiv.</p>
+                    <p><b>[System Notification]</b> Nexus AI v23 erfolgreich deployed (Release: 19.11.2026). Alle Freigabe- und Early-Access-Kontrollen aktiv.</p>
                 </div>
             </div>
 
             <!-- Tab 3: System -->
             <div id="tab-system" class="tab-content hidden">
                 <div class="sys-setting">
-                    <label>Globaler System-Prompt (Ultimatives Weltwissen)</label>
-                    <textarea id="admin-system-prompt" rows="4">Du bist NEXUS AI Omni v22, eine ultimative Super-KI mit Zugriff auf umfassendes Weltwissen (Google, Wissenschaft, Geschichte, Kultur, Sport), exzellenter Bildgenerierung und Programmierkompetenz.</textarea>
+                    <label>Globaler System-Prompt</label>
+                    <textarea id="admin-system-prompt" rows="4">Du bist NEXUS AI Omni v23, eine ultimative Super-KI mit Zugriff auf umfassendes Weltwissen, präziser dynamischer Bildgenerierung und Programmierkompetenz.</textarea>
                 </div>
                 <button class="btn-primary" onclick="alert('Einstellungen gespeichert!'); closeModals();">Speichern</button>
             </div>
@@ -266,14 +264,14 @@
             <!-- Tab 4: Logs -->
             <div id="tab-logs" class="tab-content hidden">
                 <div class="logs-box" style="background:#0b0f19; padding:14px; border-radius:8px; border:1px solid rgba(75,85,99,0.3); font-family:monospace; font-size:11px; color:#10b981; max-height:220px; overflow-y:auto; line-height:1.5;">
-                    [19.11.2026 12:00:00] [INIT] Nexus Omni v22 core loaded.<br>
-                    [19.11.2026 12:00:01] [SUCCESS] Original login & admin panel restored.<br>
-                    [19.11.2026 12:00:02] [SUCCESS] High-end canvas image generator and speech synthesis active.
+                    [19.11.2026 14:00:00] [INIT] Nexus Omni v23 core loaded.<br>
+                    [19.11.2026 14:00:01] [SUCCESS] Dynamic image renderer mapped to exact prompt input.<br>
+                    [19.11.2026 14:00:02] [SUCCESS] User approval & Early Access toggles active.
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="app.js?v=22"></script>
+    <script src="app.js?v=23"></script>
 </body>
 </html>

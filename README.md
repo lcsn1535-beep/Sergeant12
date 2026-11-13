@@ -1,6 +1,6 @@
-# NEXUS AI OMNI v22 (Ultimate Omni Intelligence & Release Edition)
+# NEXUS AI OMNI v23 (Ultimate Master Edition)
 - Released on 19.11.2026.
-- Preserved original Login & Full Admin Panel with role management.
-- Integrated fully functional High-End Canvas Image Generator (rendering clean visual cards for prompts like Thomas Müller).
-- Integrated text-to-speech & speech recognition (voice input & output).
-- Equipped with comprehensive world knowledge (Google & Enzyklopädie 2026 data).
+- Fixed image generator to dynamically render *any* prompt (apples, cars, portraits, etc.) without hardcoding everything to Thomas Müller.
+- Removed auto-talking / TTS spam so the user can chat freely.
+- Added full user approval workflow, account banning, and Early Access toggles directly in the Admin Panel.
+- Added Theme Switcher (Deep Space Blue, Cyberpunk Neon, Matrix Green).

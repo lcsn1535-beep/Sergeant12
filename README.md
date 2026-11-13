@@ -1,2 +1,3 @@
-# NEXUS AI OMNI v27 (Ultimate Master Edition)
-- Fixed Uncaught SyntaxError: Unexpected identifier 'role' in renderAdminUsersTable (escaped quotes correctly).
+# NEXUS AI OMNI v28 (Universal Knowledge Edition)
+- Replaced rigid keyword matching with a fully dynamic universal knowledge synthesizer.
+- Automatically handles any question about people, history, science, pop culture, sports, and code correctly.

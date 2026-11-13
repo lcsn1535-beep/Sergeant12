@@ -1,4 +1,8 @@
-# NEXUS AI OMNI v20 (Original Design & Full Admin Restored)
-- Completely removed the "Studio" clutter.
-- Restored the exact original layout, sidebar widgets, and full 5-tab Admin Panel.
-- Kept the robust canvas image generator clean so prompts like Thomas Müller render cleanly without text dumps.
+# NEXUS AI OMNI v21 (Ultimate Release Edition)
+- Released on 19.11.2026.
+- Removed voice and Spotify widgets.
+- Enhanced design inspired by Claude and ChatGPT architectures.
+- Added full Account Registration & Login system.
+- Upgraded Admin Panel with Role Management (Admin, Premium, User).
+- Secure login without hardcoded password hints.
+- Completely overhauled High-End Canvas Image Generator.

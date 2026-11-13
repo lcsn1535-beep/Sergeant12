@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI // Ultra Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Markdown & Syntax Highlighting -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="login-overlay">
+        <div class="cyber-grid"></div>
+        <div class="login-box">
+            <div class="login-logo">
+                <div class="orb"></div>
+                <h1>NEXUS<span>AI</span></h1>
+            </div>
+            <p class="login-subtitle">Autorisierter Zugang erforderlich</p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="login-user" placeholder="Benutzername" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-pass" placeholder="Passwort" required>
+                </div>
+                <div id="login-error" class="error-msg"></div>
+                <button type="submit" class="btn-glow">SYSTEM ENTSPERREN <i class="fas fa-arrow-right"></i></button>
+            </form>
+
+            <div class="login-hint">
+                <span>Standard-Admin: <b>admin</b> / <b>admin123</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app-container" class="app-container hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="orb-small"></div>
+                <span>NEXUS<b>AI</b></span>
+                <span class="badge-pro">ULTRA</span>
+            </div>
+
+            <button id="new-chat-btn" class="new-chat-btn">
+                <i class="fas fa-plus"></i> Neuer Chat
+            </button>
+
+            <div class="sidebar-section-title">VERLAUF</div>
+            <div class="chat-history" id="chat-history"></div>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar" id="current-user-avatar">A</div>
+                    <div class="user-details">
+                        <span id="current-user-name">admin</span>
+                        <span id="current-user-role" class="role-badge">ADMIN</span>
+                    </div>
+                </div>
+
+                <div class="footer-actions">
+                    <button id="admin-panel-btn" class="icon-btn admin-only" title="Admin Kontrollzentrum">
+                        <i class="fas fa-shield-halved"></i> Admin
+                    </button>
+                    <button id="api-settings-btn" class="icon-btn" title="KI-Gehirn / API Einstellungen">
+                        <i class="fas fa-brain"></i> KI-Setup
+                    </button>
+                    <button id="logout-btn" class="icon-btn danger" title="Abmelden">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <header class="topbar">
+                <div class="model-selector">
+                    <i class="fas fa-microchip"></i>
+                    <select id="model-select">
+                        <option value="nexus-auto">Nexus-Ultra (Smart Auto-Modus - Kein Key nötig)</option>
+                        <option value="pollinations-openai">GPT-4o / Omni (Kostenlos & Direkt aktiv)</option>
+                        <option value="pollinations-claude">Claude-3.5 Style (Kostenlos & Direkt aktiv)</option>
+                        <option value="custom-api">Eigener API-Key (OpenAI / OpenRouter)</option>
+                    </select>
+                </div>
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span> System Online
+                </div>
+            </header>
+
+            <!-- Chat Messages -->
+            <div class="chat-feed" id="chat-feed">
+                <div class="welcome-hero" id="welcome-hero">
+                    <div class="hero-orb"></div>
+                    <h2>Willkommen zurück, <span id="hero-username">Admin</span>.</h2>
+                    <p>Ich kann Code schreiben, Dateien analysieren, Daten verarbeiten und jede Frage beantworten.</p>
+                    
+                    <div class="quick-cards">
+                        <div class="q-card" onclick="usePrompt('Analysiere folgende Daten und erstelle eine Zusammenfassung: Umsatz Q1: 12.000€, Q2: 18.500€, Q3: 15.200€, Q4: 29.800€')">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Daten auswerten</h4>
+                            <p>Zahlen, Tabellen & CSVs analysieren</p>
+                        </div>
+                        <div class="q-card" onclick="usePrompt('Schreibe mir ein modernes Python-Skript für einen Web-Scraper mit Erklärungen.')">
+                            <i class="fas fa-code"></i>
+                            <h4>Code & Entwicklung</h4>
+                            <p>Websites, Skripte & Debugging</p>
+                        </div>
+                        <div class="q-card" onclick="usePrompt('Erkläre mir Quantencomputing so einfach, als wäre ich 12 Jahre alt.')">
+                            <i class="fas fa-atom"></i>
+                            <h4>Komplexes Wissen</h4>
+                            <p>Jedes Thema tiefgehend verstehen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Preview Bar -->
+            <div id="file-attachment-bar" class="file-bar hidden">
+                <div class="file-chip">
+                    <i class="fas fa-file-code"></i>
+                    <span id="attached-filename">daten.csv</span>
+                    <button id="remove-file-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-wrapper">
+                <div class="input-container">
+                    <input type="file" id="file-upload" hidden accept=".txt,.csv,.json,.md,.js,.py,.html,.css,.xml,.log">
+                    <button id="attach-btn" class="tool-btn" title="Datei / Daten hochladen (CSV, TXT, JSON, Code)">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <textarea id="prompt-input" placeholder="Frag mich alles oder lade eine Datei zur Analyse hoch..." rows="1"></textarea>
+                    <button id="send-btn" class="send-btn">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span>Unterstützt Datei-Upload (.csv, .json, .txt, Code) &bull; Markdown & Code-Highlighting aktiv</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ADMIN MODAL -->
+    <div id="admin-modal" class="modal-backdrop hidden">
+        <div class="modal-card admin-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-shield-halved"></i> ADMIN KONTROLLZENTRUM</h3>
+                <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchAdminTab('users')">Benutzer & Passwörter</button>
+                <button class="tab-btn" onclick="switchAdminTab('system')">System & KI-Steuerung</button>
+                <button class="tab-btn" onclick="switchAdminTab('logs')">Aktivitäts-Logs</button>
+            </div>
+
+            <!-- Tab 1: Users -->
+            <div id="tab-users" class="tab-content active">
+                <div class="add-user-box">
+                    <h4>Neuen Zugang erstellen</h4>
+                    <div class="form-row">
+                        <input type="text" id="new-username" placeholder="Neuer Benutzername">
+                        <input type="text" id="new-password" placeholder="Passwort vergeben">
+                        <select id="new-role">
+                            <option value="user">Nutzer (User)</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                        <button id="create-user-btn" class="btn-primary"><i class="fas fa-user-plus"></i> Erstellen</button>
+                    </div>
+                </div>
+
+                <h4>Aktive Benutzerkonten</h4>
+                <div class="table-wrapper">
+                    <table class="user-table">
+                        <thead>
+                            <tr>
+                                <th>Benutzername</th>
+                                <th>Passwort</th>
+                                <th>Rolle</th>
+                                <th>Status</th>
+                                <th>Aktionen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 2: System -->
+            <div id="tab-system" class="tab-content hidden">
+                <div class="sys-setting">
+                    <label>System-Persönlichkeit der KI (System Prompt)</label>
+                    <textarea id="system-prompt-input" rows="4">Du bist NEXUS AI, eine extrem intelligente, hilfreiche und präzise KI. Du analysierst Daten messerscharf, schreibst perfekten Code und antwortest immer strukturiert auf Deutsch.</textarea>
+                </div>
+                <div class="sys-setting">
+                    <label>KI-Name im Header</label>
+                    <input type="text" id="custom-ai-name" value="NEXUS AI">
+                </div>
+                <div class="sys-setting toggle-row">
+                    <span>Wartungsmodus (Sperrt normale Nutzer aus)</span>
+                    <input type="checkbox" id="maintenance-toggle">
+                </div>
+                <button id="save-system-btn" class="btn-primary">System-Einstellungen speichern</button>
+            </div>
+
+            <!-- Tab 3: Logs -->
+            <div id="tab-logs" class="tab-content hidden">
+                <div class="logs-box" id="admin-logs-list"></div>
+                <button id="clear-logs-btn" class="btn-danger-outline" style="margin-top:10px;">Logs löschen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KI API MODAL -->
+    <div id="api-modal" class="modal-backdrop hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-brain"></i> KI-Gehirn Konfiguration</h3>
+                <button class="close-modal" onclick="closeModals()"><i class="fas fa-times"></i></button>
+            </div>
+            <p class="modal-desc">Deine KI funktioniert <b>sofort ohne API-Key</b> über das integrierte Cloud-Modell. Wenn du zusätzlich deinen eigenen OpenAI- oder OpenRouter-Key nutzen willst, kannst du ihn hier eintragen:</p>
+            <div class="sys-setting">
+                <label>Eigener API-Key (Optional)</label>
+                <input type="password" id="custom-api-key" placeholder="sk-...">
+            </div>
+            <div class="sys-setting">
+                <label>API Endpoint URL</label>
+                <input type="text" id="custom-api-url" value="https://api.openai.com/v1/chat/completions">
+            </div>
+            <button id="save-api-btn" class="btn-primary">Speichern</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# NEXUS AI OMNI v19 (Ultimate Image Studio)
-- Completely overhauled image generator using real high-resolution photo compositing & cinematic color grading.
-- Added Aspect Ratio selectors (16:9, 1:1, 9:16), Style Presets (Photorealistic 8K, Cyberpunk, Oil Painting), and 4-Grid Variations.
-- Added AI Prompt Enhancer button.
+# NEXUS AI OMNI v20 (Original Design & Full Admin Restored)
+- Completely removed the "Studio" clutter.
+- Restored the exact original layout, sidebar widgets, and full 5-tab Admin Panel.
+- Kept the robust canvas image generator clean so prompts like Thomas Müller render cleanly without text dumps.

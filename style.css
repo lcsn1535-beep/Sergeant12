@@ -108,7 +108,7 @@ body.theme-matrix { background-color: #020f07; }
 .tab-content { display: flex; flex-direction: column; gap: 16px; max-height: 420px; overflow-y: auto; }
 .sys-setting { display: flex; flex-direction: column; gap: 6px; }
 .sys-setting label { font-size: 12px; font-weight: 600; color: #d1d5db; }
-.sys-setting input, .sys-setting textarea, .sys-setting select { background: again; background: #1f2937; border: 1px solid rgba(75, 85, 99, 0.4); color: white; padding: 10px 14px; border-radius: 8px; font-size: 13px; outline: none; }
+.sys-setting input, .sys-setting textarea, .sys-setting select { background: #1f2937; border: 1px solid rgba(75, 85, 99, 0.4); color: white; padding: 10px 14px; border-radius: 8px; font-size: 13px; outline: none; }
 .btn-primary { background: #3b82f6; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; }
 .btn-secondary { background: #374151; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; }
 .btn-danger-sm { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }

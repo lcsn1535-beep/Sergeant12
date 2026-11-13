@@ -1,3 +1,2 @@
-# NEXUS AI OMNI v26 (Ultimate Master Edition)
-- Fixed JS SyntaxError (multiline string literals in app.js).
-- Fully validated login and robust AI question answering engine.
+# NEXUS AI OMNI v27 (Ultimate Master Edition)
+- Fixed Uncaught SyntaxError: Unexpected identifier 'role' in renderAdminUsersTable (escaped quotes correctly).

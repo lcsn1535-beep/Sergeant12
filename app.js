@@ -1,11 +1,11 @@
 // ==========================================
-// NEXUS AI OMNI v26 - ULTIMATE MASTER EDITION
+// NEXUS AI OMNI v27 - ULTIMATE MASTER EDITION
 // ==========================================
 const RELEASE_DATE = '13.11.2026';
 const TARGET_ADMIN_EMAIL = 'lcsn1535@gmail.com';
 
 function getUsersDB() {
-    const stored = localStorage.getItem('nexus_users_v26');
+    const stored = localStorage.getItem('nexus_users_v27');
     if (stored) {
         try { return JSON.parse(stored); } catch(e){}
     }
@@ -14,12 +14,12 @@ function getUsersDB() {
         { username: 'premium_user', pass: '123', role: 'premium', approved: true, status: 'Aktiv', earlyAccess: true },
         { username: 'free_user', pass: '123', role: 'user', approved: false, status: 'Aktiv', earlyAccess: false }
     ];
-    localStorage.setItem('nexus_users_v26', JSON.stringify(defaults));
+    localStorage.setItem('nexus_users_v27', JSON.stringify(defaults));
     return defaults;
 }
 
 function saveUsersDB(users) {
-    localStorage.setItem('nexus_users_v26', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v27', JSON.stringify(users));
 }
 
 var currentUser = null;
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 currentUser = found;
-                sessionStorage.setItem('nexus_session_v26', JSON.stringify(found));
+                sessionStorage.setItem('nexus_session_v27', JSON.stringify(found));
                 initApp();
             } else {
                 document.getElementById('login-error').innerText = 'Ungültiger Benutzername oder Passwort!';
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isAdm) {
                 currentUser = newUser;
-                sessionStorage.setItem('nexus_session_v26', JSON.stringify(newUser));
+                sessionStorage.setItem('nexus_session_v27', JSON.stringify(newUser));
                 initApp();
             } else {
                 alert('Account erfolgreich erstellt! Bitte warte, bis ein Administrator deinen Account freigibt.');
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('nexus_session_v26');
+            sessionStorage.removeItem('nexus_session_v27');
             location.reload();
         });
     }
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initWorldKnowledgeModal();
     initAdminModal();
 
-    const saved = sessionStorage.getItem('nexus_session_v26');
+    const saved = sessionStorage.getItem('nexus_session_v27');
     if (saved) {
         try {
             currentUser = JSON.parse(saved);
@@ -144,7 +144,7 @@ function initApp() {
     const adminBtn = document.getElementById('admin-panel-btn');
 
     roleLabel.innerText = currentUser.role.toUpperCase();
-    sideBadge.innerText = 'v26 ' + (currentUser.earlyAccess ? 'EARLY ACCESS' : currentUser.role.toUpperCase());
+    sideBadge.innerText = 'v27 ' + (currentUser.earlyAccess ? 'EARLY ACCESS' : currentUser.role.toUpperCase());
 
     if (currentUser.role !== 'admin') {
         if (adminBtn) adminBtn.style.display = 'none';
@@ -179,7 +179,7 @@ function initChatControls() {
     }
     if (newChatBtn) {
         newChatBtn.addEventListener('click', () => {
-            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace v26</h2></div>';
+            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace v27</h2></div>';
         });
     }
     if (magicBtn) {
@@ -241,7 +241,7 @@ function sendAIQuery() {
 
     if (isImageRequest(text)) {
         const loadId = 'img-' + Date.now();
-        appendMessage('ai', `<div id="${loadId}-prog"><i class="fas fa-wand-magic-sparkles fa-spin" style="color:#3b82f6;"></i> Nexus v26 analysiert Prompt & initialisiert Diffusion Engine... (0%)</div>`, loadId, true);
+        appendMessage('ai', `<div id="${loadId}-prog"><i class="fas fa-wand-magic-sparkles fa-spin" style="color:#3b82f6;"></i> Nexus v27 analysiert Prompt & initialisiert Diffusion Engine... (0%)</div>`, loadId, true);
 
         setTimeout(() => {
             const el1 = document.getElementById(`${loadId}-prog`);
@@ -263,19 +263,19 @@ function sendAIQuery() {
             if (bubble) {
                 bubble.innerHTML = `<p>Hier ist dein fotorealistisches, frisch generiertes KI-Bild für: <i>"${cleanPrompt}"</i></p>` +
                     `<div class="ai-image-wrapper">` +
-                    `<img src="${imageUrl}" alt="Nexus v26 AI Render" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1000';">` +
+                    `<img src="${imageUrl}" alt="Nexus v27 AI Render" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=1000';">` +
                     `<div class="ai-image-footer">` +
-                    `<span>Nexus AI Studio v26 // True AI Render Engine</span>` +
-                    `<a href="${imageUrl}" target="_blank" download="nexus-v26-ai-image.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
+                    `<span>Nexus AI Studio v27 // True AI Render Engine</span>` +
+                    `<a href="${imageUrl}" target="_blank" download="nexus-v27-ai-image.jpg" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
                     `</div></div>`;
             }
         }, 4500);
         return;
     }
 
-    // Intelligent Knowledge Engine for Answers (Strictly single-line strings to avoid SyntaxError)
+    // Intelligent Knowledge Engine for Answers
     const loadId = 'msg-' + Date.now();
-    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Nexus v26 analysiert deine Frage im Weltwissen...', loadId, true);
+    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Nexus v27 analysiert deine Frage im Weltwissen...', loadId, true);
 
     setTimeout(() => {
         let reply = '';
@@ -294,9 +294,9 @@ function sendAIQuery() {
         } else if (lower.includes('ki') || lower.includes('intelligenz') || lower.includes('ai')) {
             reply = '### Künstliche Intelligenz 2026\n- **Aktueller Stand:** Multimodale LLMs, Echtzeit-Websuche und autonome Agenten-Workflows prägen das Jahr 2026.\n- **Fakten:** Ich stehe dir für all deine Fragen als Experten-System zur Seite.';
         } else if (lower.includes('code') || lower.includes('html') || lower.includes('javascript')) {
-            reply = 'Hier ist dein professioneller Web-Code:\n```html\n<!DOCTYPE html>\n<html>\n<head><title>Nexus v26 App</title></head>\n<body style=\"background:#0b0f19; color:white; font-family:Inter; padding:40px;\">\n  <h1>Nexus v26 Code Engine</h1>\n  <p>Erfolgreich generiert und sofort einsatzbereit!</p>\n</body>\n</html>\n```';
+            reply = 'Hier ist dein professioneller Web-Code:\n```html\n<!DOCTYPE html>\n<html>\n<head><title>Nexus v27 App</title></head>\n<body style=\"background:#0b0f19; color:white; font-family:Inter; padding:40px;\">\n  <h1>Nexus v27 Code Engine</h1>\n  <p>Erfolgreich generiert und sofort einsatzbereit!</p>\n</body>\n</html>\n```';
         } else {
-            reply = '### Antwort von Nexus v26 (Weltwissen)\nZu deiner Anfrage (*"' + text + '"*):\n- **Analyse:** Die Frage wurde erfolgreich verarbeitet.\n- **Details:** Als **' + currentUser.role.toUpperCase() + '** hast du Zugriff auf die globale Datenbank. Dein gesuchtes Thema wurde analysiert.\n- **Hinweis:** Falls du spezifischere Eckdaten oder Code benötigst, stelle deine Frage einfach präzisiert in den Chat!';
+            reply = '### Antwort von Nexus v27 (Weltwissen)\nZu deiner Anfrage (*"' + text + '"*):\n- **Analyse:** Die Frage wurde erfolgreich verarbeitet.\n- **Details:** Als **' + currentUser.role.toUpperCase() + '** hast du Zugriff auf die globale Datenbank. Dein gesuchtes Thema wurde analysiert.\n- **Hinweis:** Falls du spezifischere Eckdaten oder Code benötigst, stelle deine Frage einfach präzisiert in den Chat!';
         }
 
         updateAIMessage(loadId, reply);
@@ -392,7 +392,7 @@ function renderAdminUsersTable() {
     users.forEach((u, idx) => {
         const tr = document.createElement('tr');
         tr.innerHTML = '<td><b>' + u.username + '</b></td>' +
-            '<td><select onchange="updateUserField(' + idx + ', 'role', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;">' +
+            '<td><select onchange="updateUserField(' + idx + ', \'role\', this.value)" class="song-select-dropdown" style="padding:4px; font-size:11px;">' +
             '<option value="user" ' + (u.role==='user'?'selected':'') + '>User</option>' +
             '<option value="premium" ' + (u.role==='premium'?'selected':'') + '>Premium</option>' +
             '<option value="admin" ' + (u.role==='admin'?'selected':'') + '>Admin</option></select></td>' +

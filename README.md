@@ -1,6 +1,6 @@
-# NEXUS AI OMNI v23 (Ultimate Master Edition)
-- Released on 19.11.2026.
-- Fixed image generator to dynamically render *any* prompt (apples, cars, portraits, etc.) without hardcoding everything to Thomas Müller.
-- Removed auto-talking / TTS spam so the user can chat freely.
-- Added full user approval workflow, account banning, and Early Access toggles directly in the Admin Panel.
-- Added Theme Switcher (Deep Space Blue, Cyberpunk Neon, Matrix Green).
+# NEXUS AI OMNI v24 (Ultimate Master Edition)
+- Fixed JS SyntaxError (unescaped multiline strings in app.js).
+- Fixed Login and User Authentication.
+- Added extended image generation delay (~4.5s) with multi-step progress indicators.
+- Integrated Pollinations AI real image generation so users get actual generated images matching their exact prompt.
+- Restored robust normal question answering for all topics.

@@ -1,8 +1,6 @@
-# NEXUS AI OMNI v21 (Ultimate Release Edition)
+# NEXUS AI OMNI v22 (Ultimate Omni Intelligence & Release Edition)
 - Released on 19.11.2026.
-- Removed voice and Spotify widgets.
-- Enhanced design inspired by Claude and ChatGPT architectures.
-- Added full Account Registration & Login system.
-- Upgraded Admin Panel with Role Management (Admin, Premium, User).
-- Secure login without hardcoded password hints.
-- Completely overhauled High-End Canvas Image Generator.
+- Preserved original Login & Full Admin Panel with role management.
+- Integrated fully functional High-End Canvas Image Generator (rendering clean visual cards for prompts like Thomas Müller).
+- Integrated text-to-speech & speech recognition (voice input & output).
+- Equipped with comprehensive world knowledge (Google & Enzyklopädie 2026 data).

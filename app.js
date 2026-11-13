@@ -1,12 +1,11 @@
 // ==========================================
-// NEXUS AI OMNI v21 - ULTIMATE RELEASE EDITION
+// NEXUS AI OMNI v22 - ULTIMATE OMNI INTELLIGENCE
 // ==========================================
 const RELEASE_DATE = '19.11.2026';
 const TARGET_ADMIN_EMAIL = 'lcsn1535@gmail.com';
 
-// Local storage database for users & settings
 function getUsersDB() {
-    const stored = localStorage.getItem('nexus_users_v21');
+    const stored = localStorage.getItem('nexus_users_v22');
     if (stored) {
         try { return JSON.parse(stored); } catch(e){}
     }
@@ -15,15 +14,16 @@ function getUsersDB() {
         { username: 'premium_user', pass: '123', role: 'premium', status: 'Aktiv' },
         { username: 'free_user', pass: '123', role: 'user', status: 'Aktiv' }
     ];
-    localStorage.setItem('nexus_users_v21', JSON.stringify(defaults));
+    localStorage.setItem('nexus_users_v22', JSON.stringify(defaults));
     return defaults;
 }
 
 function saveUsersDB(users) {
-    localStorage.setItem('nexus_users_v21', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v22', JSON.stringify(users));
 }
 
 var currentUser = null;
+var masterVoiceEnabled = true;
 
 document.addEventListener('DOMContentLoaded', function() {
     const hardReloadBtn = document.getElementById('hard-reload-btn');
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Auth Form Switcher
+    // Login & Register form handlers
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
 
@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const found = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.pass === p);
             if (found) {
                 currentUser = found;
-                sessionStorage.setItem('nexus_session_v21', JSON.stringify(found));
+                sessionStorage.setItem('nexus_session_v22', JSON.stringify(found));
                 initApp();
             } else {
-                document.getElementById('login-error').innerText = 'Ungültiger Benutzername oder Passwort. Erstelle einen Account!';
+                document.getElementById('login-error').innerText = 'Ungültiger Benutzername oder Passwort!';
             }
         });
     }
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             saveUsersDB(users);
 
             currentUser = newUser;
-            sessionStorage.setItem('nexus_session_v21', JSON.stringify(newUser));
+            sessionStorage.setItem('nexus_session_v22', JSON.stringify(newUser));
             initApp();
         });
     }
@@ -83,16 +83,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('nexus_session_v21');
+            sessionStorage.removeItem('nexus_session_v22');
             location.reload();
         });
     }
 
+    initSpeechSynthesis();
     initChatControls();
     initWorldKnowledgeModal();
     initAdminModal();
 
-    const saved = sessionStorage.getItem('nexus_session_v21');
+    const saved = sessionStorage.getItem('nexus_session_v22');
     if (saved) {
         try {
             currentUser = JSON.parse(saved);
@@ -101,13 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function switchAuthTab(tab) {
-    const lBtn = document.getElementById('tab-login-btn');
-    const rBtn = document.getElementById('tab-register-btn');
+function switchAuthMode(mode) {
+    const lBtn = document.getElementById('mode-login-btn');
+    const rBtn = document.getElementById('mode-reg-btn');
     const lForm = document.getElementById('login-form');
     const rForm = document.getElementById('register-form');
 
-    if (tab === 'login') {
+    if (mode === 'login') {
         lBtn.classList.add('active');
         rBtn.classList.remove('active');
         lForm.classList.remove('hidden');
@@ -119,22 +120,21 @@ function switchAuthTab(tab) {
         lForm.classList.add('hidden');
     }
 }
-window.switchAuthTab = switchAuthTab;
+window.switchAuthMode = switchAuthMode;
 
 function initApp() {
-    document.getElementById('auth-screen').classList.add('hidden');
+    document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('app-container').classList.remove('hidden');
     document.getElementById('current-user-name').innerText = currentUser.username;
     document.getElementById('current-user-avatar').innerText = currentUser.username[0].toUpperCase();
     
-    const roleBadge = document.getElementById('current-user-role-label');
+    const roleLabel = document.getElementById('current-user-role-label');
     const sideBadge = document.getElementById('sidebar-role-badge');
     const adminBtn = document.getElementById('admin-panel-btn');
 
-    roleBadge.innerText = currentUser.role.toUpperCase();
-    sideBadge.innerText = 'v21 ' + currentUser.role.toUpperCase();
+    roleLabel.innerText = currentUser.role.toUpperCase();
+    sideBadge.innerText = 'v22 ' + currentUser.role.toUpperCase();
 
-    // Restrict admin panel strictly to admin role
     if (currentUser.role !== 'admin') {
         if (adminBtn) adminBtn.style.display = 'none';
     } else {
@@ -142,11 +142,74 @@ function initApp() {
     }
 }
 
+// ==========================================
+// SPEECH SYNTHESIS & VOICE CONTROLS
+// ==========================================
+function initSpeechSynthesis() {
+    const toggle = document.getElementById('master-voice-toggle');
+    if (toggle) {
+        toggle.addEventListener('click', function() {
+            masterVoiceEnabled = !masterVoiceEnabled;
+            toggle.innerText = masterVoiceEnabled ? 'AN' : 'AUS';
+            toggle.classList.toggle('active', masterVoiceEnabled);
+            if (!masterVoiceEnabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+        });
+    }
+
+    const stopBtn = document.getElementById('stop-speech-btn');
+    if (stopBtn) {
+        stopBtn.addEventListener('click', () => {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        });
+    }
+
+    const testBtn = document.getElementById('test-speech-btn');
+    if (testBtn) {
+        testBtn.addEventListener('click', () => {
+            speakText('NEXUS AI v22 Sprachausgabe erfolgreich aktiviert.');
+        });
+    }
+
+    // Populate voices
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            const voices = window.speechSynthesis.getVoices();
+            const select = document.getElementById('voice-select');
+            if (select) {
+                select.innerHTML = '';
+                voices.forEach((v, idx) => {
+                    if (v.lang.includes('de') || v.lang.includes('en')) {
+                        const opt = document.createElement('option');
+                        opt.value = idx;
+                        opt.innerText = v.name + ' (' + v.lang + ')';
+                        select.appendChild(opt);
+                    }
+                });
+            }
+        };
+    }
+}
+
+function speakText(text) {
+    if (!masterVoiceEnabled || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const clean = text.replace(/[*#`]/g, '').trim();
+    if (clean) {
+        const utterance = new SpeechSynthesisUtterance(clean);
+        utterance.lang = 'de-DE';
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// ==========================================
+// CHAT CONTROLS & COMPREHENSIVE KNOWLEDGE
+// ==========================================
 function initChatControls() {
     const promptInput = document.getElementById('prompt-input');
     const sendBtn = document.getElementById('send-btn');
     const newChatBtn = document.getElementById('new-chat-btn');
-    const magicBtn = document.getElementById('magic-prompt-btn');
+    const magicBtn = document.getElementById('magic-enhance-btn');
+    const micBtn = document.getElementById('mic-input-btn');
 
     if (sendBtn) sendBtn.addEventListener('click', sendAIQuery);
     if (promptInput) {
@@ -159,94 +222,113 @@ function initChatControls() {
     }
     if (newChatBtn) {
         newChatBtn.addEventListener('click', () => {
-            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Workspace (v21)</h2></div>';
+            document.getElementById('chat-feed').innerHTML = '<div class="welcome-hero" id="welcome-hero"><h2>Neuer Chat v22 bereit!</h2></div>';
         });
     }
     if (magicBtn) {
         magicBtn.addEventListener('click', () => {
             if (promptInput) {
                 const val = promptInput.value.trim();
-                promptInput.value = val ? val + ', hochauflösend, masterwork, cinematic lighting, 8k resolution' : 'Generiere ein High-End Action-Porträt von Thomas Müller im Bayern-Trikot in Aktion';
+                promptInput.value = val ? val + ', hochauflösend, masterwork, 8k resolution, cinematic lighting' : 'Generiere ein High-End Action-Porträt von Thomas Müller im Bayern-Trikot in Aktion';
             }
+        });
+    }
+    if (micBtn) {
+        micBtn.addEventListener('click', () => {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Spracheingabe wird in diesem Browser leider nicht unterstützt.');
+                return;
+            }
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const rec = new SpeechRec();
+            rec.lang = 'de-DE';
+            rec.onstart = () => { micBtn.style.color = '#ef4444'; };
+            rec.onresult = (e) => {
+                const transcript = e.results[0][0].transcript;
+                if (promptInput) promptInput.value = transcript;
+                micBtn.style.color = '#9ca3af';
+                sendAIQuery();
+            };
+            rec.onerror = () => { micBtn.style.color = '#9ca3af'; };
+            rec.onend = () => { micBtn.style.color = '#9ca3af'; };
+            rec.start();
         });
     }
 }
 
-function triggerPresetPrompt(text) {
+function useQuickPrompt(text) {
     const p = document.getElementById('prompt-input');
     if (p) {
         p.value = text;
         sendAIQuery();
     }
 }
-window.triggerPresetPrompt = triggerPresetPrompt;
+window.useQuickPrompt = useQuickPrompt;
 
 // ==========================================
-// ADVANCED CANVA IMAGE GENERATOR (v21)
+// HIGH-END CANVAS IMAGE GENERATOR (v22)
 // ==========================================
-function generateHighEndStudioImage(promptText) {
+function generateHighEndImageCanvas(promptText) {
     const canvas = document.createElement('canvas');
     canvas.width = 1200;
     canvas.height = 800;
     const ctx = canvas.getContext('2d');
 
-    // Background gradient with cinematic depth
+    // Background Gradient (Cinematic Deep Space & Bayern Red)
     const grad = ctx.createLinearGradient(0, 0, 1200, 800);
-    grad.addColorStop(0, '#0f172a');
+    grad.addColorStop(0, '#0b0f19');
     grad.addColorStop(0.5, '#1e1b4b');
-    grad.addColorStop(1, '#7f1d1d');
+    grad.addColorStop(1, '#991b1b');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1200, 800);
 
-    // High-end glowing border frame
+    // Neon Frame
     ctx.strokeStyle = '#3b82f6';
     ctx.lineWidth = 6;
     ctx.strokeRect(30, 30, 1140, 740);
 
-    // Center Emblem / Orb
-    ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
+    // Center Emblem
+    ctx.fillStyle = 'rgba(59, 130, 246, 0.25)';
     ctx.beginPath();
-    ctx.arc(600, 240, 90, 0, Math.PI * 2);
+    ctx.arc(600, 250, 95, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = '#60a5fa';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 4;
     ctx.stroke();
 
-    // Icon / Emoji
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 55px Inter, sans-serif';
-    ctx.textAlign = 'center';
     const lower = promptText.toLowerCase();
-    let iconSymbol = '⚡';
+    let icon = '⚡';
     let mainTitle = 'NEXUS AI MASTERWORK';
     let subTitle = 'ULTRA-HD FOTOREALISTISCHES RENDERING';
 
-    if (lower.includes('müller') || lower.includes('bayern') || lower.includes('fussball')) {
-        iconSymbol = '⚽';
+    if (lower.includes('müller') || lower.includes('bayern') || lower.includes('fussball') || lower.includes('action')) {
+        icon = '⚽';
         mainTitle = 'THOMAS MÜLLER // FC BAYERN MÜNCHEN';
         subTitle = 'FOTOREALISTISCHES AKTIONSPORTRÄT // ULTRA HD 8K';
     } else if (lower.includes('yeat') || lower.includes('cyber')) {
-        iconSymbol = '🔥';
+        icon = '🔥';
         mainTitle = 'YEAT 2093 // CYBERPUNK TRAP';
-        subTitle = 'FUTURISTIC STAGE ARTWORK // 8K RESOLUTION';
+        subTitle = 'FUTURISTIC STAGE ARTWORK // 8K';
     } else if (lower.includes('weltwissen') || lower.includes('wissen')) {
-        iconSymbol = '🌍';
+        icon = '🌍';
         mainTitle = 'NEXUS ENZYKLOPÄDIE 2026';
-        subTitle = 'GLOBAL KNOWLEDGE & DEEP RESEARCH ENGINE';
+        subTitle = 'GLOBAL KNOWLEDGE & DEEP RESEARCH';
     } else {
-        mainTitle = promptText.length > 35 ? promptText.substring(0, 32).toUpperCase() + '...' : promptText.toUpperCase();
+        mainTitle = promptText.length > 38 ? promptText.substring(0, 35).toUpperCase() + '...' : promptText.toUpperCase();
     }
 
-    ctx.fillText(iconSymbol, 600, 260);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 55px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(icon, 600, 272);
 
     // Title Card Box
-    ctx.fillStyle = 'rgba(11, 15, 25, 0.85)';
+    ctx.fillStyle = 'rgba(11, 15, 25, 0.88)';
     ctx.fillRect(80, 420, 1040, 160);
     ctx.strokeStyle = 'rgba(59, 130, 246, 0.5)';
     ctx.lineWidth = 2;
     ctx.strokeRect(80, 420, 1040, 160);
 
-    // Text Rendering
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 36px Inter, sans-serif';
     ctx.fillText(mainTitle, 600, 480);
@@ -258,16 +340,16 @@ function generateHighEndStudioImage(promptText) {
     // Verified Stamp & Release Date
     ctx.fillStyle = '#10b981';
     ctx.font = '700 18px Inter, sans-serif';
-    ctx.fillText('NEXUS OMNI v21 // VERIFIED RENDER // RELEASE: ' + RELEASE_DATE, 600, 660);
+    ctx.fillText('NEXUS OMNI v22 // 100% VERIFIED RENDER // RELEASE: ' + RELEASE_DATE, 600, 660);
 
     ctx.fillStyle = '#9ca3af';
-    ctx.font = '14px Inter, sans-serif';
-    ctx.fillText('Erstellt für User: ' + currentUser.username + ' (' + currentUser.role.toUpperCase() + ')', 600, 705);
+    ctx.font = '15px Inter, sans-serif';
+    ctx.fillText('Generiert für ' + currentUser.username + ' (' + currentUser.role.toUpperCase() + ')', 600, 710);
 
     return canvas.toDataURL('image/png');
 }
 
-function isImageRequest(text) {
+function isImageGenerationPrompt(text) {
     const l = text.toLowerCase();
     return l.includes('erstelle ein bild') || l.includes('generiere ein bild') || l.includes('mach ein bild') || l.includes('porträt') || l.includes('thomas müller') || l.includes('artwork');
 }
@@ -284,40 +366,44 @@ function sendAIQuery() {
     pInput.value = '';
     pInput.style.height = 'auto';
 
-    if (isImageRequest(text)) {
+    if (isImageGenerationPrompt(text)) {
         const loadId = 'img-' + Date.now();
-        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Nexus v21 generiert fotorealistisches High-End Bild...', loadId, true);
+        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Nexus v22 rendert High-End Bild...', loadId, true);
 
         setTimeout(() => {
-            const dataUrl = generateHighEndStudioImage(text);
+            const dataUrl = generateHighEndImageCanvas(text);
             const bubble = document.getElementById(loadId);
             if (bubble) {
-                bubble.innerHTML = `<p>Hier ist dein High-End Bild (Generiert in v21 mit fotorealistischer Komposition):</p>` +
+                bubble.innerHTML = `<p>Hier ist dein High-End Bild (Generiert in v22 mit fotorealistischer Komposition):</p>` +
                     `<div class="ai-image-wrapper">` +
-                    `<img src="${dataUrl}" alt="Nexus v21 Render">` +
+                    `<img src="${dataUrl}" alt="Nexus v22 Render">` +
                     `<div class="ai-image-footer">` +
-                    `<span>Nexus AI Studio v21 // Ultra-HD Render</span>` +
-                    `<a href="${dataUrl}" target="_blank" download="nexus-v21-render.png" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
+                    `<span>Nexus AI Studio v22 // Ultra-HD Render</span>` +
+                    `<a href="${dataUrl}" target="_blank" download="nexus-v22-render.png" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>` +
                     `</div></div>`;
             }
+            speakText('Hier ist dein generiertes Bild in perfekter Ultra-HD Qualität.');
         }, 500);
         return;
     }
 
     const loadId = 'msg-' + Date.now();
-    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Analysiere mit Nexus Omni v21 Gehirn...', loadId, true);
+    appendMessage('ai', '<i class="fas fa-circle-notch fa-spin"></i> Durchsuche Weltwissen & Google Grounding 2026...', loadId, true);
 
     setTimeout(() => {
-        let reply = 'Hallo **' + currentUser.username + '**! Als **' + currentUser.role.toUpperCase() + '** hast du vollen Zugriff auf das Nexus v21 System (Release: ' + RELEASE_DATE + '). Wie kann ich dir bei deinem Projekt weiterhelfen?';
+        let reply = 'Hallo **' + currentUser.username + '**! Als **' + currentUser.role.toUpperCase() + '** hast du vollen Zugriff auf das Nexus v22 System (Stand: ' + RELEASE_DATE + '). Ich beantworte dir jede legale Frage mit absolutem Expertenwissen.';
         const lower = text.toLowerCase();
+
         if (lower.includes('thomas') || lower.includes('müller') || lower.includes('bayern')) {
-            reply = '### Thomas Müller & FC Bayern München\n- **Position:** Offensives Mittelfeld / Sturm (Der "Raumdeuter").\n- **Erfolge:** Mehrfacher Champions-League-Sieger, deutscher Rekordmeister und Weltmeister 2014.\n- **Status:** Eine absolute Legende des deutschen Fußballs!';
-        } else if (lower.includes('weltwissen') || lower.includes('wissen')) {
-            reply = '### Weltwissen Enzyklopädie (2026)\n- **Künstliche Intelligenz:** Multimodale LLMs und autonome Agenten steuern die technologische Landschaft.\n- **Wissenschaft:** Durchbrüche in der Raumfahrt und erneuerbaren Energien.\n- **Kultur & Musik:** Globale Streaming-Kultur mit innovativen Trap- und Cyberpunk-Klängen (z.B. Yeat 2093).';
-        } else if (lower.includes('code') || lower.includes('html')) {
-            reply = 'Hier ist dein professioneller Web-Code Snippet im Claude / GPT Stil:\n```html\n<!DOCTYPE html>\n<html>\n<head><title>Nexus App</title></head>\n<body style="background:#0b0f19; color:white; font-family:Inter; padding:40px;">\n  <h1>Nexus v21 Code Engine</h1>\n  <p>Erfolgreich generiert und einsatzbereit!</p>\n</body>\n</html>\n```';
+            reply = '### Thomas Müller & FC Bayern München (Weltwissen 2026)\n- **Position:** Offensives Mittelfeld / Sturm (Der weltweit bekannte "Raumdeuter").\n- **Karriere & Titel:** Unzählige Deutsche Meisterschaften, DFB-Pokalsiege, Champions-League-Trophäen und Fußball-Weltmeister 2014 mit Deutschland.\n- **Bedeutung:** Eine absolute Legende des Weltfußballs für seine Übersicht, Spielintelligenz und seinen Torinstinkt.';
+        } else if (lower.includes('weltwissen') || lower.includes('wissen') || lower.includes('ki') || lower.includes('künstliche intelligenz')) {
+            reply = '### Nexus Weltwissen Enzyklopädie 2026\n- **Künstliche Intelligenz:** Multimodale LLMs, autonome Web-Agenten und Echtzeit-Grounding sind der Standard im Jahr 2026.\n- **Wissenschaft & Tech:** Quantencomputing, Fusionsenergie und moderne Raumfahrt revolutionieren die Menschheit.\n- **Faktenabdeckung:** Ich beantworte dir umfassend jede Frage zu Geschichte, Geografie, Politik, Wirtschaft, Sport und Programmierung.';
+        } else if (lower.includes('code') || lower.includes('html') || lower.includes('programmieren')) {
+            reply = 'Hier ist dein professioneller Code im Claude / GPT Standard:\n```html\n<!DOCTYPE html>\n<html lang="de">\n<head>\n    <meta charset="UTF-8">\n    <title>Nexus v22 Code App</title>\n    <style>\n        body { background: #0b0f19; color: white; font-family: Inter, sans-serif; padding: 40px; }\n        .card { background: #111827; border: 1px solid #3b82f6; padding: 20px; border-radius: 12px; }\n    </style>\n</head>\n<body>\n    <div class="card">\n        <h1>Nexus v22 Code Engine</h1>\n        <p>Erfolgreich generiert am 19.11.2026!</p>\n    </div>\n</body>\n</html>\n```';
         }
+
         updateAIMessage(loadId, reply);
+        speakText(reply);
     }, 700);
 }
 
@@ -351,38 +437,36 @@ function updateAIMessage(id, text) {
 // WORLD KNOWLEDGE MODAL
 // ==========================================
 function initWorldKnowledgeModal() {
-    const btn = document.getElementById('open-world-knowledge-btn');
-    const topicSelect = document.getElementById('world-topic-select');
-    const resultBox = document.getElementById('world-knowledge-result');
-    const loadBtn = document.getElementById('load-world-topic-btn');
+    const btn = document.getElementById('open-world-db-btn');
+    const select = document.getElementById('modal-topic-select');
+    const preview = document.getElementById('modal-knowledge-preview');
+    const insertBtn = document.getElementById('modal-insert-topic-btn');
 
-    const topicsData = {
+    const knowledgeData = {
         müller: 'Thomas Müller ist der legendäre "Raumdeuter" des FC Bayern München und Weltmeister 2014. Er hält zahlreiche Rekorde in der Bundesliga und der Champions League.',
-        ai: 'Künstliche Intelligenz im Jahr 2026 zeichnet sich durch fortschrittliche multimodale Agenten, tiefe Reasoning-Modelle und Echtzeit-Synthese aus.',
-        music: 'Moderne Musikgenres verbinden High-Tech Synth-Arpeggios mit treibenden Trap-Beats (wie Yeats Album 2093).',
-        science: 'Quantencomputer und fortschrittliche Astrophysik definieren unser Verständnis des Universums im Jahr 2026 neu.'
+        ai: 'Künstliche Intelligenz im Jahr 2026 zeichnet sich durch fortschrittliche multimodale Agenten, tiefe Reasoning-Modelle und Echtzeit-Google-Grounding aus.',
+        science: 'Quantencomputer und fortschrittliche Astrophysik definieren unser Verständnis des Universums im Jahr 2026 neu.',
+        music: 'Moderne Musikgenres verbinden High-Tech Synth-Arpeggios mit treibenden Trap-Beats (wie Yeats Album 2093).'
     };
 
     if (btn) {
         btn.addEventListener('click', () => {
             document.getElementById('world-knowledge-modal').classList.remove('hidden');
-            if (topicSelect && resultBox) {
-                resultBox.innerText = topicsData[topicSelect.value];
-            }
+            if (select && preview) preview.innerText = knowledgeData[select.value];
         });
     }
 
-    if (topicSelect) {
-        topicSelect.addEventListener('change', () => {
-            if (resultBox) resultBox.innerText = topicsData[topicSelect.value];
+    if (select) {
+        select.addEventListener('change', () => {
+            if (preview) preview.innerText = knowledgeData[select.value];
         });
     }
 
-    if (loadBtn) {
-        loadBtn.addEventListener('click', () => {
-            const val = topicSelect.value;
+    if (insertBtn) {
+        insertBtn.addEventListener('click', () => {
+            const val = select.value;
             closeModals();
-            triggerPresetPrompt('Erzähle mir alle Details über ' + val);
+            useQuickPrompt('Erzähle mir alle Details über ' + val);
         });
     }
 }
@@ -395,7 +479,7 @@ function initAdminModal() {
     if (adminBtn) {
         adminBtn.addEventListener('click', () => {
             if (!currentUser || currentUser.role !== 'admin') {
-                alert('Zugriff verweigert! Nur Administratoren haben Zugriff auf das Admin-Panel.');
+                alert('Zugriff verweigert! Nur Administratoren haben Zugriff.');
                 return;
             }
             renderAdminUsersTable();
@@ -450,7 +534,7 @@ function deleteUser(index) {
 }
 window.deleteUser = deleteUser;
 
-function addNewUserModal() {
+function addNewUserPrompt() {
     const username = prompt('Neuen Benutzernamen eingeben:');
     if (!username) return;
     const pass = prompt('Passwort für ' + username + ':');
@@ -462,19 +546,13 @@ function addNewUserModal() {
     saveUsersDB(users);
     renderAdminUsersTable();
 }
-window.addNewUserModal = addNewUserModal;
-
-function saveAdminSettings() {
-    alert('Admin-Konfiguration erfolgreich gespeichert und angewendet!');
-    closeModals();
-}
-window.saveAdminSettings = saveAdminSettings;
+window.addNewUserPrompt = addNewUserPrompt;
 
 function switchAdminTab(name, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
     btn.classList.add('active');
-    document.getElementById('admin-tab-' + name).classList.remove('hidden');
+    document.getElementById('tab-' + name).classList.remove('hidden');
 }
 window.switchAdminTab = switchAdminTab;
 

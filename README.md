@@ -1,3 +1,3 @@
-# NEXUS AI OMNI v14 (Ultimate World Knowledge & HTML5 Canvas HD Fix)
-- Added World Knowledge Explorer sidebar widget with deep databases on science, history, geography, sports, music, and tech.
-- Replaced external image links with a robust HTML5 Canvas data URL generator (`generateCanvasImage`) to guarantee 100% successful rendering without any broken image icons.
+# NEXUS AI OMNI v15 (World Knowledge Popup & HD Image Fix)
+- Removed World Knowledge box from the sidebar and turned it into an interactive topbar Popup Modal (`world-knowledge-modal`).
+- Fixed the canvas image generator (`generateCanvasImage`) to properly wrap text and prevent clipping or overflow issues.

@@ -265,7 +265,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    max-height: 150px;
+    max-height: 180px;
 }
 
 .history-item {
@@ -285,43 +285,6 @@ body {
 .history-item:hover, .history-item.active {
     background: rgba(55, 65, 81, 0.5);
     color: #ffffff;
-}
-
-/* WORLD KNOWLEDGE BOX (NEW FEATURE v14) */
-.world-knowledge-box {
-    background: #1f2937;
-    border-radius: 12px;
-    padding: 12px;
-    border: 1px solid rgba(59, 130, 246, 0.4);
-}
-
-.wk-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    font-weight: 600;
-    color: #3b82f6;
-    margin-bottom: 8px;
-}
-
-.wk-header button {
-    background: none;
-    border: none;
-    color: #9ca3af;
-    cursor: pointer;
-}
-
-.wk-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.wk-desc {
-    font-size: 11px;
-    color: #9ca3af;
-    line-height: 1.4;
 }
 
 /* MUSIC BOX */

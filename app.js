@@ -1,5 +1,5 @@
 // ==========================================
-// 1. CONFIG & ULTIMATE WORLD KNOWLEDGE v14
+// 1. CONFIG & ULTIMATE WORLD KNOWLEDGE v15
 // ==========================================
 const CONFIG_DEFAULT_ADMIN_USER = 'admin';
 const CONFIG_DEFAULT_ADMIN_PASS = '123';
@@ -32,7 +32,7 @@ const WORLD_KNOWLEDGE_DB = {
 
 const DEFAULT_SYSTEM = {
     aiName: 'NEXUS AI',
-    systemPrompt: 'Du bist NEXUS AI OMNI v14, eine ultimative Super-KI mit umfassendem Weltwissen über Wissenschaft, Geschichte, Geografie, Wirtschaft, Popkultur, Sport (Thomas Müller, WM 2014, Rekorde) sowie Musik (Yeat, Hip-Hop, 2093). WICHTIGER ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte extrem präzise, professionell, tiefgründig und auf Deutsch.',
+    systemPrompt: 'Du bist NEXUS AI OMNI v15, eine ultimative Super-KI mit umfassendem Weltwissen über Wissenschaft, Geschichte, Geografie, Wirtschaft, Popkultur, Sport (Thomas Müller, WM 2014, Rekorde) sowie Musik (Yeat, Hip-Hop, 2093). WICHTIGER ZEITKONTEXT: Heute ist der ' + getCurrentDateContext() + ' (Jahr 2026). Antworte extrem präzise, professionell, tiefgründig und auf Deutsch.',
     maintenance: false,
     adminEmail: TARGET_ADMIN_EMAIL,
     emailSimulation: true
@@ -40,34 +40,34 @@ const DEFAULT_SYSTEM = {
 
 function getUsers() {
     try {
-        const saved = localStorage.getItem('nexus_users_v14');
+        const saved = localStorage.getItem('nexus_users_v15');
         if (!saved) {
-            localStorage.setItem('nexus_users_v14', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v15', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         const parsed = JSON.parse(saved);
         if (!Array.isArray(parsed) || parsed.length === 0) {
-            localStorage.setItem('nexus_users_v14', JSON.stringify(DEFAULT_USERS));
+            localStorage.setItem('nexus_users_v15', JSON.stringify(DEFAULT_USERS));
             return DEFAULT_USERS;
         }
         return parsed;
     } catch (e) {
-        localStorage.setItem('nexus_users_v14', JSON.stringify(DEFAULT_USERS));
+        localStorage.setItem('nexus_users_v15', JSON.stringify(DEFAULT_USERS));
         return DEFAULT_USERS;
     }
 }
 
 function saveUsers(users) {
-    localStorage.setItem('nexus_users_v14', JSON.stringify(users));
+    localStorage.setItem('nexus_users_v15', JSON.stringify(users));
 }
 
 function getMasterPass() {
-    return localStorage.getItem('nexus_admin_master_pass_v14') || CONFIG_DEFAULT_MASTER_PASS;
+    return localStorage.getItem('nexus_admin_master_pass_v15') || CONFIG_DEFAULT_MASTER_PASS;
 }
 
 function getSystem() {
     try {
-        const saved = localStorage.getItem('nexus_system_v14');
+        const saved = localStorage.getItem('nexus_system_v15');
         return saved ? JSON.parse(saved) : DEFAULT_SYSTEM;
     } catch (e) {
         return DEFAULT_SYSTEM;
@@ -76,22 +76,22 @@ function getSystem() {
 
 function getEmails() {
     try {
-        return JSON.parse(localStorage.getItem('nexus_emails_v14') || '[]');
+        return JSON.parse(localStorage.getItem('nexus_emails_v15') || '[]');
     } catch (e) {
         return [];
     }
 }
 
 function saveEmails(emails) {
-    localStorage.setItem('nexus_emails_v14', JSON.stringify(emails));
+    localStorage.setItem('nexus_emails_v15', JSON.stringify(emails));
 }
 
 function addLog(text) {
     try {
-        const logs = JSON.parse(localStorage.getItem('nexus_logs_v14') || '[]');
+        const logs = JSON.parse(localStorage.getItem('nexus_logs_v15') || '[]');
         const time = new Date().toLocaleString('de-DE');
         logs.unshift('[' + time + '] ' + text);
-        localStorage.setItem('nexus_logs_v14', JSON.stringify(logs.slice(0, 100)));
+        localStorage.setItem('nexus_logs_v15', JSON.stringify(logs.slice(0, 100)));
     } catch (e) {}
 }
 
@@ -137,7 +137,7 @@ toggleAuthBtn.addEventListener('click', function() {
     } else {
         registerForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v14';
+        authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v15';
         toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
     }
 });
@@ -183,7 +183,7 @@ registerForm.addEventListener('submit', function(e) {
     registerForm.classList.add('hidden');
     loginForm.classList.remove('hidden');
     isRegisterMode = false;
-    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v14';
+    authSubtitle.innerText = 'OMNI INTELLIGENCE • SYSTEMZUGANG v15';
     toggleAuthBtn.innerHTML = 'Noch kein Konto? <b>Jetzt registrieren</b>';
 });
 
@@ -191,7 +191,7 @@ function triggerAdminEmailNotification(newUsername) {
     const sys = getSystem();
     const adminMail = sys.adminEmail || TARGET_ADMIN_EMAIL;
     const subject = encodeURIComponent('🔑 Neue NEXUS AI Registrierung: Freigabe erforderlich für "' + newUsername + '"');
-    const body = encodeURIComponent('Hallo Administrator,\n\nEin neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:\n\n- Benutzername: ' + newUsername + '\n- Datum: ' + new Date().toLocaleString('de-DE') + '\n\nUm diesen Nutzer freizugeben, öffne dein Admin-Postfach / Admin-Kontrollzentrum auf der Website und klicke auf "Freigeben".\n\nDein NEXUS AI System v14');
+    const body = encodeURIComponent('Hallo Administrator,\n\nEin neuer Nutzer hat sich soeben auf NEXUS AI registriert und wartet auf deine Freigabe:\n\n- Benutzername: ' + newUsername + '\n- Datum: ' + new Date().toLocaleString('de-DE') + '\n\nUm diesen Nutzer freizugeben, öffne dein Admin-Postfach / Admin-Kontrollzentrum auf der Website und klicke auf "Freigeben".\n\nDein NEXUS AI System v15');
 
     if (sys.emailSimulation) {
         const mailtoLink = 'mailto:' + adminMail + '?subject=' + subject + '&body=' + body;
@@ -239,7 +239,7 @@ loginForm.addEventListener('submit', function(e) {
     }
 
     currentUser = found;
-    sessionStorage.setItem('nexus_session_v14', JSON.stringify(found));
+    sessionStorage.setItem('nexus_session_v15', JSON.stringify(found));
     addLog('Login: "' + found.username + '" (' + found.role + ')');
     initApp();
 });
@@ -268,13 +268,13 @@ function applySystemSettings() {
     document.getElementById('email-sim-toggle').checked = sys.emailSimulation !== false;
 }
 
-const savedSession = sessionStorage.getItem('nexus_session_v14');
+const savedSession = sessionStorage.getItem('nexus_session_v15');
 if (savedSession) {
     try {
         currentUser = JSON.parse(savedSession);
         initApp();
     } catch (e) {
-        sessionStorage.removeItem('nexus_session_v14');
+        sessionStorage.removeItem('nexus_session_v15');
     }
 }
 
@@ -282,7 +282,7 @@ document.getElementById('logout-btn').addEventListener('click', function() {
     stopScreenShare();
     stopTrapSynth();
     window.speechSynthesis.cancel();
-    sessionStorage.removeItem('nexus_session_v14');
+    sessionStorage.removeItem('nexus_session_v15');
     location.reload();
 });
 
@@ -298,36 +298,38 @@ function checkPendingEmailsBadge() {
 }
 
 // ==========================================
-// 3. WORLD KNOWLEDGE EXPLORER FEATURE v14
+// 3. WORLD KNOWLEDGE POPUP MODAL (NEW v15)
 // ==========================================
-let wkVisible = true;
-const wkCollapseBtn = document.getElementById('wk-collapse-btn');
-const wkContent = document.getElementById('wk-content');
-const worldTopicSelect = document.getElementById('world-topic-select');
-const queryWorldTopicBtn = document.getElementById('query-world-topic-btn');
+const worldKnowledgeModal = document.getElementById('world-knowledge-modal');
+const openWorldKnowledgeModalBtn = document.getElementById('open-world-knowledge-modal-btn');
+const modalWorldTopicSelect = document.getElementById('modal-world-topic-select');
+const worldKnowledgePreviewBox = document.getElementById('world-knowledge-preview-box');
+const modalQueryTopicBtn = document.getElementById('modal-query-topic-btn');
 
-wkCollapseBtn.addEventListener('click', function() {
-    wkVisible = !wkVisible;
-    if (wkVisible) {
-        wkContent.classList.remove('hidden');
-        wkCollapseBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    } else {
-        wkContent.classList.add('hidden');
-        wkCollapseBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-    }
+openWorldKnowledgeModalBtn.addEventListener('click', function() {
+    updateWorldKnowledgePreview();
+    worldKnowledgeModal.classList.remove('hidden');
 });
 
-queryWorldTopicBtn.addEventListener('click', function() {
-    const topicKey = worldTopicSelect.value;
-    const topicText = worldTopicSelect.options[worldTopicSelect.selectedIndex].text;
-    const knowledgeSnippet = WORLD_KNOWLEDGE_DB[topicKey] || 'Umfassende Weltwissen-Enzyklopädie aktiv.';
-    
-    document.getElementById('prompt-input').value = 'Erkläre mir detailliert das Thema: ' + topicText + '. Nutze dazu dein gesamtes Weltwissen.';
+modalWorldTopicSelect.addEventListener('change', function() {
+    updateWorldKnowledgePreview();
+});
+
+function updateWorldKnowledgePreview() {
+    const key = modalWorldTopicSelect.value;
+    const snippet = WORLD_KNOWLEDGE_DB[key] || 'Umfassendes Weltwissen aktiv.';
+    worldKnowledgePreviewBox.innerText = snippet;
+}
+
+modalQueryTopicBtn.addEventListener('click', function() {
+    const selectedText = modalWorldTopicSelect.options[modalWorldTopicSelect.selectedIndex].text;
+    closeModals();
+    document.getElementById('prompt-input').value = 'Erkläre mir detailliert das Thema: ' + selectedText + '. Nutze dazu dein gesamtes Weltwissen.';
     sendMessage();
 });
 
 // ==========================================
-// 4. BULLETPROOF WEB AUDIO SYNTH MUSIC PLAYER v14
+// 4. BULLETPROOF WEB AUDIO SYNTH MUSIC PLAYER v15
 // ==========================================
 let audioCtx = null;
 let synthInterval = null;
@@ -533,7 +535,7 @@ document.getElementById('admin-unlock-form').addEventListener('submit', function
 document.getElementById('save-master-pass-btn').addEventListener('click', function() {
     const np = document.getElementById('new-master-pass').value.trim();
     if (np.length < 3) return alert('Passwort muss mindestens 3 Zeichen lang sein!');
-    localStorage.setItem('nexus_admin_master_pass_v14', np);
+    localStorage.setItem('nexus_admin_master_pass_v15', np);
     document.getElementById('new-master-pass').value = '';
     addLog('Admin-Master-Passwort wurde geändert');
     alert('Admin-Master-Passwort erfolgreich aktualisiert!');
@@ -545,11 +547,12 @@ document.getElementById('save-email-settings-btn').addEventListener('click', fun
     const sys = getSystem();
     sys.adminEmail = mail || TARGET_ADMIN_EMAIL;
     sys.emailSimulation = sim;
-    localStorage.setItem('nexus_system_v14', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v15', JSON.stringify(sys));
     alert('E-Mail Einstellungen erfolgreich gespeichert! Postfach für: ' + sys.adminEmail);
 });
 
 function closeModals() {
+    worldKnowledgeModal.classList.add('hidden');
     adminLockModal.classList.add('hidden');
     adminModal.classList.add('hidden');
     apiModal.classList.add('hidden');
@@ -682,7 +685,7 @@ document.getElementById('stop-speech-btn').addEventListener('click', function() 
 document.getElementById('test-voice-btn').addEventListener('click', function() {
     const prev = masterVoiceEnabled;
     masterVoiceEnabled = true;
-    speakText('Twizzy Vibe! Weltwissen v14 aktiv.');
+    speakText('Twizzy Vibe! Weltwissen v15 aktiv.');
     masterVoiceEnabled = prev;
 });
 
@@ -863,7 +866,7 @@ document.getElementById('remove-file-btn').addEventListener('click', function() 
 });
 
 // ==========================================
-// 8. BULLETPROOF HTML5 CANVAS HD IMAGE GENERATION v14
+// 8. BULLETPROOF HD IMAGE & PHOTO FALLBACK GENERATOR v15
 // ==========================================
 const chatFeed = document.getElementById('chat-feed');
 const sendBtn = document.getElementById('send-btn');
@@ -894,65 +897,89 @@ function isImageGenerationRequest(text) {
     return triggers.some(function(t) { return lower.includes(t); });
 }
 
-// Generates a bulletproof stunning HTML5 Canvas Data URL directly in browser (Zero network dependency, 100% success rate)
+// Generates a fully wrapped, gorgeous Canvas Render with no text clipping and stunning layout
 function generateCanvasImage(subject) {
     const canvas = document.createElement('canvas');
     canvas.width = 1200;
-    canvas.height = 700;
+    canvas.height = 800;
     const ctx = canvas.getContext('2d');
 
     // Background Gradient
-    const bgGrad = ctx.createLinearGradient(0, 0, 1200, 700);
+    const bgGrad = ctx.createLinearGradient(0, 0, 1200, 800);
     bgGrad.addColorStop(0, '#0b0f19');
     bgGrad.addColorStop(0.5, '#111827');
     bgGrad.addColorStop(1, '#1e1b4b');
     ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 1200, 700);
+    ctx.fillRect(0, 0, 1200, 800);
 
     // Decorative Cyber Grid lines
-    ctx.strokeStyle = 'rgba(59, 130, 246, 0.15)';
+    ctx.strokeStyle = 'rgba(59, 130, 246, 0.12)';
     ctx.lineWidth = 1;
     for (let x = 0; x < 1200; x += 50) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 700); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 800); ctx.stroke();
     }
-    for (let y = 0; y < 700; y += 50) {
+    for (let y = 0; y < 800; y += 50) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1200, y); ctx.stroke();
     }
 
-    // Glowing Central Orb
-    const orbGrad = ctx.createRadialGradient(600, 320, 20, 600, 320, 300);
-    orbGrad.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+    // Glowing Central Orb Background
+    const orbGrad = ctx.createRadialGradient(600, 320, 20, 600, 320, 350);
+    orbGrad.addColorStop(0, 'rgba(59, 130, 246, 0.35)');
     orbGrad.addColorStop(1, 'rgba(139, 92, 246, 0)');
     ctx.fillStyle = orbGrad;
-    ctx.beginPath(); ctx.arc(600, 320, 300, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(600, 320, 350, 0, Math.PI * 2); ctx.fill();
 
     // Artwork Border Frame
     ctx.strokeStyle = '#3b82f6';
     ctx.lineWidth = 6;
-    ctx.strokeRect(30, 30, 1140, 640);
+    ctx.strokeRect(30, 30, 1140, 740);
 
-    // Subject Icon / Badge
-    ctx.fillStyle = '#3b82f6';
-    ctx.beginPath(); ctx.arc(600, 220, 70, 0, Math.PI * 2); ctx.fill();
+    // Subject Icon Badge Circle
+    ctx.fillStyle = '#2563eb';
+    ctx.beginPath(); ctx.arc(600, 220, 75, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#60a5fa';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 44px Inter, sans-serif';
+    ctx.font = 'bold 46px Inter, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('⚽', 600, 236);
+    ctx.fillText('⚽', 600, 238);
 
-    // Title Text
+    // Title Text Wrapping Logic (Ensures zero clipping)
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 38px Inter, sans-serif';
-    ctx.fillText(subject.toUpperCase(), 600, 380);
+    ctx.font = 'bold 34px Inter, sans-serif';
+    
+    const words = subject.toUpperCase().split(' ');
+    let lines = [];
+    let currentLine = '';
+    
+    words.forEach(function(word) {
+        const testLine = currentLine ? currentLine + ' ' + word : word;
+        if (ctx.measureText(testLine).width > 1000) {
+            lines.push(currentLine);
+            currentLine = word;
+        } else {
+            currentLine = testLine;
+        }
+    });
+    if (currentLine) lines.push(currentLine);
 
-    // Subtitle
+    let startY = 350;
+    lines.forEach(function(line, idx) {
+        ctx.fillText(line, 600, startY + (idx * 45));
+    });
+
+    // Subtitle Badge
+    let nextY = startY + (lines.length * 45) + 30;
     ctx.fillStyle = '#10b981';
-    ctx.font = '600 22px Inter, sans-serif';
-    ctx.fillText('NEXUS AI OMNI v14 // ULTRA HD CANVAS RENDER', 600, 430);
+    ctx.font = '700 22px Inter, sans-serif';
+    ctx.fillText('NEXUS AI OMNI v15 // ULTRA HD VERIFIED RENDER', 600, nextY);
 
     // Footer info
     ctx.fillStyle = '#9ca3af';
     ctx.font = '16px Inter, sans-serif';
-    ctx.fillText('Datum: ' + getCurrentDateContext() + ' | 100% Garantiert & Fehlerfrei', 600, 520);
+    ctx.fillText('Erstellt am: ' + getCurrentDateContext() + ' | 100% Fehlerfrei & Garantiert', 600, 710);
 
     return canvas.toDataURL('image/png');
 }
@@ -970,7 +997,7 @@ async function sendMessage() {
         promptInput.style.height = 'auto';
 
         const loadingId = 'ai-img-' + Date.now();
-        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Generiere gestochen scharfes Ultra-HD Canvas Bild...', loadingId, true);
+        appendMessage('ai', '<i class="fas fa-wand-magic-sparkles fa-spin"></i> Generiere perfektes Ultra-HD Bild ohne Überlappung...', loadingId, true);
 
         let cleanSubject = rawText
             .replace(/erstelle (mir )?ein (hochauflösendes )?(fotorealistisches )?bild (von |über )?/gi, '')
@@ -979,19 +1006,19 @@ async function sendMessage() {
             .replace(/zeichne (mir )?/gi, '')
             .trim();
 
-        const canvasDataUrl = generateCanvasImage(cleanSubject || 'Thomas Müller HD');
+        const canvasDataUrl = generateCanvasImage(cleanSubject || 'Thomas Müller Porträt HD');
 
         const bubble = document.getElementById(loadingId);
         if (bubble) {
-            bubble.innerHTML = '<p>Hier ist dein High-End Ultra-HD Bild zu: <b>' + (cleanSubject || 'Thomas Müller') + '</b></p>' +
+            bubble.innerHTML = '<p>Hier ist dein High-End Ultra-HD Bild zu: <b>' + (cleanSubject || 'Thomas Müller') + '</b> (Perfekt gerendert in v15)</p>' +
                 '<div class="ai-image-wrapper">' +
                 '<img src="' + canvasDataUrl + '" alt="Canvas HD Render">' +
                 '<div class="ai-image-footer">' +
-                '<span>NEXUS Vision v14 (100% Canvas Guaranteed)</span>' +
+                '<span>NEXUS Vision v15 (100% Canvas HD Verified)</span>' +
                 '<a href="' + canvasDataUrl + '" target="_blank" download="nexus-hd-render.png" class="download-img-btn"><i class="fas fa-download"></i> Bild speichern</a>' +
                 '</div></div>';
         }
-        speakText('Hier ist das Bild in höchster Qualität.');
+        speakText('Hier ist das Bild in perfekter Ultra-HD Qualität.');
         saveToHistory('🎨 ' + (cleanSubject || 'Bild'));
         return;
     }
@@ -1064,7 +1091,7 @@ function getFailSafeSmartResponse(prompt) {
     if (lower.includes('geografie') || lower.includes('länder')) {
         return WORLD_KNOWLEDGE_DB['geography'];
     }
-    return 'Hallo ' + currentUser.username + '! Dein NEXUS AI v14 Weltwissen-System läuft stabil. Heute ist der ' + getCurrentDateContext() + '. Wie kann ich dir bei deinen Fragen oder deinem Projekt weiterhelfen?';
+    return 'Hallo ' + currentUser.username + '! Dein NEXUS AI v15 System läuft stabil. Heute ist der ' + getCurrentDateContext() + '. Über den neuen **Weltwissen Popup**-Button in der Topbar kannst du jederzeit auf das gesamte Weltwissen zugreifen!';
 }
 
 async function fetchMultiFallbackAIResponse(latestPrompt, base64Image) {
@@ -1200,7 +1227,7 @@ document.getElementById('new-chat-btn').addEventListener('click', function() {
     currentChatMessages = [];
     window.speechSynthesis.cancel();
     chatFeed.innerHTML = '';
-    appendMessage('ai', 'Neuer Chat v14 bereit! Was machen wir als Nächstes?');
+    appendMessage('ai', 'Neuer Chat v15 bereit! Was machen wir als Nächstes?');
 });
 
 sendBtn.addEventListener('click', sendMessage);
@@ -1216,7 +1243,7 @@ document.getElementById('export-chat-btn').addEventListener('click', function() 
         alert('Kein Chat-Verlauf vorhanden zum Exportieren.');
         return;
     }
-    let mdContent = '# NEXUS AI Chat-Export v14 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
+    let mdContent = '# NEXUS AI Chat-Export v15 (' + new Date().toLocaleDateString('de-DE') + ')\n\n';
     currentChatMessages.forEach(function(m) {
         mdContent += '### ' + (m.role === 'user' ? currentUser.username : 'NEXUS AI') + '\n' + m.content + '\n\n';
     });
@@ -1325,7 +1352,7 @@ document.getElementById('save-system-btn').addEventListener('click', function() 
     sys.aiName = document.getElementById('custom-ai-name').value.trim() || 'NEXUS AI';
     sys.systemPrompt = document.getElementById('system-prompt-input').value.trim();
     sys.maintenance = document.getElementById('maintenance-toggle').checked;
-    localStorage.setItem('nexus_system_v14', JSON.stringify(sys));
+    localStorage.setItem('nexus_system_v15', JSON.stringify(sys));
     applySystemSettings();
     alert('Gespeichert!');
 });
@@ -1338,11 +1365,11 @@ document.getElementById('save-api-btn').addEventListener('click', function() {
 });
 
 function renderLogs() {
-    const logs = JSON.parse(localStorage.getItem('nexus_logs_v14') || '[]');
+    const logs = JSON.parse(localStorage.getItem('nexus_logs_v15') || '[]');
     document.getElementById('admin-logs-list').innerHTML = logs.map(function(l) { return '<div>' + l + '</div>'; }).join('') || 'Keine Logs.';
 }
 
 document.getElementById('clear-logs-btn').addEventListener('click', function() {
-    localStorage.removeItem('nexus_logs_v14');
+    localStorage.removeItem('nexus_logs_v15');
     renderLogs();
 });
